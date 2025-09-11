@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarte Certo</title>
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    </head>
+
+
+    <body class="descarte-body">
+        <a href="login.html" class="voltar-link">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+         </a>
+        <div class="descarte-signup-container">
+            <h2 class="descarte-signup-title">Junte-se ao movimento</h2>
+            <form class="descarte-signup-form">
+                <div class="descarte-signup-form-group">
+                    <label class="descarte-signup-label" for="fullname">Nome Completo:</label>
+                    <input class="descarte-signup-input" type="text" id="fullname" name="fullname" required placeholder="Digite seu nome">
+                </div>
+                <div class="descarte-signup-form-group">
+                    <label class="descarte-signup-label" for="email">Email:</label>
+                    <input class="descarte-signup-input" type="email" id="email" name="email" required placeholder="Digite seu email">
+                </div>
+                <div class="descarte-signup-form-group">
+                    <label class="descarte-signup-label" for="password">Senha:</label>
+                    <input class="descarte-signup-input" type="password" id="password" name="password" required placeholder="Digite sua senha">
+                </div>
+                <div class="descarte-signup-form-group">
+                    <label class="descarte-signup-label" for="confirm-password">Confirme sua senha:</label>
+                    <input class="descarte-signup-input" type="password" id="confirm-password" name="confirm-password" required placeholder="Confirme sua senha">
+                </div>
+                <div class="descarte-signup-form-group">
+                    <button class="descarte-signup-button" type="submit" onclick="alerta()">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </body>
+    
+
+<script>
+    function alerta(){
+        alert("Conta criada com sucesso!" )
+    }
+    
+    document.querySelector(".signup-form").addEventListener("submit", function (e) {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault(); // Impede envio do formulário
+            alert("As senhas não coincidem. Por favor, verifique.");
+        }
+    });
+</script>
+
+</script>
+</html>

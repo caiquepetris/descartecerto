@@ -1,0 +1,923 @@
+/* Estilos específicos para a seção de missão */
+.mission-section {
+    padding: 96px 0; 
+    background: linear-gradient(to bottom right, #f0fdf4, #ffffff, #f0fdf4);
+}
+
+.mission-container {
+    max-width: 1280px; 
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column; 
+}
+
+/* Cabeçalho da missão */
+.mission-header {
+    text-align: center;
+    margin-bottom: 64px;
+    width: 100%; 
+}
+
+.mission-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 24px;
+}
+
+.mission-divider {
+    width: 96px;
+    height: 4px;
+    background-color: #16a34a; 
+    margin: 0 auto 32px;
+    border-radius: 9999px;
+}
+
+.mission-subtitle {
+    font-size: 20px;
+    color: #4b5563; 
+    max-width: 768px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Grid layout */
+.mission-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    width: 100%; 
+}
+
+@media (min-width: 768px) {
+    .mission-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+}
+
+
+.mission-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+
+.mission-card {
+    background-color: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.mission-card:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);}
+
+.mission-card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    background-color: #16a34a; 
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    
+}
+
+
+
+.mission-card-content {
+    position: relative;
+    z-index: 1;
+}
+
+.mission-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    display: inline-block;
+    color: #16a34a; /* text-green-600 */
+}
+
+.mission-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937; /* text-gray-800 */
+    margin-bottom: 12px;
+}
+
+.mission-card-text {
+    color: #4b5563; 
+    line-height: 1.7;
+}
+
+/* Coluna direita */
+.mission-feature-card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    position: relative;
+    overflow: hidden;
+}
+.mission-feature-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.mission-circle-bg {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background-color: #f0fdf4;
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+.mission-top-right {
+    top: -40px;
+    right: -40px;
+}
+
+.mission-bottom-left {  bottom: -32px; left: -32px; }
+
+.mission-feature-content { position: relative; z-index: 1;}
+
+.mission-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+
+    border-radius: 50%;
+    margin-bottom: 24px;
+    font-size: 32px;
+    color: #16a34a; /* text-green-600 */
+}
+
+.mission-feature-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937; 
+    margin-bottom: 24px;
+}
+
+.mission-feature-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: #4b5563; 
+    line-height: 1.7;
+}
+
+/* Rodapé da missão */
+.mission-footer {
+    margin-top: 64px;
+    text-align: center;
+    width: 100%;
+    font-size: px;
+}
+
+.mission-join-us {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #16a34a;
+    font-weight: 500;
+}
+
+.mission-leaf-icon {font-size: 20px;}
+
+@media (max-width: 768px) {
+    .mission-header, 
+    .mission-footer {
+        width: 100%;
+    }
+}
+/* do 0 ao 212, foi o que significa o que é o descarte certo */
+
+.dc-help-section {
+    padding: 5rem 1rem;
+    background: linear-gradient(to top right, #f0fdf4, #ffffff, #f0fdf4);
+  }
+  
+  .dc-help-section .dc-help-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  
+  .dc-help-section .dc-help-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 1rem;
+  }
+  
+  .dc-help-section .dc-help-subtitle {
+    text-align: center;
+    color: #4b5563;
+    margin-bottom: 3rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .dc-help-section .dc-features-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  
+  .dc-feature-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center; 
+  }
+  
+  .dc-feature-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dc-feature-card .icon {
+    width: 3rem;
+    height: 3rem; 
+    color: #059669;
+    margin-bottom: 1.5rem; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dc-feature-title{
+    margin-top: 10px;
+  }
+  
+ 
+  .dc-feature-chat .icon-chat {
+    color: #059669; 
+  }
+  
+  .dc-feature-location .icon-points {
+    color: #2563eb; 
+  }
+  
+  .dc-feature-content .icon {
+    color: #d97706; 
+  }
+  
+  .dc-feature-card .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    width: 100%; 
+  }
+  
+  .dc-feature-card .dc-feature-description {
+    color: #4b5563;
+    width: 100%; 
+  }
+  
+  
+  .dc-feature-card .icon {
+    background-color: rgba(5, 150, 105, 0.1);
+    border-radius: 50%;
+    padding: 0.75rem;
+  }
+  
+  .dc-feature-chat .icon-chat {
+    background-color: rgba(5, 150, 105, 0.1);
+  }
+  
+  .dc-feature-location .icon-points {
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+  
+  .dc-feature-content .icon {
+    background-color: rgba(217, 119, 6, 0.1);
+  }
+  
+  @media (min-width: 768px) {
+    .dc-help-section .dc-features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dc-feature-card .icon {
+      width: 3.5rem; /* Ainda maior em telas médias */
+      height: 3.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .dc-help-section .dc-features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .dc-feature-card {
+      padding: 2rem;
+    }
+    
+    .dc-feature-card .icon {
+      width: 4rem; 
+      height: 4rem;
+    }
+  }
+
+  .recycling-guide {
+    padding: 5rem 1rem;
+    background-color: rgb(249, 250, 251);
+   
+  }
+  
+  .recycling-guide-container {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+  
+  .recycling-guide-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  
+  .recycling-guide-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .recycling-guide-icon svg {
+    width: 3rem;
+    height: 3rem;
+    color: rgb(22, 163, 74);
+  }
+  
+  .recycling-guide-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: rgb(31, 41, 55);
+    margin-bottom: 1rem;
+  }
+  
+  .recycling-guide-description {
+    color: rgb(75, 85, 99);
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  
+  .recycling-guide-grid {
+    display: grid;
+    gap: 1rem; 
+    grid-template-columns:  1fr;
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .recycling-guide-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .recycling-guide-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .guide-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+  
+  .guide-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .guide-card-header {
+    height: 0.5rem;
+  }
+  
+  .guide-card-header.plastic { background-color: rgb(239, 68, 68); }
+  .guide-card-header.paper { background-color: rgb(59, 130, 246); }
+  .guide-card-header.metal { background-color: rgb(234, 179, 8); }
+  .guide-card-header.glass { background-color: rgb(22, 163, 74); }
+  
+  .guide-card-content {
+    padding: 1.5rem;
+  }
+  
+  .guide-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: rgb(31, 41, 55);
+    margin-bottom: 1rem;
+  }
+  
+  .guide-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .guide-section-title {
+    font-weight: 500;
+    color: rgb(55, 65, 81);
+    margin-bottom: 0.5rem;
+  }
+  
+  .guide-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between;
+     gap:0.5rem;
+  }
+  
+  .guide-list-item {
+    color: rgb(75, 85, 99);
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .guide-list-item::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: rgb(34, 197, 94);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+  
+  .guide-step {
+    color: rgb(75, 85, 99);
+    display: flex;
+    align-items: start;
+    margin-bottom: 0.5rem;
+  }
+  
+  .guide-step-number {
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: rgb(220, 252, 231);
+    color: rgb(22, 163, 74);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+    margin-top: 0.125rem;
+  }
+  
+  .guide-tips {
+    background-color: rgb(240, 253, 244);
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .guide-tips-content {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+  }
+  
+  .guide-tips-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: rgb(22, 163, 74);
+    margin-top: 0.125rem;
+  }
+  
+  .guide-tips-text {
+    font-size: 0.875rem;
+    color: rgb(21, 128, 61);
+  }
+
+  /* Seção Descartar */
+.descartar-section {
+  background-color: rgb(249, 250, 251);
+  padding: 5rem 1rem;
+  color: #111;  width: 100vw;  
+  font-family: 'Segoe UI', sans-serif;
+  
+}
+
+
+.descartar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+  
+}
+
+
+/* icone  */
+.descartar-icon svg path {
+  width: 25px;
+  height: 25px;
+  padding-bottom: 10px;
+  fill:green;
+}
+
+
+.descartar-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  line-height: 1.2;
+}
+
+.descartar-description {
+  font-size: 1.2rem;
+  margin: 20px auto;
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+.descartar-highlight {
+  font-weight: 700;
+}
+
+/* DcBot HTML */
+.descartar-chatbot-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.descartar-chatbot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
+}
+
+.descartar-chatbot-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: white;
+}
+
+.descartar-chatbot-name {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+/* Logo chat */
+.descartar-chatbot img{object-fit: contain;}
+
+.descartar-chatbot-button {
+  display: inline-block;
+  background-color: rgb(34, 197, 94);
+  color: white;
+  padding:20px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  margin-top: 10px;
+  font-size: 20px;
+  transition: background-color 0.3s ease, transform .2s ease;
+  border:none;
+}
+
+.descartar-chatbot-button:hover { transform: scale(1.1); }
+
+
+@media (max-width: 768px) {
+  .descartar-title {
+    font-size: 2rem;
+  }
+
+  .descartar-chatbot-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .descartar-description {
+    font-size: 1rem;
+  }
+}
+
+
+
+
+
+/* Bolha flutuante DcBot */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+
+.chatbot-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  position: relative;
+  z-index: 1001;
+}
+
+.chatbot-button:hover {
+  transform: scale(1.05);
+  background-color: #059669;
+}
+
+/* Chatbot Window */
+.chatbot-window {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 450px;              /* tamanho inicial */
+  height: 400px;             /* tamanho inicial */
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+
+  /* 🔧 melhora a performance das animações de entrada */
+  transform: translateY(20px);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform .25s ease, opacity .25s ease, visibility .25s ease; /* evita 'all' pra não animar width/height */
+  overflow: hidden;
+  z-index: 1000;
+
+  /* 🔧 limites para redimensionar via JS */
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 120px);
+  min-width: 300px;
+  min-height: 340px;
+
+  /* opcional: ajuda o navegador a isolar layout/pintura desse painel */
+  will-change: transform, opacity;
+}
+
+.chatbot-window.open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Chatbot Header */
+.chatbot-header {
+  background-color: #10b981;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  /* opcional: cursor de mover se depois quiser arrastar a janela pela header */
+  /* cursor: move; */
+}
+
+.chatbot-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chatbot-close-button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.chatbot-close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Chat Messages */
+.chatbot-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chatbot-message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.bot-message {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.user-message .message-bubble {
+  background-color: #10b981;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.bot-message .message-bubble {
+  background-color: #f0f0f0;
+  color: #333;
+  border-bottom-left-radius: 4px;
+}
+
+/* Input Area */
+.chatbot-input-container {
+  padding: 12px;
+  border-top: 1px solid #eaeaea;
+  display: flex;
+  background-color: white;
+}
+
+.chatbot-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chatbot-input:focus {
+  border-color: #10b981;
+}
+
+.chatbot-send-button {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-left: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.chatbot-send-button:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.chatbot-send-button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .chatbot-window {
+    width: calc(100% - 40px);
+    height: 60vh;
+    bottom: 80px;
+    right: 20px;
+    max-width: calc(100% - 40px);
+    max-height: calc(100dvh - 120px);
+    min-width: 280px;
+    min-height: 320px;
+  }
+}
+
+/* Adicione isso ao seu CSS existente */
+.typing .message-bubble {
+  display: flex;
+  align-items: center;
+  min-width: 30px;
+}
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.suggestion-btn {
+  background-color: #ffffff;             
+  border: 1px solid #10b981;              
+  border-radius: 12px;                   
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #10b981;                         
+  cursor: pointer;
+  text-align: center;                   
+  transition: all 0.25s ease;             
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+}
+
+.suggestion-btn:hover {
+  background-color: #10b981;              
+  color: #fff;                            
+  transform: translateY(-2px);            
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.suggestion-btn:active {
+  transform: translateY(0);              
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+/* Estilo para o efeito de digitação */
+.typing .message-bubble {
+  display: flex;
+  align-items:center ;
+}
+
+/* Indicador de digitação */
+.typing .message-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 20px;
+  color: #555;
+}
+
+.typing .dot {
+  width: 6px;
+  height: 6px;
+  background-color: #aaa;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1.2s infinite;
+}
+
+.typing .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
+.chatbot-message.user-message {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.chatbot-message.user-message .message-bubble {
+  background-color: #d1e7dd; /* verde claro */
+  color: #000;
+  padding: 10px 15px;
+  border-radius: 16px;
+  max-width: 70%;
+  word-wrap: break-word;
+}

@@ -1,0 +1,184 @@
+<script>
+  document.addEventListener("DOMContentLoaded", async function () {
+    try {
+      const [headerRes, footerRes] = await Promise.all([
+        fetch('header.html'),
+        fetch('footer.html')
+      ]);
+  
+      if (!headerRes.ok || !footerRes.ok) {
+        throw new Error("Erro ao carregar header ou footer.");
+      }
+  
+      const [headerHTML, footerHTML] = await Promise.all([
+        headerRes.text(),
+        footerRes.text()
+      ]);
+  
+      document.body.insertAdjacentHTML('afterbegin', headerHTML);
+      document.body.insertAdjacentHTML('beforeend', footerHTML);
+  
+      initMenu(); 
+    } catch (error) {
+      console.error("Erro ao carregar o header/footer:", error);
+    }
+  });
+  </script>
+  <section class="news" aria-labelledby="news-title">
+  <h2 id="news-title">Notícias</h2>
+
+  <article class="news-principal">
+    <img src="assets/images/n11.png" alt="Mulheres em cooperativas de reciclagem" class="news-img" loading="lazy">
+    <div class="news-textos">
+      <h4 class="news-titulos">
+        <a href="https://www.uol.com.br/ecoa/ultimas-noticias/2025/03/28/mulheres-sao-maioria-em-cooperativas-de-reciclagem-no-brasil.htm" target="_blank" rel="noopener noreferrer">
+          Mulheres assumem protagonismo em cooperativas de reciclagem no Brasil
+        </a>
+      </h4>
+      <p class="news-paragrafos">
+        <a href="https://www.uol.com.br/ecoa/ultimas-noticias/2025/03/28/mulheres-sao-maioria-em-cooperativas-de-reciclagem-no-brasil.htm" target="_blank" rel="noopener noreferrer">
+          Mulheres são maioria nas cooperativas de resíduos sólidos no país. Segundo o Atlas Brasileiro da Reciclagem, elas são 56% dos mais de 75 mil catadores registrados. Dessa porcentagem, 61% ocupam cargos de direção e de gestão.
+        </a>
+      </p>
+      <p class="data">Data: 18/03/2025</p>
+    </div>
+  </article>
+</section>
+
+<section id="projetos" class="projetos" aria-labelledby="projetos-title">
+  <h2 id="projetos-title" class="sr-only">Projetos e matérias</h2>
+  <div class="projetos-caixa">
+
+    <article class="projetos-card">
+      <img src="assets/images/tijolo.png" alt="Tijolo cerâmico feito com solo contaminado" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/residuo-de-petroleo-que-vira-tijolo/" target="_blank" rel="noopener noreferrer">Resíduo de petróleo que vira tijolo</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/residuo-de-petroleo-que-vira-tijolo/" target="_blank" rel="noopener noreferrer">
+            Pesquisadores da UFRN patentearam um processo de produção de tijolos cerâmicos usando solo contaminado com petróleo. A técnica também pode ser aplicada a outros produtos cerâmicos, como telhas, blocos e pisos.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/filtro de ar.png" alt="Filtro de ar automotivo" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/como-descartar-filtro-de-ar/" target="_blank" rel="noopener noreferrer">Como descartar filtro de ar corretamente</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/como-descartar-filtro-de-ar/" target="_blank" rel="noopener noreferrer">
+            Filtros de ar acumulam impurezas e, se descartados incorretamente, podem prejudicar o meio ambiente. É essencial dar o destino certo a esses componentes.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/bateria.png" alt="Baterias e extração de minerais" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/extracao-de-minerais-para-baterias-pressiona-saude-e-meio-ambiente/" target="_blank" rel="noopener noreferrer">Extração de minerais para baterias</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/extracao-de-minerais-para-baterias-pressiona-saude-e-meio-ambiente/" target="_blank" rel="noopener noreferrer">
+            A demanda por baterias impulsiona a extração mineral, gerando impactos ambientais e riscos à saúde que precisam ser considerados na transição energética.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/lampadas.png" alt="Coleta itinerante de lâmpadas" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/coleta-itinerante-de-lampadas-da-reciclus-prazo-para-municipios-manifestarem-interesse-acaba-em-31-03/" target="_blank" rel="noopener noreferrer">Coleta itinerante de lâmpadas da Reciclus</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/coleta-itinerante-de-lampadas-da-reciclus-prazo-para-municipios-manifestarem-interesse-acaba-em-31-03/" target="_blank" rel="noopener noreferrer">
+            Cidades com menos de 25 mil habitantes podem participar da coleta gratuita de lâmpadas fluorescentes promovida pela Reciclus.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/lixo.png" alt="Lixo urbano acumulado" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/estimativa-revela-que-quantidade-de-lixo-produzida-no-mundo-sera-quase-70-maior-em-2030/" target="_blank" rel="noopener noreferrer">Estimativa sobre produção de lixo mundial</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/estimativa-revela-que-quantidade-de-lixo-produzida-no-mundo-sera-quase-70-maior-em-2030/" target="_blank" rel="noopener noreferrer">
+            A produção de lixo deve aumentar de 1,3 bilhão para 2,2 bilhões de toneladas até 2025, segundo o Pnuma. A má gestão dos resíduos ameaça a saúde pública.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/reciclagem eletronico.png" alt="Reciclagem de eletrônicos" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/projeto-cria-programa-nacional-de-coleta-reciclagem-e-descarte-de-equipamentos-eletronicos/" target="_blank" rel="noopener noreferrer">Programa nacional de descarte eletrônico</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/projeto-cria-programa-nacional-de-coleta-reciclagem-e-descarte-de-equipamentos-eletronicos/" target="_blank" rel="noopener noreferrer">
+            O Projeto de Lei 4094/24 visa criar um programa nacional para o descarte adequado de equipamentos eletrônicos, minimizando impactos ambientais.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/armario de roupa.png" alt="Armário de roupas para doação e reutilização" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/14-mil-armarios-de-roupas-recicladas-ca-amplia-circularidade-na-moda-e-arrecada-34-toneladas-em-2024/" target="_blank" rel="noopener noreferrer">C&A amplia circularidade na moda</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/14-mil-armarios-de-roupas-recicladas-ca-amplia-circularidade-na-moda-e-arrecada-34-toneladas-em-2024/" target="_blank" rel="noopener noreferrer">
+            A C&A arrecadou 34 toneladas de roupas em 2024, reforçando seu compromisso com a moda circular e incentivando o consumo consciente.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/bndes.png" alt="Logomarca do BNDES" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="https://www.ecycle.com.br/bndes-lanca-tudo-na-circularidade-com-selecao-de-parceiro-gestor-para-fortalecer-cooperativas-e-ampliar-rendimentos-dos-catadores/" target="_blank" rel="noopener noreferrer">Iniciativa do BNDES fortalece cooperativas</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="https://www.ecycle.com.br/bndes-lanca-tudo-na-circularidade-com-selecao-de-parceiro-gestor-para-fortalecer-cooperativas-e-ampliar-rendimentos-dos-catadores/" target="_blank" rel="noopener noreferrer">
+            O BNDES lançou o programa “Tudo na Circularidade” com objetivo de aumentar a renda e a produtividade de cooperativas de reciclagem.
+          </a>
+        </p>
+      </div>
+    </article>
+
+    <article class="projetos-card">
+      <img src="assets/images/plastico.png" alt="Embalagens multimateriais de alumínio e plástico" class="projetos-imagem" loading="lazy">
+      <div class="caixa-textos-projetos">
+        <h3 class="info-projetos">
+          <a href="#" target="_blank" rel="noopener noreferrer">Reciclagem de embalagens multimateriais</a>
+        </h3>
+        <p class="paragrafo-projetos">
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            A CBA criou uma tecnologia capaz de separar totalmente alumínio e plástico de embalagens complexas, com potencial de reciclar até 1,3 bilhão de unidades por ano.
+          </a>
+        </p>
+      </div>
+    </article>
+
+  </div>
+</section>
+</body>
+
+<script src="assets/js/menu.js" defer></script>
+<script src="assets/js/script.js"defer></script>
+<script src="assets/js/chat.js" defer></script>

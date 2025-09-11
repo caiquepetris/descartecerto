@@ -1,0 +1,773 @@
+/* Variáveis */
+:root {
+    --primary-green: #27AE60;
+    --primary-blue: #2980B9;
+    --white: #FFFFFF;
+    --light-gray: #F5F5F5;
+    --dark-gray: #333333;
+    --yellow-pastel: #F9E79F;
+    --orange-pastel: #FAD7A0;
+    --sky-color: #87CEEB;
+    --night-sky: #2C3E50;
+    --cloud: rgba(255, 255, 255, 0.8);
+    --star: rgba(255, 255, 255, 0.7);
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--light-gray);
+}
+
+/* Layout Principal */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Lado Esquerdo (Formulário) */
+.login-form-container {
+    flex: 1;
+    background-color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.login-form-content {
+    width: 100%;
+    max-width: 400px;
+} 
+/* Barra verde  */
+.mission-divider {
+    width: 96px;
+    height: 4px;
+    background-color: #16a34a; /* bg-green-600 */
+    margin: 0 auto 32px;
+    border-radius: 9999px;
+    margin-top: 10px;
+    padding: 0 0 1px;
+}
+
+
+.logo {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    color: var(--dark-gray);
+}
+
+.logo span {
+    color: var(--dark-gray);
+}
+
+.login-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.login-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-gray);
+    text-align: left;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+
+
+.signup-link {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.signup-link:hover {
+    
+    text-decoration: underline;
+    transition:ease 0.3s;
+    color: #219653;
+}
+
+/* Formulário */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-right: 8px;
+}
+
+.forgot-password {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-size: 0.85rem;
+    
+}
+
+.forgot-password:hover {
+  
+    text-decoration: underline;
+    transition:ease 0.3s;
+    color: #219653;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #219653;
+    transform: translateY(-2px);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Lado Direito (Ilustração) */
+.illustration-container {
+    flex: 1;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+    position: relative;
+    overflow: hidden;
+}
+
+.illustration {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+/* Elementos Visuais */
+.recycling-bin {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 100px;
+    background: linear-gradient(to bottom, #3498db, #2980b9);
+    border-radius: 5px 5px 10px 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out infinite;
+    overflow: visible;
+    z-index: 999;
+}
+
+
+.recycling-bin::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -10px;
+    width: 100px;
+    height: 20px;
+    background: linear-gradient(to bottom, #2c3e50, #34495e);
+    border-radius: 5px 5px 0 0;
+    transform: perspective(10px) rotateX(5deg);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+.recycling-bin::after {
+    content: '♻️';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.recycling-bin .bin-details {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.recycling-bin .bin-details::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 0 rgba(255, 255, 255, 0.2), 
+                0 50px 0 rgba(255, 255, 255, 0.2);
+}
+.recycling-bin:hover {
+    transform: translateX(-50%) scale(1.05);
+    cursor: pointer;
+}
+
+
+
+
+
+/* Nuvens, pássaros e estrelas */
+.cloud {
+    position: absolute;
+    background-color: var(--cloud);
+    border-radius: 50px;
+    transition: all 0.5s ease-in-out;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cloud-1 {
+    top: 20%;
+    left: 10%;
+    width: 100px;
+    height: 40px;
+    animation: floatCloud 20s linear infinite;
+}
+
+.cloud-2 {
+    top: 30%;
+    right: 15%;
+    width: 80px;
+    height: 30px;
+    animation: floatCloud 15s linear infinite reverse;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background-color: var(--cloud);
+    border-radius: 50%;
+}
+
+.cloud::before {
+    width: 50px;
+    height: 50px;
+    top: -20px;
+    left: 15px;
+}
+
+.cloud::after {
+    width: 30px;
+    height: 30px;
+    top: -10px;
+    left: 60px;
+}
+
+.bird {
+    position: absolute;
+    width: 15px;
+    height: 5px;
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+.bird::before,
+.bird::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 5px;
+    background-color: var(--cloud);
+    border-radius: 50% 50% 0 0;
+}
+
+.bird::before {
+    transform: rotate(-20deg);
+    left: -8px;
+}
+
+.bird::after {
+    transform: rotate(20deg);
+    left: 8px;
+}
+
+.bird-1 {
+    top: 25%;
+    left: 30%;
+    animation: flyBird 30s linear infinite;
+}
+
+.bird-2 {
+    top: 15%;
+    right: 40%;
+    animation: flyBird 25s linear infinite 5s;
+}
+.bird-1, .bird-2 {
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: none;
+}
+
+.stars::before,
+.stars::after {
+    content: '✦';
+    position: absolute;
+    color: var(--star);
+    animation: twinkle 4s infinite;
+}
+
+.stars::before {
+    font-size: 10px;
+    top: 15%;
+    left: 20%;
+    animation-duration: 3s;
+}
+
+.stars::after {
+    font-size: 8px;
+    top: 25%;
+    right: 30%;
+    animation-delay: 1s;
+}
+
+/* Animações */
+@keyframes growPlant {
+    0% { 
+        height: 100px;
+        transform: translateY(0);
+    }
+    50% { 
+        height: 120px;
+        transform: translateY(-10px);
+    }
+    100% { 
+        height: 100px;
+        transform: translateY(0);
+    }
+}
+@keyframes floatCloud {
+    0% {
+        transform: translateX(-100px) translateY(0);
+    }
+    50% {
+        transform: translateX(calc(50vw - 50px)) translateY(-10px);
+    }
+    100% {
+        transform: translateX(calc(100vw + 100px)) translateY(0);
+    }
+}
+
+@keyframes flyBird {
+    0% { transform: translateX(-50px) translateY(0); }
+    25% { transform: translateX(25vw) translateY(-20px); }
+    50% { transform: translateX(50vw) translateY(0); }
+    75% { transform: translateX(75vw) translateY(-10px); }
+    100% { transform: translateX(calc(100vw + 50px)) translateY(0); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+@keyframes binFloat {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Modo noturno */
+body.night-mode .illustration-container {
+    background: linear-gradient(135deg, var(--night-sky), var(--dark-gray));
+}
+
+body.night-mode .cloud,
+body.night-mode .cloud::before,
+body.night-mode .cloud::after {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.night-mode .stars {
+    display: block;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .login-form-container {
+        flex: 2;
+        order: 2;
+    }
+    
+    .illustration-container {
+        flex: 1;
+        order: 1;
+        min-height: 200px;
+    }
+    
+}
+
+/* Botão Voltar */
+/* Adicione este código ao seu arquivo CSS existente */
+
+/* Estilo para o link de voltar */
+.voltar-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--dark-gray);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    z-index: 100;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: none;
+    
+}
+
+.voltar-link i {
+    margin-right: 8px;
+    font-size: 14px;
+    color: var(--primary-green);
+}
+
+.voltar-link:hover {
+    color: var(--primary-green);
+    transform: translateY(-2px);
+   
+}
+
+.voltar-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 4px;
+    left: 12px;
+    background-color: var(--primary-green);
+    transition: width 0.3s ease;
+}
+
+.voltar-link:hover::after {
+    width: calc(100% - 24px);
+}
+
+/* Ajuste para responsividade */
+@media (max-width: 768px) {
+    .voltar-link {
+        top: 10px;
+        left: 10px;
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}
+
+
+/* Aba (Registro) */
+.descarte-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+
+.descarte-signup-container {
+    background: #ffffff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 420px;
+    animation: fadeInDescarte 0.6s ease-in-out;
+}
+
+.descarte-signup-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #2e7d32;
+}
+
+.descarte-signup-form {
+    width: 100%;
+}
+
+.descarte-signup-form-group {
+    margin-bottom: 1.2rem;
+}
+
+.descarte-signup-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.descarte-signup-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.descarte-signup-input:focus {
+    border-color: #4caf50;
+    outline: none;
+}
+
+.descarte-signup-button {
+    width: 100%;
+    background-color: #4caf50;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.descarte-signup-button:hover {
+    background-color: #388e3c;
+}
+
+/* Animação específica */
+@keyframes fadeInDescarte {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Forgot Password */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body.forgot {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .forgotpasswordcontainer {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .container-forgot {
+    background-color: white;
+    border-radius: 20px;
+    padding: 30px;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .container-forgot i.fa-key {
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+  
+  .container-forgot h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .container-forgot p {
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.5;
+  }
+  
+  .form-forgot {
+    width: 100%;
+  }
+  
+  .boxinput {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .boxinput label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-container i {
+    position: absolute;
+    left: 15px;
+    color: #999;
+  }
+  
+  .boxinput input {
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .boxinput input:focus {
+    outline: none;
+    border-color: #4CAF50;
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  #mensagem-status {
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .backlink {
+    display: inline-block;
+    color: #4CAF50;
+    text-decoration: none;
+    margin-top: 15px;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  .backlink:hover {
+    color: #45a049;
+  }
+  
+  .backlink i {
+    margin-right: 5px;
+  }
+  
+  @media (max-width: 600px) {
+    .container-forgot {
+      padding: 20px;
+    }
+    
+    .container-forgot h3 {
+      font-size: 20px;
+    }
+  }
+  

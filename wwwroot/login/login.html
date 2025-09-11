@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarte Certo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/login.css">
+</head>
+<body>
+     <a href="../index.html" class="voltar-link">
+        <i class="fas fa-arrow-left"></i> Voltar
+     </a>
+    <div class="container">
+        <!-- Lado Esquerdo - Formulário de Login -->
+        <div class="login-form-container">
+            <div class="login-form-content">
+                <div class="logo">
+                    <h1>Descarte <span>Certo</span></h1>
+                    <div class="mission-divider"></div>
+                </div>
+                
+                <div class="login-header">
+                    <h2>Login</h2>
+                    <p>Ainda não tem uma conta? <a href="/login/cadastro.html" class="signup-link">Crie agora mesmo</a></p>
+                </div>
+                
+                <form class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" placeholder="Digite seu email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" placeholder="Digite sua senha" required>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Lembrar de mim</label>
+                        </div>
+                        <a href="/login/forgotpassword.html" class="forgot-password">Esqueceu sua senha?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Entrar</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Lado Direito - Ilustração -->
+        <div class="illustration-container">
+            <div class="illustration">
+                <div class="recycling-bin"></div>
+                <div class="cloud cloud-1"></div>
+                <div class="cloud cloud-2"></div>
+                <div class="bird bird-1"></div>
+                <div class="bird bird-2"></div>
+                <div class="stars"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/V1.4/assets/js/login.js"></script>
+</body>
+</html>

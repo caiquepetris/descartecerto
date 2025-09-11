@@ -1,0 +1,266 @@
+<script>
+  document.addEventListener("DOMContentLoaded", async function () {
+    try {
+      const [headerRes, footerRes] = await Promise.all([
+        fetch('header.html'),
+        fetch('footer.html')
+      ]);
+  
+      if (!headerRes.ok || !footerRes.ok) {
+        throw new Error("Erro ao carregar header ou footer.");
+      }
+  
+      const [headerHTML, footerHTML] = await Promise.all([
+        headerRes.text(),
+        footerRes.text()
+      ]);
+  
+      document.body.insertAdjacentHTML('afterbegin', headerHTML);
+      document.body.insertAdjacentHTML('beforeend', footerHTML);
+  
+      initMenu(); // Só precisa chamar uma vez
+    } catch (error) {
+      console.error("Erro ao carregar o header/footer:", error);
+    }
+  });
+  </script>
+ <main>
+<section>
+  <div class="titlerec">
+    <h1>Quer saber onde reciclar seus produtos?</h1>
+    <p>Digite seu CEP e escolha o produto que você quer reciclar!</p>
+
+    <div class="searchcep">
+      <label for="cep">CEP:</label>
+      <input 
+        type="text" 
+        id="cep"  
+        name="cep" 
+        maxlength="9" 
+        pattern="[0-9]{5}-?[0-9]{3}" 
+        inputmode="numeric" 
+        placeholder="00000-000" 
+        required 
+      >
+
+      <label for="produto">Qual produto quer reciclar?</label>
+      <select id="produto" name="produto" required>
+        <option value="" disabled selected>Escolha o produto</option>
+        <option value="plastico">Plástico</option>
+        <option value="papel">Papel</option>
+        <option value="metal">Metal</option>
+        <option value="vidro">Vidro</option>
+      </select>
+
+      <button id="buscar">Buscar ponto de coleta</button>
+    </div>
+
+    <div class="maparec">
+      <div id="map"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-o9N1j+EybXzqZ0KyVh1Z5LBxCk4k+4D03GzGxZ1hkuM=" crossorigin=""></script>
+
+<script>
+  // Inicializa o mapa centrado no Brasil
+  const map = L.map('map').setView([-15.7801, -47.9292], 4);
+
+  // Adiciona camada de mapa OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Lista de pontos de coleta (latitude, longitude, nome)
+  const pontosColeta = [
+    { lat: -23.5505, lng: -46.6333, nome: "Ponto SP" },
+    { lat: -22.9068, lng: -43.1729, nome: "Ponto RJ" },
+    { lat: -15.7797, lng: -47.9297, nome: "Ponto Brasília" },
+    { lat: -30.0346, lng: -51.2177, nome: "Ponto Porto Alegre" }
+  ];
+
+  // Adiciona marcadores no mapa
+  pontosColeta.forEach(ponto => {
+    L.marker([ponto.lat, ponto.lng])
+      .addTo(map)
+      .bindPopup(`<b>${ponto.nome}</b>`);
+  });
+
+  // Tenta pegar a localização do usuário
+  map.locate({ setView: true, maxZoom: 12 });
+
+  function onLocationFound(e) {
+    const radius = e.accuracy / 2;
+
+    L.marker(e.latlng).addTo(map)
+      .bindPopup("Você está aqui").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+
+    // Encontra o ponto mais próximo
+    let pontoMaisProximo = null;
+    let menorDistancia = Infinity;
+
+    pontosColeta.forEach(ponto => {
+      const distancia = map.distance(e.latlng, L.latLng(ponto.lat, ponto.lng));
+      if (distancia < menorDistancia) {
+        menorDistancia = distancia;
+        pontoMaisProximo = ponto;
+      }
+    });
+
+    if (pontoMaisProximo) {
+      L.polyline([e.latlng, [pontoMaisProximo.lat, pontoMaisProximo.lng]], {color: 'green'})
+        .addTo(map)
+        .bindPopup(`Ponto mais próximo: ${pontoMaisProximo.nome} (${(menorDistancia/1000).toFixed(2)} km)`)
+        .openPopup();
+    }
+  }
+
+  map.on('locationfound', onLocationFound);
+
+  function onLocationError(e) {
+    alert("Não foi possível obter sua localização.");
+  }
+
+  map.on('locationerror', onLocationError);
+
+</script></div>
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- 2a Seção -->
+   <section class="bestway">
+  <h2>Como preparar seus materiais para reciclagem</h2>
+
+  <div class="scroller scroller--right">
+    <div class="scroller__track">
+      <!-- LOTE 1 -->
+      <article class="card">
+        <h3>Plástico</h3>
+        <ul>
+          <li>Esvazie e enxágue rapidamente</li>
+          <li>Mantenha as tampas na garrafa</li>
+          <li>Compacte para reduzir volume</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Papel/Papelão</h3>
+        <ul>
+          <li>Mantenha limpo e seco</li>
+          <li>Retire fitas/grampos quando possível</li>
+          <li>Achate caixas</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Metal</h3>
+        <ul>
+          <li>Enxágue latas</li>
+          <li>Pode amassar para economizar espaço</li>
+          <li>Aerossol: apenas vazio</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Vidro</h3>
+        <ul>
+          <li>Enxágue e evite quebrar</li>
+          <li>Remova tampas (recicle à parte)</li>
+          <li>Leve a PEVs/Ecopontos quando houver</li>
+        </ul>
+      </article>
+
+      <!-- LOTE 2=-->
+      <article class="card" aria-hidden="true">
+        <h3>Plástico</h3>
+        <ul>
+          <li>Esvazie e enxágue rapidamente</li>
+          <li>Mantenha as tampas na garrafa</li>
+          <li>Compacte para reduzir volume</li>
+        </ul>
+      </article>
+
+      <article class="card" aria-hidden="true">
+        <h3> Papel/Papelão</h3>
+        <ul>
+          <li>Mantenha limpo e seco</li>
+          <li>Retire fitas/grampos quando possível</li>
+          <li>Achate caixas</li>
+        </ul>
+      </article>
+
+      <article class="card" aria-hidden="true">
+        <h3>Metal</h3>
+        <ul>
+          <li>Enxágue latas</li>
+          <li>Pode amassar para economizar espaço</li>
+          <li>Aerossol: apenas vazio</li>
+        </ul>
+      </article>
+
+      <article class="card" aria-hidden="true">
+        <h3>Vidro</h3>
+        <ul>
+          <li>Enxágue e evite quebrar</li>
+          <li>Remova tampas (recicle à parte)</li>
+          <li>Leve a PEVs/Ecopontos quando houver</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 3a seção -->
+<section class="impact" id="impact">
+  <header class="impact-header">
+    <h2>Seu impacto mensal</h2>
+    <p class="impact-sub">Informe seus volumes mensais e veja o impacto estimado da sua reciclagem.</p>
+  </header>
+
+  <form class="impact-form" autocomplete="off">
+    <label class="field">
+      <span>Garrafas PET por mês</span>
+      <input type="number" min="0" value="0" id="qtdPet" inputmode="numeric" />
+    </label>
+
+    <label class="field">
+      <span>Latas de alumínio por mês</span>
+      <input type="number" min="0" value="0" id="qtdLata" inputmode="numeric" />
+    </label>
+
+    <label class="field">
+      <span>Peso de papel reciclado (kg por mês)</span>
+      <input type="number" min="0" value="0" id="kgPapel" step="0.1" inputmode="decimal" />
+    </label>
+  </form>
+
+  <div class="impact-grid">
+    <article class="impact-card">
+      <p class="kpi-label">Plástico desviado</p>
+      <p class="kpi-value"><span id="kgPlastico">0</span> kg/mês</p>
+      <p class="kpi-note">Estimado por garrafa PET de 25 g.</p>
+    </article>
+
+    <article class="impact-card">
+      <p class="kpi-label">Alumínio desviado</p>
+      <p class="kpi-value"><span id="kgAluminio">0</span> kg/mês</p>
+      <p class="kpi-note">Estimado por lata de 14,5 g.</p>
+    </article>
+
+    <article class="impact-card">
+      <p class="kpi-label">CO₂ evitado (papel)</p>
+      <p class="kpi-value">~<span id="kgCO2">0</span> kg/mês</p>
+      <p class="kpi-note">Fator médio: 1,5 kg CO₂ por kg de papel.</p>
+    </article>
+  </div>
+</section>
+</main>
+    </body>
+<script src="./assets/js/impacto.js" defer></script>
+ <script src="./assets/js/menu.js" defer></script>
+ <script src="./assets/js/chat.js" defer></script> 
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </html>

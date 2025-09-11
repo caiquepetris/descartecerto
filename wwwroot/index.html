@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Descarte Certo</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="./assets/js/menu.js" defer></script>
+    <script src="./assets/js/chat.js" defer></script>
+</head>
+<body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            try {
+                const [headerRes, footerRes] = await Promise.all([
+                    fetch('header.html'),
+                    fetch('footer.html')
+                ]);
+
+                if (!headerRes.ok || !footerRes.ok) {
+                    throw new Error("Erro ao carregar header ou footer.");
+                }
+
+                const [headerHTML, footerHTML] = await Promise.all([
+                    headerRes.text(),
+                    footerRes.text()
+                ]);
+
+                document.body.insertAdjacentHTML('afterbegin', headerHTML);
+                document.body.insertAdjacentHTML('beforeend', footerHTML);
+
+                initMenu();
+            } catch (error) {
+                console.error("Erro ao carregar o header/footer:", error);
+            }
+        });
+    </script>
+
+    <!-- O que é a Descarte Certo? -->
+    <section class="mission-section" id="sobrenos">
+        <div class="mission-container">
+            <div class="mission-header">
+                <h2 class="mission-title">O que é a Descarte Certo?</h2>
+                <div class="mission-divider"></div>
+                <p class="mission-subtitle">
+                    O <b>Descarte Certo</b> existe para educar e conscientizar sobre o descarte responsável de resíduos. Nosso objetivo é promover práticas sustentáveis, como reciclagem e doação, contribuindo para um mundo mais ecológico e menos poluído.
+                </p>
+            </div>
+
+            <div class="mission-grid">
+                <div class="mission-left-column">
+                    <div class="mission-card">
+                        <div class="mission-card-accent"></div>
+                        <div class="mission-card-content">
+                            <div class="mission-icon">🌎</div>
+                            <h3 class="mission-card-title">Impacto Global</h3>
+                            <p class="mission-card-text">
+                                Nosso impacto global é impulsionado pela <b>redução da poluição</b> e pelo apoio à economia circular, ajudando a preservar recursos naturais e a reduzir a quantidade de resíduos nos aterros.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-card-accent"></div>
+                        <div class="mission-card-content">
+                            <div class="mission-icon">❤️</div>
+                            <h3 class="mission-card-title">Compromisso Social</h3>
+                            <p class="mission-card-text">
+                                O <b>Descarte Certo</b> se compromete a engajar a comunidade, oferecendo informações práticas e promovendo a conscientização sobre o consumo responsável e o descarte correto de resíduos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mission-right-column">
+                    <div class="mission-feature-card">
+                        <div class="mission-circle-bg mission-top-right"></div>
+                        <div class="mission-circle-bg mission-bottom-left"></div>
+                        <div class="mission-feature-content">
+                            <div class="mission-feature-icon">✨</div>
+                            <h3 class="mission-feature-title">Por que existimos?</h3>
+                            <div class="mission-feature-text">
+                                <p>
+                                    O <b>Descarte Certo</b> nasceu da necessidade urgente de transformar nossa relação com o meio ambiente. Em um mundo onde cada decisão de descarte impacta nosso futuro, surgimos como um guia para fazer a diferença.
+                                </p>
+                                <p>
+                                    Nossa plataforma une tecnologia e consciência ambiental para criar um movimento de mudança. Não somos apenas um serviço - somos uma comunidade comprometida com um planeta mais limpo e sustentável.
+                                </p>
+                                <p>
+                                    Acreditamos que pequenas mudanças nos hábitos de descarte podem gerar grandes transformações. Por isso, trabalhamos incansavelmente para educar, inspirar e facilitar práticas sustentáveis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mission-footer">
+                <div class="mission-join-us">
+                    <span class="mission-leaf-icon" aria-hidden="true">🍃</span>
+                    <a href="https://www.instagram.com/descartecerto010" style="color: #16a34a;">Junte-se a nós nessa missão</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Resto das seções mantidas iguais (dc-help, recycling-guide, descartar-section) -->
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
