@@ -1,266 +1,525 @@
 <script>
-  document.addEventListener("DOMContentLoaded", async function () {
-    try {
-      const [headerRes, footerRes] = await Promise.all([
-        fetch('header.html'),
-        fetch('footer.html')
-      ]);
-  
-      if (!headerRes.ok || !footerRes.ok) {
-        throw new Error("Erro ao carregar header ou footer.");
-      }
-  
-      const [headerHTML, footerHTML] = await Promise.all([
-        headerRes.text(),
-        footerRes.text()
-      ]);
-  
-      document.body.insertAdjacentHTML('afterbegin', headerHTML);
-      document.body.insertAdjacentHTML('beforeend', footerHTML);
-  
-      initMenu(); // Só precisa chamar uma vez
-    } catch (error) {
-      console.error("Erro ao carregar o header/footer:", error);
-    }
-  });
-  </script>
- <main>
-<section>
-  <div class="titlerec">
-    <h1>Quer saber onde reciclar seus produtos?</h1>
-    <p>Digite seu CEP e escolha o produto que você quer reciclar!</p>
-
-    <div class="searchcep">
-      <label for="cep">CEP:</label>
-      <input 
-        type="text" 
-        id="cep"  
-        name="cep" 
-        maxlength="9" 
-        pattern="[0-9]{5}-?[0-9]{3}" 
-        inputmode="numeric" 
-        placeholder="00000-000" 
-        required 
-      >
-
-      <label for="produto">Qual produto quer reciclar?</label>
-      <select id="produto" name="produto" required>
-        <option value="" disabled selected>Escolha o produto</option>
-        <option value="plastico">Plástico</option>
-        <option value="papel">Papel</option>
-        <option value="metal">Metal</option>
-        <option value="vidro">Vidro</option>
-      </select>
-
-      <button id="buscar">Buscar ponto de coleta</button>
-    </div>
-
-    <div class="maparec">
-      <div id="map"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-o9N1j+EybXzqZ0KyVh1Z5LBxCk4k+4D03GzGxZ1hkuM=" crossorigin=""></script>
-
-<script>
-  // Inicializa o mapa centrado no Brasil
-  const map = L.map('map').setView([-15.7801, -47.9292], 4);
-
-  // Adiciona camada de mapa OpenStreetMap
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-
-  // Lista de pontos de coleta (latitude, longitude, nome)
-  const pontosColeta = [
-    { lat: -23.5505, lng: -46.6333, nome: "Ponto SP" },
-    { lat: -22.9068, lng: -43.1729, nome: "Ponto RJ" },
-    { lat: -15.7797, lng: -47.9297, nome: "Ponto Brasília" },
-    { lat: -30.0346, lng: -51.2177, nome: "Ponto Porto Alegre" }
-  ];
-
-  // Adiciona marcadores no mapa
-  pontosColeta.forEach(ponto => {
-    L.marker([ponto.lat, ponto.lng])
-      .addTo(map)
-      .bindPopup(`<b>${ponto.nome}</b>`);
-  });
-
-  // Tenta pegar a localização do usuário
-  map.locate({ setView: true, maxZoom: 12 });
-
-  function onLocationFound(e) {
-    const radius = e.accuracy / 2;
-
-    L.marker(e.latlng).addTo(map)
-      .bindPopup("Você está aqui").openPopup();
-
-    L.circle(e.latlng, radius).addTo(map);
-
-    // Encontra o ponto mais próximo
-    let pontoMaisProximo = null;
-    let menorDistancia = Infinity;
-
-    pontosColeta.forEach(ponto => {
-      const distancia = map.distance(e.latlng, L.latLng(ponto.lat, ponto.lng));
-      if (distancia < menorDistancia) {
-        menorDistancia = distancia;
-        pontoMaisProximo = ponto;
-      }
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const [headerRes, footerRes] = await Promise.all([fetch('header.html'), fetch('footer.html')]);
+            const [headerHTML, footerHTML] = await Promise.all([headerRes.text(), footerRes.text()]);
+            document.body.insertAdjacentHTML('afterbegin', headerHTML);
+            document.body.insertAdjacentHTML('beforeend', footerHTML);
+            initMenu();
+            document.body.dispatchEvent(new Event('hf:ready'));  // << NOVO
+        } catch (e) { console.error("Erro ao carregar o header/footer:", e); }
     });
-
-    if (pontoMaisProximo) {
-      L.polyline([e.latlng, [pontoMaisProximo.lat, pontoMaisProximo.lng]], {color: 'green'})
-        .addTo(map)
-        .bindPopup(`Ponto mais próximo: ${pontoMaisProximo.nome} (${(menorDistancia/1000).toFixed(2)} km)`)
-        .openPopup();
-    }
-  }
-
-  map.on('locationfound', onLocationFound);
-
-  function onLocationError(e) {
-    alert("Não foi possível obter sua localização.");
-  }
-
-  map.on('locationerror', onLocationError);
-
-</script></div>
-    </div>
-  </div>
-</section>
+</script>
 
 
 
-  <!-- 2a Seção -->
-   <section class="bestway">
-  <h2>Como preparar seus materiais para reciclagem</h2>
+<main>
+    <section>
+        <div class="titlerec">
+            <h1>Quer saber onde reciclar seus produtos?</h1>
+            <p>Digite seu CEP e escolha o produto que você quer reciclar!</p>
 
-  <div class="scroller scroller--right">
-    <div class="scroller__track">
-      <!-- LOTE 1 -->
-      <article class="card">
-        <h3>Plástico</h3>
-        <ul>
-          <li>Esvazie e enxágue rapidamente</li>
-          <li>Mantenha as tampas na garrafa</li>
-          <li>Compacte para reduzir volume</li>
-        </ul>
-      </article>
+            <div class="searchcep">
+                <label for="cep">CEP:</label>
+                <input type="text"
+                       id="cep"
+                       name="cep"
+                       maxlength="9"
+                       pattern="[0-9]{5}-?[0-9]{3}"
+                       inputmode="numeric"
+                       placeholder="00000-000"
+                       required />
 
-      <article class="card">
-        <h3>Papel/Papelão</h3>
-        <ul>
-          <li>Mantenha limpo e seco</li>
-          <li>Retire fitas/grampos quando possível</li>
-          <li>Achate caixas</li>
-        </ul>
-      </article>
+                <label for="produto">Qual produto quer reciclar?</label>
+                <select id="produto" name="produto" required>
+                    <option value="" disabled selected>Escolha o produto</option>
+                    <option value="plastico">Plástico</option>
+                    <option value="papel">Papel</option>
+                    <option value="metal">Metal</option>
+                    <option value="vidro">Vidro</option>
+                    <option value="eletronicos">Eletrônicos</option>
+                </select>
 
-      <article class="card">
-        <h3>Metal</h3>
-        <ul>
-          <li>Enxágue latas</li>
-          <li>Pode amassar para economizar espaço</li>
-          <li>Aerossol: apenas vazio</li>
-        </ul>
-      </article>
+                <button id="buscar" type="button">Buscar ponto de coleta</button>
+            </div>
 
-      <article class="card">
-        <h3>Vidro</h3>
-        <ul>
-          <li>Enxágue e evite quebrar</li>
-          <li>Remova tampas (recicle à parte)</li>
-          <li>Leve a PEVs/Ecopontos quando houver</li>
-        </ul>
-      </article>
+            <div class="maparec">
 
-      <!-- LOTE 2=-->
-      <article class="card" aria-hidden="true">
-        <h3>Plástico</h3>
-        <ul>
-          <li>Esvazie e enxágue rapidamente</li>
-          <li>Mantenha as tampas na garrafa</li>
-          <li>Compacte para reduzir volume</li>
-        </ul>
-      </article>
+                <div id="map" aria-label="Mapa de pontos de coleta"></div>
+            </div>
+        </div>
+    </section>
 
-      <article class="card" aria-hidden="true">
-        <h3> Papel/Papelão</h3>
-        <ul>
-          <li>Mantenha limpo e seco</li>
-          <li>Retire fitas/grampos quando possível</li>
-          <li>Achate caixas</li>
-        </ul>
-      </article>
+    <!-- 2a Seção -->
+    <section class="bestway">
+        <h2>Como preparar seus materiais para reciclagem</h2>
 
-      <article class="card" aria-hidden="true">
-        <h3>Metal</h3>
-        <ul>
-          <li>Enxágue latas</li>
-          <li>Pode amassar para economizar espaço</li>
-          <li>Aerossol: apenas vazio</li>
-        </ul>
-      </article>
+        <div class="scroller scroller--right">
+            <div class="scroller__track">
+                <!-- LOTE 1 -->
+                <article class="card">
+                    <h3>Plástico</h3>
+                    <ul>
+                        <li>Esvazie e enxágue rapidamente</li>
+                        <li>Mantenha as tampas na garrafa</li>
+                        <li>Compacte para reduzir volume</li>
+                    </ul>
+                </article>
 
-      <article class="card" aria-hidden="true">
-        <h3>Vidro</h3>
-        <ul>
-          <li>Enxágue e evite quebrar</li>
-          <li>Remova tampas (recicle à parte)</li>
-          <li>Leve a PEVs/Ecopontos quando houver</li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
+                <article class="card">
+                    <h3>Papel/Papelão</h3>
+                    <ul>
+                        <li>Mantenha limpo e seco</li>
+                        <li>Retire fitas/grampos quando possível</li>
+                        <li>Achate caixas</li>
+                    </ul>
+                </article>
 
-<!-- 3a seção -->
-<section class="impact" id="impact">
-  <header class="impact-header">
-    <h2>Seu impacto mensal</h2>
-    <p class="impact-sub">Informe seus volumes mensais e veja o impacto estimado da sua reciclagem.</p>
-  </header>
+                <article class="card">
+                    <h3>Metal</h3>
+                    <ul>
+                        <li>Enxágue latas</li>
+                        <li>Pode amassar para economizar espaço</li>
+                        <li>Aerossol: apenas vazio</li>
+                    </ul>
+                </article>
 
-  <form class="impact-form" autocomplete="off">
-    <label class="field">
-      <span>Garrafas PET por mês</span>
-      <input type="number" min="0" value="0" id="qtdPet" inputmode="numeric" />
-    </label>
+                <article class="card">
+                    <h3>Vidro</h3>
+                    <ul>
+                        <li>Enxágue e evite quebrar</li>
+                        <li>Remova tampas (recicle à parte)</li>
+                        <li>Leve a PEVs/Ecopontos quando houver</li>
+                    </ul>
+                </article>
 
-    <label class="field">
-      <span>Latas de alumínio por mês</span>
-      <input type="number" min="0" value="0" id="qtdLata" inputmode="numeric" />
-    </label>
+                <!-- LOTE 2 (duplicado para scroller infinito) -->
+                <article class="card" aria-hidden="true">
+                    <h3>Plástico</h3>
+                    <ul>
+                        <li>Esvazie e enxágue rapidamente</li>
+                        <li>Mantenha as tampas na garrafa</li>
+                        <li>Compacte para reduzir volume</li>
+                    </ul>
+                </article>
 
-    <label class="field">
-      <span>Peso de papel reciclado (kg por mês)</span>
-      <input type="number" min="0" value="0" id="kgPapel" step="0.1" inputmode="decimal" />
-    </label>
-  </form>
+                <article class="card" aria-hidden="true">
+                    <h3>Papel/Papelão</h3>
+                    <ul>
+                        <li>Mantenha limpo e seco</li>
+                        <li>Retire fitas/grampos quando possível</li>
+                        <li>Achate caixas</li>
+                    </ul>
+                </article>
 
-  <div class="impact-grid">
-    <article class="impact-card">
-      <p class="kpi-label">Plástico desviado</p>
-      <p class="kpi-value"><span id="kgPlastico">0</span> kg/mês</p>
-      <p class="kpi-note">Estimado por garrafa PET de 25 g.</p>
-    </article>
+                <article class="card" aria-hidden="true">
+                    <h3>Metal</h3>
+                    <ul>
+                        <li>Enxágue latas</li>
+                        <li>Pode amassar para economizar espaço</li>
+                        <li>Aerossol: apenas vazio</li>
+                    </ul>
+                </article>
 
-    <article class="impact-card">
-      <p class="kpi-label">Alumínio desviado</p>
-      <p class="kpi-value"><span id="kgAluminio">0</span> kg/mês</p>
-      <p class="kpi-note">Estimado por lata de 14,5 g.</p>
-    </article>
+                <article class="card" aria-hidden="true">
+                    <h3>Vidro</h3>
+                    <ul>
+                        <li>Enxágue e evite quebrar</li>
+                        <li>Remova tampas (recicle à parte)</li>
+                        <li>Leve a PEVs/Ecopontos quando houver</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
 
-    <article class="impact-card">
-      <p class="kpi-label">CO₂ evitado (papel)</p>
-      <p class="kpi-value">~<span id="kgCO2">0</span> kg/mês</p>
-      <p class="kpi-note">Fator médio: 1,5 kg CO₂ por kg de papel.</p>
-    </article>
-  </div>
-</section>
+    <!-- 3a seção -->
+    <section class="impact" id="impact">
+        <header class="impact-header">
+            <h2>Seu impacto mensal</h2>
+            <p class="impact-sub">Informe seus volumes mensais e veja o impacto estimado da sua reciclagem.</p>
+        </header>
+
+        <form class="impact-form" autocomplete="off">
+            <label class="field">
+                <span>Garrafas PET por mês</span>
+                <input type="number" min="0" value="0" id="qtdPet" inputmode="numeric" />
+            </label>
+
+            <label class="field">
+                <span>Latas de alumínio por mês</span>
+                <input type="number" min="0" value="0" id="qtdLata" inputmode="numeric" />
+            </label>
+
+            <label class="field">
+                <span>Peso de papel reciclado (kg por mês)</span>
+                <input type="number" min="0" value="0" id="kgPapel" step="0.1" inputmode="decimal" />
+            </label>
+        </form>
+
+        <div class="impact-grid">
+            <article class="impact-card">
+                <p class="kpi-label">Plástico desviado</p>
+                <p class="kpi-value"><span id="kgPlastico">0</span> kg/mês</p>
+                <p class="kpi-note">Estimado por garrafa PET de 25 g.</p>
+            </article>
+
+            <article class="impact-card">
+                <p class="kpi-label">Alumínio desviado</p>
+                <p class="kpi-value"><span id="kgAluminio">0</span> kg/mês</p>
+                <p class="kpi-note">Estimado por lata de 14,5 g.</p>
+            </article>
+
+            <article class="impact-card">
+                <p class="kpi-label">CO₂ evitado (papel)</p>
+                <p class="kpi-value">~<span id="kgCO2">0</span> kg/mês</p>
+                <p class="kpi-note">Fator médio: 1,5 kg CO₂ por kg de papel.</p>
+            </article>
+        </div>
+    </section>
 </main>
-    </body>
+
+<!-- Leaflet JS (apenas um) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+        defer></script>
+
+<!-- Init seguro do mapa -->
+<!-- ===== UI / MAPA ===== -->
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+
+<script defer>
+    (function () {
+        "use strict";
+
+        // =========================
+        // Config & utilitários
+        // =========================
+        const DEFAULT_RADIUS_KM = 8;        // Raio padrão
+        const DEFAULT_ZOOM_CEP = 14;        // Zoom ao centralizar no CEP
+        const FLY_DURATION = 0.7;           // Animação do pan/zoom
+        const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
+        const OVERPASS_ENDPOINTS = [
+            "https://overpass-api.de/api/interpreter",
+            "https://overpass.kumi.systems/api/interpreter",
+            "https://overpass.openstreetmap.ru/api/interpreter"
+        ];
+        const FETCH_TIMEOUT_MS = 12000;
+
+        const MATERIAL_TAGS = {
+            plastico: ["recycling:plastic", "recycling:plastic_packaging", "recycling:packaging_plastic"],
+            papel: ["recycling:paper", "recycling:cardboard", "recycling:magazines", "recycling:newspaper"],
+            metal: ["recycling:metal", "recycling:aluminium", "recycling:steel"],
+            vidro: ["recycling:glass", "recycling:glass_bottles"],
+            eletronicos: ["recycling:electronics", "recycling:electrical_appliances", "recycling:small_appliances", "recycling:computers", "recycling:mobile_phones"]
+        };
+
+        // Referências (IDs do seu HTML)
+        const $map = document.getElementById("map");
+        const $cep = document.getElementById("cep");
+        const $produto = document.getElementById("produto");
+        const $btn = document.getElementById("buscar");
+
+        // Estado Leaflet
+        let map, resultsLayer, linkLine, searchCircle, cepMarker;
+
+        // =========================
+        // Helpers
+        // =========================
+        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+        const fmtKm = (m) => (m / 1000).toFixed(2);
+
+        function withTimeout(promise, ms, controller) {
+            let id;
+            const timeout = new Promise((_, rej) => {
+                id = setTimeout(() => {
+                    controller?.abort?.();
+                    rej(new Error("Tempo de rede esgotado."));
+                }, ms);
+            });
+            return Promise.race([promise, timeout]).finally(() => clearTimeout(id));
+        }
+
+        function sanitizeCEP(v) {
+            return (v || "").replace(/\D/g, "");
+        }
+
+        function assertValidCEP(v) {
+            if (v.length !== 8) throw new Error("CEP inválido. Use 8 dígitos (ex: 01311000).");
+        }
+
+        function listAcceptedMaterials(tags) {
+            const mats = Object.keys(tags || {})
+                .filter(k => k.startsWith("recycling:") && tags[k] === "yes")
+                .map(k => k.replace("recycling:", "").replaceAll("_", " "));
+            return mats.length ? mats.join(", ") : "não informado";
+        }
+
+        // === NOVO: link para o Google Maps com ORIGEM e DESTINO
+        function gmLink(originQuery, destLat, destLon) {
+            // originQuery: ex. "09961190, Brasil" (mostra o CEP no campo de origem no Maps)
+            const params = new URLSearchParams({
+                api: "1",
+                origin: originQuery,
+                destination: `${destLat},${destLon}`,
+                travelmode: "driving",
+                dir_action: "navigate"
+            });
+            return `https://www.google.com/maps/dir/?${params.toString()}`;
+        }
+
+        function distanceMeters(a, b) {
+            return map.distance(
+                L.latLng(a.lat, a.lon || a.lng),
+                L.latLng(b.lat, b.lon || b.lng)
+            );
+        }
+
+        // =========================
+        // OSM: ViaCEP + Nominatim + Overpass
+        // =========================
+        async function viaCep(cep) {
+            const controller = new AbortController();
+            const url = `https://viacep.com.br/ws/${cep}/json/`;
+            const resp = await withTimeout(fetch(url, { signal: controller.signal }), FETCH_TIMEOUT_MS, controller);
+            if (!resp.ok) throw new Error("Falha no ViaCEP.");
+            const data = await resp.json();
+            if (data.erro) throw new Error("CEP não encontrado.");
+            return data;
+        }
+
+        async function geocodeBR(addr) {
+            const parts = [
+                addr.logradouro || "",
+                addr.bairro || "",
+                addr.localidade ? `${addr.localidade} - ${addr.uf}` : "",
+                "Brasil"
+            ].filter(Boolean);
+            const q = parts.join(", ");
+
+            const params = new URLSearchParams({
+                q,
+                format: "json",
+                addressdetails: "1",
+                countrycodes: "br",
+                limit: "1"
+            });
+            const controller = new AbortController();
+            const url = `${NOMINATIM_URL}?${params.toString()}`;
+            const resp = await withTimeout(fetch(url, { signal: controller.signal }), FETCH_TIMEOUT_MS, controller);
+            if (!resp.ok) throw new Error("Falha no geocoding (Nominatim).");
+            const arr = await resp.json();
+            if (!arr.length) throw new Error("Endereço não geocodificado.");
+            const { lat, lon, display_name } = arr[0];
+            return { lat: +lat, lon: +lon, label: display_name };
+        }
+
+        function buildOverpassQL(lat, lon, radiusMeters, materialKeyList) {
+            const blocks = materialKeyList.map(k =>
+                `nwr(around:${radiusMeters},${lat},${lon})["amenity"="recycling"]["${k}"="yes"];`
+            ).join("\n");
+            return `
+[out:json][timeout:30];
+(
+  ${blocks}
+);
+out center tags;
+`.trim();
+        }
+
+        async function fetchOverpass(ql) {
+            let lastErr;
+            for (const ep of OVERPASS_ENDPOINTS) {
+                try {
+                    const controller = new AbortController();
+                    const resp = await withTimeout(
+                        fetch(ep, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                            body: new URLSearchParams({ data: ql }),
+                            signal: controller.signal
+                        }),
+                        FETCH_TIMEOUT_MS,
+                        controller
+                    );
+                    if (!resp.ok) throw new Error(`Overpass fora ou respondeu ${resp.status}.`);
+                    const data = await resp.json();
+                    return data?.elements ?? [];
+                } catch (err) {
+                    lastErr = err;
+                    await sleep(250);
+                }
+            }
+            throw lastErr || new Error("Falha na Overpass API.");
+        }
+
+        // =========================
+        // Leaflet
+        // =========================
+        function ensureMap() {
+            if (map) return map;
+
+            map = L.map($map, { zoomControl: true }).setView([-15.78, -47.93], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            resultsLayer = L.layerGroup().addTo(map);
+
+            // Geolocalização DESATIVADA (para não criar "Você está aqui" do navegador)
+
+            // Invalidação robusta do tamanho
+            const invalidate = () => { if (map) map.invalidateSize(); };
+            setTimeout(invalidate, 0);
+            setTimeout(invalidate, 250);
+            setTimeout(invalidate, 800);
+            window.addEventListener('load', invalidate);
+            document.body.addEventListener('hf:ready', invalidate);
+            if ('ResizeObserver' in window) {
+                const ro = new ResizeObserver(invalidate);
+                ro.observe($map);
+            } else {
+                window.addEventListener('resize', invalidate);
+            }
+
+            return map;
+        }
+
+        function clearResults() {
+            resultsLayer && resultsLayer.clearLayers();
+            if (linkLine) { map.removeLayer(linkLine); linkLine = null; }
+            if (searchCircle) { map.removeLayer(searchCircle); searchCircle = null; }
+            if (cepMarker) { map.removeLayer(cepMarker); cepMarker = null; }
+        }
+
+        // =========================
+        // Fluxo principal
+        // =========================
+        async function buscar() {
+            try {
+                ensureMap();
+                clearResults();
+
+                const cepRaw = sanitizeCEP($cep.value);
+                const produto = $produto.value;
+                if (!produto) throw new Error("Escolha um produto para reciclar.");
+                assertValidCEP(cepRaw);
+
+                const raioKm = DEFAULT_RADIUS_KM;
+                const raioM = Math.round(raioKm * 1000);
+                const originQuery = `${cepRaw}, Brasil`;   // <= vai aparecer no campo "origem" do Maps
+
+                const materialKeys = MATERIAL_TAGS[produto];
+                if (!materialKeys) throw new Error("Material inválido.");
+
+                // 1) CEP -> ViaCEP
+                const addr = await viaCep(cepRaw);
+
+                // 2) Geocode em Nominatim
+                const center = await geocodeBR(addr);
+
+                // --- círculo do RAIO DE BUSCA no CEP informado ---
+                searchCircle = L.circle([center.lat, center.lon], {
+                    radius: raioM,
+                    color: '#16a34a',
+                    weight: 1,
+                    fillColor: '#86efac',
+                    fillOpacity: 0.2
+                }).addTo(resultsLayer);
+
+                // Centraliza no CEP e marca
+                map.flyTo([center.lat, center.lon], DEFAULT_ZOOM_CEP, { duration: FLY_DURATION });
+                cepMarker = L.marker([center.lat, center.lon]).addTo(resultsLayer)
+                    .bindPopup(`<b>Você está aqui (CEP informado)</b><br>${center.label}`).openPopup();
+
+                // 3) Overpass
+                const ql = buildOverpassQL(center.lat, center.lon, raioM, materialKeys);
+                await sleep(150);
+                const elements = await fetchOverpass(ql);
+
+                // 4) Plotagem
+                const bounds = [[center.lat, center.lon]];
+                const icon = L.icon({
+                    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+                    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+                    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png", shadowSize: [41, 41]
+                });
+
+                if (!elements.length) {
+                    map.fitBounds(bounds, { padding: [40, 40] });
+                    alert("Nenhum ponto de coleta para esse material nesse raio.");
+                    return;
+                }
+
+                const pts = elements.map(el => {
+                    const lat = el.lat || el.center?.lat;
+                    const lon = el.lon || el.center?.lon;
+                    if (lat == null || lon == null) return null;
+                    const name = el.tags?.name || "Ponto de coleta";
+                    const mats = listAcceptedMaterials(el.tags || {});
+                    const link = gmLink(originQuery, lat, lon);   // <= AQUI: origem = CEP, destino = ponto
+
+                    L.marker([lat, lon], { icon }).addTo(resultsLayer)
+                        .bindPopup(
+                            `<b>${name}</b><br>` +
+                            (el.tags?.operator ? `${el.tags.operator}<br>` : "") +
+                            `Materiais aceitos: ${mats}<br>` +
+                            `<a href="${link}" target="_blank" rel="noopener">Traçar rota</a>`
+                        );
+                    bounds.push([lat, lon]);
+                    return { lat, lon, name, mats };
+                }).filter(Boolean);
+
+                // Linha do CEP até o ponto mais próximo
+                let best = null, bestD = Infinity;
+                for (const p of pts) {
+                    const d = distanceMeters(center, p);
+                    if (d < bestD) { bestD = d; best = p; }
+                }
+                if (best) {
+                    linkLine = L.polyline([[center.lat, center.lon], [best.lat, best.lon]], { color: "green" })
+                        .addTo(resultsLayer)
+                        .bindPopup(`Ponto mais próximo: <b>${best.name}</b> (${fmtKm(bestD)} km)`)
+                        .openPopup();
+                }
+
+                if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
+            } catch (err) {
+                console.error(err);
+                alert(err.message || "Erro ao buscar pontos. Confira o CEP e tente novamente.");
+            }
+        }
+
+        // =========================
+        // Bindings
+        // =========================
+        document.addEventListener("DOMContentLoaded", () => {
+            ensureMap();
+            $btn?.addEventListener("click", (e) => { e.preventDefault?.(); buscar(); });
+
+            const onEnter = (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    buscar();
+                }
+            };
+            $cep?.addEventListener("keydown", onEnter);
+            $produto?.addEventListener("keydown", onEnter);
+        });
+    })();
+</script>
+
+
+
+
+
+<!-- Seus scripts já existentes -->
 <script src="./assets/js/impacto.js" defer></script>
- <script src="./assets/js/menu.js" defer></script>
- <script src="./assets/js/chat.js" defer></script> 
+<script src="./assets/js/menu.js" defer></script>
+<script src="./assets/js/chat.js" defer></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    </html>

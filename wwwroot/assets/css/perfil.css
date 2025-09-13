@@ -112,15 +112,15 @@ a {
     padding: 0 16px;
 }
 
-/* ===== HEADER do perfil: card branco centralizado ===== */
+/* ===== HEADER do perfil ===== */
 .dc-profile {
     background: #fff;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 12px 16px;
-    max-width: 680px; /* mesma largura do feed */
-    margin: 12px auto 6px; /* centralizado */
+    max-width: 680px;
+    margin: 12px auto 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,21 +157,13 @@ a {
 .dc-rank-btn {
     display: none !important;
 }
-/* removido do header */
-.dc-mini-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: grid;
-    place-items: center;
-    background: var(--soft);
-    border: 1px solid var(--line);
-}
 
-/* ===== Tabs centralizadas com largura do feed ===== */
+/* ===== Tabs ===== */
 .dc-tabs {
     max-width: 680px;
     margin: 12px auto 8px;
+    padding-bottom: 20px;
+    margin-top: 50px;
     display: flex;
     gap: 18px;
     justify-content: center;
@@ -201,16 +193,20 @@ a {
             background: linear-gradient(135deg,var(--accent),var(--accent-2));
         }
 
-/* ===== GRID: sidebar (esquerda) + feed (centro) ===== */
+/* GRID PRINCIPAL */
 .dc-grid {
     display: grid;
-    grid-template-columns: 320px minmax(0, 680px); /* esquerda / feed */
+    grid-template-columns: 220px minmax(0,680px);
     gap: 22px;
+    padding-top: 5px;
     align-items: start;
-    justify-content: center;
+    max-width: 1280px;
+    margin: 18px auto 56px;
+    justify-content: start;
+    padding-left: 40px;
 }
 
-/* Sidebar vem primeiro (coluna esquerda) no desktop */
+/* Sidebar */
 .dc-sidebar {
     order: -1;
 }
@@ -225,11 +221,10 @@ a {
     .dc-grid {
         grid-template-columns: minmax(0,1fr) 320px;
     }
-    /* feed + direita */
+
     .dc-sidebar {
         order: 0;
     }
-    /* volta pra direita */
 }
 
 @media (max-width:780px) {
@@ -242,12 +237,14 @@ a {
     }
 }
 
-/* Cards genéricos */
+/* ===== Cards genéricos ===== */
 .dc-card {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
 }
 
 .dc-card__hd {
@@ -257,42 +254,99 @@ a {
 }
 
 .dc-card__bd {
-    padding: 5px 5px
+    padding: 16px;
 }
-/* você tinha reduzido para 5px; mantive */
 
-/* Composer */
+/* ===== Seção "Publicar" (Composer) ===== */
 .dc-composer {
     display: grid;
-    gap: 10px
+    gap: 12px;
 }
 
-    .dc-composer input[type="file"], .dc-composer textarea {
-        width: 100%;
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 10px;
-        outline: none;
-    }
-
+    /* Textarea */
     .dc-composer textarea {
-        min-height: 90px;
-        resize: vertical
+        width: 100%;
+        min-height: 100px;
+        resize: none;
+        padding: 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
     }
 
+        .dc-composer textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--ring);
+        }
+
+    /* File input escondido de verdade */
+    .dc-composer input[type="file"][hidden] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+/* Contador */
+.dc-composer__meta {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* Ações (clip + publicar) */
 .dc-actions {
     display: flex;
-    gap: 10px;
-    justify-content: flex-end
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
 }
 
+/* Botão de clipe (label que aciona o file input) */
+.dc-attach {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--soft);
+    color: #334155;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, color .2s, background .2s;
+}
+
+    .dc-attach:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    .dc-attach[data-has-file="true"] {
+        background: #fff;
+        border-color: var(--accent);
+        color: var(--accent-2);
+    }
+
+    .dc-attach svg {
+        display: block;
+    }
+
+/* Estados dos botões */
 .dc-btn:disabled {
     opacity: .6;
     cursor: not-allowed
 }
 
-/* Feed */
+.dc-btn--primary:hover {
+    opacity: .9;
+}
+
+/* ===== Feed ===== */
 .dc-feed {
     display: grid;
     gap: 14px;
@@ -334,7 +388,7 @@ a {
     padding: 12px 14px
 }
 
-/* Botão de ranking (se for usado fora das métricas) */
+/* Botão de ranking (fora das métricas) */
 .dc-rank-link {
     display: block;
     text-align: center;
@@ -378,7 +432,7 @@ a {
     font-size: 11px
 }
 
-/* ===== Nav esquerda e widgets (opcional) ===== */
+/* ===== Nav esquerda / Widgets (opcional) ===== */
 .dc-left-nav {
     position: sticky;
     top: 72px;
@@ -446,6 +500,7 @@ a {
             background: #fff;
             font-weight: 700;
         }
+
 
 /* ===== Ranking (página) ===== */
 .dc-ranking-section {
