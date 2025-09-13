@@ -6,7 +6,6 @@ namespace RecyclingBackend.Services
 {
     public interface IGeoService
     {
-        // Try to fetch latitude/longitude from a Brazilian CEP (via public APIs).
         Task<(double? lat, double? lon, string? city, string? state)> GetLatLonFromCepAsync(string cep);
     }
 
@@ -14,7 +13,7 @@ namespace RecyclingBackend.Services
     {
         private readonly HttpClient _http = new HttpClient();
 
-        // Uses ViaCEP to get address, then Nominatim to geocode.
+       
         public async Task<(double? lat, double? lon, string? city, string? state)> GetLatLonFromCepAsync(string cep)
         {
             if (string.IsNullOrWhiteSpace(cep)) return (null, null, null, null);
