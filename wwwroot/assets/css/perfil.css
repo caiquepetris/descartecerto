@@ -105,6 +105,15 @@ a {
     box-shadow: 0 6px 16px var(--ring);
 }
 
+.dc-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed
+}
+
+.dc-btn--primary:hover {
+    opacity: .9
+}
+
 /* Largura total do conteúdo */
 .dc-wrap {
     max-width: 1280px;
@@ -119,7 +128,7 @@ a {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 12px 16px;
-    max-width: 680px;
+    max-width: 200px;
     margin: 12px auto 6px;
     display: flex;
     align-items: center;
@@ -169,7 +178,38 @@ a {
     justify-content: center;
     position: relative;
 }
+/* remove o contorno preto padrão */
+.dc-tab,
+.dc-btn,
+.dc-attach {
+    outline: none;
+}
 
+    /* foco lindo e acessível (usa sua cor --ring) */
+    .dc-tab:focus-visible,
+    .dc-btn:focus-visible,
+    .dc-attach:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--ring);
+        border-color: var(--accent); /* opcional: reforça a borda */
+    }
+
+/* opcional: melhora hover/estados da aba */
+.dc-tab {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px 12px;
+}
+
+    .dc-tab:hover {
+        background: var(--soft);
+    }
+
+    .dc-tab[aria-selected="true"] {
+        border-color: var(--accent);
+    }tline: none;
+}
 .dc-tab {
     padding: 10px 2px;
     font-weight: 700;
@@ -178,63 +218,39 @@ a {
     position: relative;
 }
 
-    .dc-tab[aria-selected="true"] {
-        color: var(--accent-2)
+ 
+.dc-grid {
+    max-width: 1100px;
+    margin: 24px auto;
+    display: grid;
+    grid-template-columns: 260px minmax(0,1fr) 320px;
+    grid-template-areas: "left main right";
+    gap: 24px;
+    align-items: start;
+}
+    /* mapeamento das áreas */
+    .dc-grid > main.dc-tab-panel {
+        grid-area: main;
+        min-width: 0;
+    }
+    /* centro */
+    .dc-grid > .dc-sidebar {
+        grid-area: left;
+    }
+    /* esquerda */
+    .dc-grid > .dc-ranking-widget {
+        grid-area: right;
     }
 
-        .dc-tab[aria-selected="true"]::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -6px;
-            height: 3px;
-            border-radius: 2px;
-            background: linear-gradient(135deg,var(--accent),var(--accent-2));
-        }
 
-/* GRID PRINCIPAL */
-.dc-grid {
-    display: grid;
-    grid-template-columns: 220px minmax(0,680px);
-    gap: 22px;
-    padding-top: 5px;
-    align-items: start;
-    max-width: 1280px;
-    margin: 18px auto 56px;
-    justify-content: start;
-    padding-left: 40px;
-}
-
-/* Sidebar */
+/* ===== Sidebar (métricas) ===== */
 .dc-sidebar {
     order: -1;
 }
-
+/* mantém à esquerda em telas largas */
 .dc-sidebar__panel {
     position: sticky;
-    top: 72px
-}
-
-/* Responsivo */
-@media (max-width:1024px) {
-    .dc-grid {
-        grid-template-columns: minmax(0,1fr) 320px;
-    }
-
-    .dc-sidebar {
-        order: 0;
-    }
-}
-
-@media (max-width:780px) {
-    .dc-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .dc-sidebar__panel {
-        position: static;
-    }
+    top: 72px;
 }
 
 /* ===== Cards genéricos ===== */
@@ -257,13 +273,12 @@ a {
     padding: 16px;
 }
 
-/* ===== Seção "Publicar" (Composer) ===== */
+/* ===== Seção "Publicar" ===== */
 .dc-composer {
     display: grid;
     gap: 12px;
 }
 
-    /* Textarea */
     .dc-composer textarea {
         width: 100%;
         min-height: 100px;
@@ -283,13 +298,12 @@ a {
             box-shadow: 0 0 0 3px var(--ring);
         }
 
-    /* File input escondido de verdade */
     .dc-composer input[type="file"][hidden] {
         display: none !important;
         visibility: hidden !important;
     }
 
-/* Contador */
+/* Contador e ações */
 .dc-composer__meta {
     display: flex;
     justify-content: flex-end;
@@ -298,7 +312,6 @@ a {
     margin-top: 4px;
 }
 
-/* Ações (clip + publicar) */
 .dc-actions {
     display: flex;
     align-items: center;
@@ -306,7 +319,7 @@ a {
     gap: 8px;
 }
 
-/* Botão de clipe (label que aciona o file input) */
+/* Botão de clipe */
 .dc-attach {
     width: 36px;
     height: 36px;
@@ -336,21 +349,11 @@ a {
         display: block;
     }
 
-/* Estados dos botões */
-.dc-btn:disabled {
-    opacity: .6;
-    cursor: not-allowed
-}
-
-.dc-btn--primary:hover {
-    opacity: .9;
-}
-
 /* ===== Feed ===== */
 .dc-feed {
     display: grid;
     gap: 14px;
-    margin-top: 14px
+    margin-top: 14px;
 }
 
 .dc-post {
@@ -432,7 +435,7 @@ a {
     font-size: 11px
 }
 
-/* ===== Nav esquerda / Widgets (opcional) ===== */
+/* ===== Nav esquerda ===== */
 .dc-left-nav {
     position: sticky;
     top: 72px;
@@ -467,87 +470,80 @@ a {
             border: 1px solid var(--line);
         }
 
-.dc-widget {
+/* ===== Widget lateral do ranking (à direita) ===== */
+.dc-ranking-widget {
     background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-    .dc-widget .dc-hd {
-        padding: 14px 16px;
-        font-weight: 800;
-        border-bottom: 1px solid var(--line);
-    }
-
-    .dc-widget .dc-bd {
-        padding: 10px 12px;
-        display: grid;
-        gap: 10px;
-    }
-
-    .dc-widget .dc-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-        .dc-widget .dc-item .dc-pill {
-            margin-left: auto;
-            border: 1px solid var(--line);
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: #fff;
-            font-weight: 700;
-        }
-
-
-/* ===== Ranking (página) ===== */
-.dc-ranking-section {
-    max-width: 800px;
-    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     padding: 20px;
-    text-align: center;
+    max-width: 320px;
+    margin: 0 auto 20px;
+    font-size: .9rem;
+    position: sticky;
+    top: 88px; 
 }
 
 .dc-ranking-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
     color: #2E7D32;
 }
 
 .dc-ranking-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    background: #fff;
 }
 
     .dc-ranking-table th, .dc-ranking-table td {
-        padding: 15px;
-        text-align: center;
+        padding: 8px;
+        font-size: .85rem;
+        text-align: left;
         border-bottom: 1px solid #eee;
     }
 
     .dc-ranking-table th {
         background: #4CAF50;
-        color: white;
-        font-weight: bold;
+        color: #fff;
+        font-weight: 700;
     }
 
     .dc-ranking-table tr:hover {
         background: #f9f9f9;
     }
 
-    .dc-ranking-table .highlight {
-        background: #FFF9C4;
-        font-weight: bold;
+.dc-ranking-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width:1100px) {
+    .dc-grid {
+        grid-template-columns: minmax(0,1fr) 320px;
+        grid-template-areas:
+            "main right"
+            "left right";
+    }
+}
+
+@media (max-width:780px) {
+    .dc-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "main"
+            "left"
+            "right";
     }
 
-.dc-ranking-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    .dc-sidebar__panel {
+        position: static;
+    }
+
+    .dc-ranking-widget {
+        position: static;
+        max-width: 640px;
+        margin: 0 auto;
+    }
 }
