@@ -31,7 +31,7 @@
                         <label for="email">Email</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" id="username" placeholder="Digite seu email" required>
+                            <input type="email" id="email" placeholder="Digite seu email" required>
                         </div>
                     </div>
 
@@ -70,7 +70,18 @@
         </div>
     </div>
 
-    <script src="./assets/js/auth.js"></script>
-    <script src="./assets/js/login.js"></script>
+    <script src="/assets/js/login.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            applyHeaderAuth({
+                userSelector: '#userDisplay',
+                logoutSelector: '#logoutBtn',
+                loginLinkSelector: '.header-section__login-button',
+                onLoggedOutRedirect: '/login/login.html'
+            });
+        });
+    </script>
 </body>
 </html>

@@ -10,7 +10,7 @@ namespace RecyclingBackend.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<RecyclingEvent> RecyclingEvents { get; set; }
-        public DbSet<CollectionPoint> CollectionPoints { get; set; }
+       
     }
 }
 

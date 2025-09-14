@@ -14,7 +14,6 @@ namespace RecyclingBackend.Models
 
         public string? Email { get; set; }
 
-        // Total points (cached), updated when events are recorded.
         public int Points { get; set; } = 0;
     }
 }

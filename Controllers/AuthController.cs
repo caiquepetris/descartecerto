@@ -9,10 +9,12 @@ namespace RecyclingBackend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserService _userService;
+        private readonly IJwtService _jwtService;
 
-        public AuthController(UserService userService)
+        public AuthController(UserService userService, IJwtService jwtService)
         {
             _userService = userService;
+            _jwtService = jwtService;
         }
 
         [HttpPost("register")]
@@ -20,19 +22,36 @@ namespace RecyclingBackend.Controllers
         {
             var createdUser = _userService.Register(request.Username, request.Email, request.Password);
             if (createdUser == null)
-                return BadRequest("Usuário já existe.");
+                return BadRequest("Usuário não pôde ser criado.");
 
-            return Ok(new { createdUser.Id, createdUser.Username, createdUser.Email });
+            return Ok(new
+            {
+                createdUser.Id,
+                createdUser.Username,
+                createdUser.Email
+            });
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginRequest request)
         {
-            var loggedUser = _userService.Login(request.Username, request.Password);
+            var loggedUser = _userService.Login(request.Email, request.Password);
             if (loggedUser == null)
                 return Unauthorized("Usuário ou senha inválidos.");
 
-            return Ok(new { loggedUser.Id, loggedUser.Username, loggedUser.Email, loggedUser.Points });
+            var token = _jwtService.GenerateToken(loggedUser);
+
+            return Ok(new
+            {
+                token,
+                user = new
+                {
+                    loggedUser.Id,
+                    loggedUser.Username,
+                    loggedUser.Email,
+                    loggedUser.Points
+                }
+            });
         }
     }
 }

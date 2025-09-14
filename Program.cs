@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.StaticFiles;
 using RecyclingBackend.Data;
 using RecyclingBackend.Services;
-using Microsoft.OpenApi.Models; // <- necessário para Swagger
+using Microsoft.OpenApi.Models; // <- necessrio para Swagger
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +25,7 @@ builder.Services.AddDbContext<RecyclingDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IGeoService, GeoService>();
+
 
 // Authentication - JWT
 var jwtKey = configuration["Jwt:Key"];

@@ -6,6 +6,9 @@
     <UserSecretsId>38ea240b-0c64-4657-af13-51e825f169e5</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\assets\js\auth.js" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="wwwroot\.vscode\settings.json" />
   </ItemGroup>
   <ItemGroup>
