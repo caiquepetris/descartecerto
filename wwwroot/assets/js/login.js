@@ -36,18 +36,19 @@ function applyHeaderAuth({
     const userEl = document.querySelector(userSelector);
     const logoutEl = document.querySelector(logoutSelector);
     const loginLinkEl = document.querySelector(loginLinkSelector);
+    const userLinkEl = document.querySelector('#userLink'); // novo link para o perfil
 
     if (auth?.user) {
         const name = auth.user.username || auth.user.name || auth.user.email || 'Usuário';
         const email = auth.user.email && !name.includes('@') ? ` (${auth.user.email})` : '';
-        if (userEl) {
-            userEl.textContent = `${name}${email}`;
-            userEl.style.display = 'inline-flex';
-        }
+
+        if (userEl) userEl.textContent = `${name}${email}`;
+        if (userLinkEl) userLinkEl.style.display = 'inline-flex';
         if (logoutEl) logoutEl.style.display = 'inline-flex';
         if (loginLinkEl) loginLinkEl.style.display = 'none';
     } else {
-        if (userEl) userEl.style.display = 'none';
+        if (userEl) userEl.textContent = '';
+        if (userLinkEl) userLinkEl.style.display = 'none';
         if (logoutEl) logoutEl.style.display = 'none';
         if (loginLinkEl) loginLinkEl.style.display = 'inline-flex';
     }
@@ -59,6 +60,7 @@ function applyHeaderAuth({
         });
     }
 }
+
 
 // ================== LOGIN ==================
 async function loginWithCredentials({ username, password }) {
