@@ -179,14 +179,12 @@
     </section>
 </main>
 
-<!-- Leaflet JS (apenas um) -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""
         defer></script>
 
-<!-- Init seguro do mapa -->
-<!-- ===== UI / MAPA ===== -->
+
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -227,9 +225,6 @@
         // Estado Leaflet
         let map, resultsLayer, linkLine, searchCircle, cepMarker;
 
-        // =========================
-        // Helpers
-        // =========================
         const sleep = (ms) => new Promise(r => setTimeout(r, ms));
         const fmtKm = (m) => (m / 1000).toFixed(2);
 
@@ -259,9 +254,8 @@
             return mats.length ? mats.join(", ") : "não informado";
         }
 
-        // === NOVO: link para o Google Maps com ORIGEM e DESTINO
         function gmLink(originQuery, destLat, destLon) {
-            // originQuery: ex. "09961190, Brasil" (mostra o CEP no campo de origem no Maps)
+            
             const params = new URLSearchParams({
                 api: "1",
                 origin: originQuery,
@@ -357,9 +351,6 @@ out center tags;
             throw lastErr || new Error("Falha na Overpass API.");
         }
 
-        // =========================
-        // Leaflet
-        // =========================
         function ensureMap() {
             if (map) return map;
 
@@ -370,9 +361,7 @@ out center tags;
 
             resultsLayer = L.layerGroup().addTo(map);
 
-            // Geolocalização DESATIVADA (para não criar "Você está aqui" do navegador)
-
-            // Invalidação robusta do tamanho
+           
             const invalidate = () => { if (map) map.invalidateSize(); };
             setTimeout(invalidate, 0);
             setTimeout(invalidate, 250);
@@ -396,9 +385,7 @@ out center tags;
             if (cepMarker) { map.removeLayer(cepMarker); cepMarker = null; }
         }
 
-        // =========================
-        // Fluxo principal
-        // =========================
+    
         async function buscar() {
             try {
                 ensureMap();
@@ -411,7 +398,7 @@ out center tags;
 
                 const raioKm = DEFAULT_RADIUS_KM;
                 const raioM = Math.round(raioKm * 1000);
-                const originQuery = `${cepRaw}, Brasil`;   // <= vai aparecer no campo "origem" do Maps
+                const originQuery = `${cepRaw}, Brasil`;   
 
                 const materialKeys = MATERIAL_TAGS[produto];
                 if (!materialKeys) throw new Error("Material inválido.");
@@ -492,11 +479,7 @@ out center tags;
                 console.error(err);
                 alert(err.message || "Erro ao buscar pontos. Confira o CEP e tente novamente.");
             }
-        }
-
-        // =========================
-        // Bindings
-        // =========================
+     
         document.addEventListener("DOMContentLoaded", () => {
             ensureMap();
             $btn?.addEventListener("click", (e) => { e.preventDefault?.(); buscar(); });
@@ -517,7 +500,6 @@ out center tags;
 
 
 
-<!-- Seus scripts já existentes -->
 <script src="./assets/js/impacto.js" defer></script>
 <script src="./assets/js/menu.js" defer></script>
 <script src="./assets/js/chat.js" defer></script>
