@@ -1,71 +1,77 @@
-/* 1a seção */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom right, #f0fdf4, #ffffff, #f0fdf4);
-  color: #1f2937;
+/* =================== Tokens =================== */
+:root {
+    --bg: linear-gradient(to bottom right,#f0fdf4,#ffffff,#f0fdf4);
+    --card-bg: #ffffff;
+    --text: #1f2937;
+    --muted: #4b5563;
+    --border: #d1d5db;
+    --accent: #10b981;
+    --accent-2: #059669;
+    --shadow: 0 6px 18px rgba(0,0,0,.08);
+    --radius: 14px;
+    --gap: 16px; /* espaçamento cards */
+    --speed: 28s; /* velocidade do scroller */
 }
-/* Estilo/altura do mapa */
 
-/* Altura explícita e responsiva para o contêiner do mapa */
+/* =================== Base =================== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right,#f0fdf4,#ffffff,#f0fdf4);
+    color: #1f2937;
+}
+
+/* =================== Mapa =================== */
 #map {
     width: 100%;
-    height: 400px; /* ou o clamp que preferir, mas não duplique */
+    height: 400px;
     border-radius: 18px;
     box-shadow: 0 8px 20px rgba(0,0,0,.12);
-    position:fixed;
-    z-index:200;
+    /* REMOVIDO position:fixed; para não sobrepor tudo */
+    position: relative;
+    z-index: 1;
 }
 
+/* evita imagens do Leaflet “estourarem” largura */
 .leaflet-container img,
 .leaflet-container .leaflet-tile,
 .leaflet-container .leaflet-marker-icon,
 .leaflet-container .leaflet-marker-shadow {
     max-width: none !important;
-    z-index:500;
-}
-header,
-.header,
-.site-header,
- {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 4000;
+    /* z-index removido: não tem efeito sem position */
 }
 
 
 
-
-/* Container principal da seção */
+/* =================== Título / busca =================== */
 .titlerec {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  text-align: center;
-  z-index:10;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 1; /* z-index agora tem efeito */
 }
 
-.titlerec h1 {
-  font-size: 1.8rem;
-  color: #064e3b;
-  margin-bottom: 10px;
-}
+    .titlerec h1 {
+        font-size: 1.8rem;
+        color: #064e3b;
+        margin-bottom: 10px
+    }
 
-.titlerec p {
-  color: #4b5563;
-  margin-bottom: 20px;
-}
+    .titlerec p {
+        color: #4b5563;
+        margin-bottom: 20px
+    }
 
 .searchcep {
     display: flex;
-    flex-wrap: nowrap; /* tudo na mesma linha */
+    flex-wrap: nowrap;
     gap: 12px;
     justify-content: center;
     align-items: center;
-    background: #ffffff;
+    background: #fff;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 6px 16px rgba(0,0,0,0.1);
@@ -76,268 +82,239 @@ header,
         font-weight: 600;
         color: #065f46;
         margin-right: 6px;
-        white-space: nowrap;
+        white-space: nowrap
     }
 
-    .searchcep input,
-    .searchcep select,
-    .searchcep button {
-        height: 42px; /* 🔥 mesma altura */
-        padding: 0 14px; /* mantém proporcional */
+    .searchcep input, .searchcep select, .searchcep button {
+        height: 42px;
+        padding: 0 14px;
         border-radius: 12px;
         font-size: 1rem;
         outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition: border-color .2s ease, box-shadow .2s ease;
     }
 
-    .searchcep input,
-    .searchcep select {
+    .searchcep input, .searchcep select {
         border: 1px solid #d1d5db;
-        background: #fff;
+        background: #fff
     }
 
-        .searchcep input:focus,
-        .searchcep select:focus {
-            border-color: #10b981;
+        .searchcep input:focus, .searchcep select:focus {
+            border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
         }
 
     .searchcep button {
         border: none;
-        background: #10b981;
+        background: var(--accent);
         color: #fff;
         font-weight: bold;
         cursor: pointer;
-        transition: background 0.2s ease;
-        font-size:16px;
+        font-size: 16px;
+        transition: background .2s ease;
     }
 
         .searchcep button:hover {
-            background: #059669;
+            background: var(--accent-2)
         }
 
-/* Área do mapa */
 .maparec {
-  margin-top: 20px;
+    margin-top: 20px
 }
 
-#map {
-  width: 100%;
-  height: 400px;
-  border-radius: 18px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+/* =================== Scroller (2ª seção) =================== */
+.bestway {
+    padding: clamp(20px,4vw,48px);
+    max-width: 1100px;
+    margin: 0 auto
 }
 
+    .bestway h2 {
+        text-align: center;
+        font-size: clamp(1.4rem,2.4vw,2rem);
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #064e3b
+    }
 
-/* 2a seção */
-:root{
-  --bg: linear-gradient(to top right, #f0fdf4, #ffffff, #f0fdf4);
-  --card-bg: #ffffff;
-  --text: #1f2937;
-  --muted: #4b5563;
-  --border: #d1d5db;
-  --shadow: 0 6px 18px rgba(0,0,0,.08);
-  --radius: 14px;
-
-  --gap: 16px;       /* espaçamento entre cards no track */
-  --speed: 28s;      /* velocidade do scroll contínuo */
+.scroller {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right,transparent,black 6%,black 94%,transparent);
+    mask-image: linear-gradient(to right,transparent,black 6%,black 94%,transparent);
+    padding-block: 6px;
 }
 
-
-.bestway{
-  padding: clamp(20px, 4vw, 48px);
-  max-width: 1100px;
-  margin: 0 auto;
+.scroller__track {
+    display: flex;
+    gap: var(--gap);
+    width: max-content;
+    will-change: transform;
+    animation: scroll-right var(--speed) linear infinite;
+    position: relative;
+    z-index: 10 !important; /* !important no lugar certo */
 }
 
-.bestway h2{
-  text-align: center;
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #064e3b;
+.card {
+    min-width: 260px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
 }
 
+    .card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+        box-shadow: 0 10px 24px rgba(0,0,0,.15)
+    }
 
-.scroller{
-  overflow: hidden;
-  /* bordas suavemente “mascaradas” nas laterais (opcional, remove se não quiser) */
-  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-          mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-  padding-block: 6px; /* respiro vertical */
+    .card h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #065f46
+    }
+
+    .card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0
+    }
+
+    .card li {
+        position: relative;
+        padding-left: 18px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin: 8px 0;
+    }
+
+        .card li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: .62em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+@keyframes scroll-right {
+    from {
+        transform: translateX(-50%)
+    }
+    /* começa no lote 2 */
+    to {
+        transform: translateX(0)
+    }
+    /* termina no lote 1 */
 }
 
-.scroller__track{
-  display: flex;
-  gap: var(--gap);
-  width: max-content;           
-  will-change: transform;
-  animation: scroll-right var(--speed) linear infinite;
-  z-index:10; !important
+@media (prefers-reduced-motion:reduce) {
+    .scroller__track {
+        animation: none
+    }
+
+    .card, .card:hover {
+        transform: none !important
+    }
 }
 
-
-.card{
-  min-width: 260px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 18px;
-  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-}
-
-.card:hover{
-  transform: translateY(-4px);
-  border-color: #10b981;
-  box-shadow: 0 10px 24px rgba(0,0,0,.15);
-}
-
-.card h3{
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #065f46;
-}
-
-.card ul{
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.card li{
-  position: relative;
-  padding-left: 18px;
-  line-height: 1.5;
-  color: var(--muted);
-  margin: 8px 0;
-}
-.card li::before{
-  content: "";
-  position: absolute;
-  left: 0; top: .62em;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-}
-/* Loop infinito, movimento constante para a direita */
-@keyframes scroll-right{
-  from{ transform: translateX(-50%); } /* começa mostrando o LOTE 2 */
-  to  { transform: translateX(0); }    /* termina mostrando o LOTE 1; reinicia sem “pulo” */
-}
-
-
-@media (prefers-reduced-motion: reduce){
-  .scroller__track{ animation: none; }
-  .card, .card:hover{ transform: none !important; }
-}
-/* 3a seção */
-  :root{
-    --bg: linear-gradient(to bottom right, #f0fdf4, #ffffff, #f0fdf4);
-    --text: #1f2937;
-    --muted:#4b5563;
-    --emph: #065f46;
-    --accent:#10b981;
-    --card-bg:#ffffff;
-    --border:#d1d5db;
-    --shadow: 0 6px 18px rgba(0,0,0,.08);
-    --radius:14px;
-    --gap:16px;
-  }
-
-  .impact{
+/* =================== Impacto (3ª seção) =================== */
+.impact {
     background: var(--bg);
     color: var(--text);
-    padding: clamp(20px,4vw,48px);
-    padding: 100px;
-  }
+    padding: clamp(20px,4vw,48px); /* removido padding duplicado */
+}
 
-  .impact-header{
+.impact-header {
     max-width: 1100px;
     margin: 0 auto 16px;
-    text-align: center;
-  }
+    text-align: center
+}
 
-  .impact h2{
-    font-size: clamp(1.4rem, 2.6vw, 2rem);
+.impact h2 {
+    font-size: clamp(1.4rem,2.6vw,2rem);
     font-weight: 700;
     color: #064e3b;
-    margin-bottom: 6px;
-  }
+    margin-bottom: 6px
+}
 
-  .impact-sub{
+.impact-sub {
     color: var(--muted);
-    font-size: .95rem;
-  }
+    font-size: .95rem
+}
 
-  .impact-form{
+.impact-form {
     max-width: 1100px;
     margin: 18px auto 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
     gap: var(--gap);
-  }
+}
 
-  .field{
+.field {
     display: grid;
-    gap: 8px;
-  }
+    gap: 8px
+}
 
-  .field span{
-    font-size: .95rem;
-    color: var(--emph);
-    font-weight: 600;
-  }
+    .field span {
+        font-size: .95rem;
+        color: #065f46;
+        font-weight: 600
+    }
 
-  .field input{
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--text);
-    box-shadow: var(--shadow);
-    outline: none;
-    transition: border-color .2s ease, box-shadow .2s ease;
-  }
+    .field input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--card-bg);
+        color: var(--text);
+        box-shadow: var(--shadow);
+        outline: none;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
 
-  .field input:focus{
-    border-color: var(--accent);
-    box-shadow: 0 8px 22px rgba(16,185,129,.18);
-  }
+        .field input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 8px 22px rgba(16,185,129,.18)
+        }
 
-  .impact-grid{
+.impact-grid {
     max-width: 1100px;
     margin: 8px auto 0;
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
     gap: var(--gap);
-  }
+}
 
-  .impact-card{
+.impact-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 16px 18px;
-  }
+}
 
-  .kpi-label{
+.kpi-label {
     margin: 0 0 6px;
     color: var(--muted);
-    font-size: .95rem;
-  }
+    font-size: .95rem
+}
 
-  .kpi-value{
+.kpi-value {
     margin: 0 0 6px;
     font-size: clamp(1.4rem,2.5vw,1.8rem);
     font-weight: 700;
-    color: var(--emph);
-  }
+    color: #065f46
+}
 
-  .kpi-note{
+.kpi-note {
     margin: 0;
     font-size: .85rem;
-    color: var(--muted);
-  }
- 
+    color: var(--muted)
+}

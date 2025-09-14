@@ -1,4 +1,4 @@
-:root {
+ï»¿:root {
     /* Paleta ECO */
     --bg: linear-gradient(to top right, #f0fdf4, #ffffff, #f0fdf4);
     --card: #ffffff;
@@ -82,7 +82,7 @@ a {
     gap: 8px
 }
 
-/* Botões */
+/* BotÃµes */
 .dc-btn {
     display: inline-flex;
     align-items: center;
@@ -96,6 +96,7 @@ a {
     color: var(--text);
     font-weight: 600;
     cursor: pointer;
+    outline: none;
 }
 
 .dc-btn--primary {
@@ -114,7 +115,12 @@ a {
     opacity: .9
 }
 
-/* Largura total do conteúdo */
+.dc-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--ring);
+    border-color: var(--accent);
+}
+
+/* Largura total do conteÃºdo */
 .dc-wrap {
     max-width: 1280px;
     margin: 18px auto 56px;
@@ -170,36 +176,32 @@ a {
 /* ===== Tabs ===== */
 .dc-tabs {
     max-width: 680px;
-    margin: 12px auto 8px;
+    margin: 50px auto 8px;
     padding-bottom: 20px;
-    margin-top: 50px;
     display: flex;
     gap: 18px;
     justify-content: center;
     position: relative;
 }
-/* remove o contorno preto padrão */
-.dc-tab,
-.dc-btn,
-.dc-attach {
+
+.dc-tab, .dc-attach {
     outline: none;
 }
 
-    /* foco lindo e acessível (usa sua cor --ring) */
-    .dc-tab:focus-visible,
-    .dc-btn:focus-visible,
-    .dc-attach:focus-visible {
-        outline: none;
+    .dc-tab:focus-visible, .dc-attach:focus-visible {
         box-shadow: 0 0 0 3px var(--ring);
-        border-color: var(--accent); /* opcional: reforça a borda */
+        border-color: var(--accent);
     }
 
-/* opcional: melhora hover/estados da aba */
 .dc-tab {
     background: transparent;
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 8px 12px;
+    padding: 10px 12px;
+    font-weight: 700;
+    color: #334155;
+    cursor: pointer;
+    position: relative;
 }
 
     .dc-tab:hover {
@@ -208,17 +210,9 @@ a {
 
     .dc-tab[aria-selected="true"] {
         border-color: var(--accent);
-    }tline: none;
-}
-.dc-tab {
-    padding: 10px 2px;
-    font-weight: 700;
-    color: #334155;
-    cursor: pointer;
-    position: relative;
-}
+    }
 
- 
+/* ===== Grid ===== */
 .dc-grid {
     max-width: 1100px;
     margin: 24px auto;
@@ -228,7 +222,7 @@ a {
     gap: 24px;
     align-items: start;
 }
-    /* mapeamento das áreas */
+
     .dc-grid > main.dc-tab-panel {
         grid-area: main;
         min-width: 0;
@@ -241,19 +235,19 @@ a {
     .dc-grid > .dc-ranking-widget {
         grid-area: right;
     }
+/* direita */
 
-
-/* ===== Sidebar (métricas) ===== */
+/* ===== Sidebar (mÃ©tricas) ===== */
 .dc-sidebar {
     order: -1;
 }
-/* mantém à esquerda em telas largas */
+
 .dc-sidebar__panel {
     position: sticky;
     top: 72px;
 }
 
-/* ===== Cards genéricos ===== */
+/* ===== Cards genÃ©ricos ===== */
 .dc-card {
     background: var(--card);
     border: 1px solid var(--line);
@@ -261,19 +255,42 @@ a {
     box-shadow: var(--shadow);
     overflow: hidden;
     margin-bottom: 16px;
+    transition: transform .2s ease, box-shadow .2s ease;
 }
+
+    .dc-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
 
 .dc-card__hd {
     padding: 14px 16px;
     border-bottom: 1px solid var(--line);
     color: var(--muted);
+    font-weight: 700;
+    /* alinhamento do tÃ­tulo/Ã­cone (ex.: "Poste sua reciclagem!") */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .dc-card__bd {
     padding: 16px;
 }
 
-/* ===== Seção "Publicar" ===== */
+/* ===== Card de PublicaÃ§Ãµes (escopado pelo #feed) ===== */
+.dc-card:has(#feed) .dc-card__hd {
+    padding: 14px 18px;
+    font-size: 1rem;
+    color: var(--accent-2);
+    background: linear-gradient(to right, #f9fafb, #ffffff);
+}
+
+.dc-card:has(#feed) .dc-card__bd {
+    padding: 18px;
+}
+
+/* ===== Composer ===== */
 .dc-composer {
     display: grid;
     gap: 12px;
@@ -303,7 +320,7 @@ a {
         visibility: hidden !important;
     }
 
-/* Contador e ações */
+/* Contador e aÃ§Ãµes */
 .dc-composer__meta {
     display: flex;
     justify-content: flex-end;
@@ -319,7 +336,7 @@ a {
     gap: 8px;
 }
 
-/* Botão de clipe */
+/* BotÃ£o de clipe */
 .dc-attach {
     width: 36px;
     height: 36px;
@@ -356,12 +373,31 @@ a {
     margin-top: 14px;
 }
 
+    .dc-feed::before {
+        content: "Carregando publicaÃ§Ãµes...";
+        display: none;
+        text-align: center;
+        font-size: .85rem;
+        color: var(--muted);
+    }
+
+    .dc-feed[aria-busy="true"]::before {
+        display: block;
+    }
+
+/* ===== Post ===== */
 .dc-post {
     background: #fff;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
+    transition: background .2s ease, box-shadow .2s ease;
 }
+
+    .dc-post:hover {
+        background: var(--soft);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
 
 .dc-post__meta {
     display: flex;
@@ -369,7 +405,7 @@ a {
     gap: 10px;
     padding: 12px 14px;
     color: var(--muted);
-    font-size: 13px;
+    font-size: .85rem;
     border-bottom: 1px solid var(--line);
 }
 
@@ -384,14 +420,17 @@ a {
     display: block;
     width: 100%;
     height: auto;
-    object-fit: cover
+    object-fit: cover;
 }
 
 .dc-post figcaption {
-    padding: 12px 14px
+    padding: 12px 14px;
+    font-size: .95rem;
+    line-height: 1.4;
+    color: var(--text);
 }
 
-/* Botão de ranking (fora das métricas) */
+/* BotÃ£o de ranking (fora das mÃ©tricas) */
 .dc-rank-link {
     display: block;
     text-align: center;
@@ -404,7 +443,7 @@ a {
     border: none;
 }
 
-/* ===== Métricas compactas ===== */
+/* ===== MÃ©tricas compactas ===== */
 .dc-sidebar .dc-card {
     max-width: 280px;
     width: 100%;
@@ -470,55 +509,460 @@ a {
             border: 1px solid var(--line);
         }
 
-/* ===== Widget lateral do ranking (à direita) ===== */
+/* ===== Widget lateral do ranking (direita) ===== */
 .dc-ranking-widget {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
     max-width: 320px;
     margin: 0 auto 20px;
-    font-size: .9rem;
+    font-size: .92rem;
     position: sticky;
-    top: 88px; 
+    top: 88px;
 }
 
 .dc-ranking-title {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    color: #2E7D32;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0 0 14px;
+    letter-spacing: .2px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
+/* Tabela moderna */
 .dc-ranking-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
     background: #fff;
+    overflow: hidden;
+    border-radius: calc(var(--radius) - 6px);
+    border: 1px solid var(--line);
 }
 
-    .dc-ranking-table th, .dc-ranking-table td {
-        padding: 8px;
-        font-size: .85rem;
+    .dc-ranking-table thead th {
+        padding: 10px 12px;
+        font-size: .78rem;
+        font-weight: 800;
         text-align: left;
-        border-bottom: 1px solid #eee;
-    }
-
-    .dc-ranking-table th {
-        background: #4CAF50;
+        letter-spacing: .3px;
         color: #fff;
-        font-weight: 700;
+        background: linear-gradient(135deg,var(--accent),var(--accent-2));
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
 
-    .dc-ranking-table tr:hover {
-        background: #f9f9f9;
+    .dc-ranking-table tbody td {
+        padding: 12px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
     }
 
+    .dc-ranking-table tbody tr {
+        transition: background .18s ease, transform .18s ease;
+    }
+
+        .dc-ranking-table tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .dc-ranking-table tbody tr:hover {
+            background: var(--soft);
+        }
+
+    /* Colunas: posiÃ§Ã£o e total */
+    .dc-ranking-table tbody td:first-child {
+        width: 1%;
+        white-space: nowrap;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .dc-ranking-table tbody td:last-child {
+        text-align: right;
+        white-space: nowrap; /* evita quebrar "325 kg" */
+    }
+
+    /* Top 1-3: faixa lateral (sem "bolonas") */
+    .dc-ranking-table tr.first,
+    .dc-ranking-table tr.second,
+    .dc-ranking-table tr.third {
+        position: relative;
+    }
+
+        .dc-ranking-table tr.first::before,
+        .dc-ranking-table tr.second::before,
+        .dc-ranking-table tr.third::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            border-radius: 6px 0 0 6px;
+        }
+
+        .dc-ranking-table tr.first::before {
+            background: #fde68a;
+        }
+        /* ouro */
+        .dc-ranking-table tr.second::before {
+            background: #bae6fd;
+        }
+        /* prata */
+        .dc-ranking-table tr.third::before {
+            background: #e9d5ff;
+        }
+        /* bronze */
+
+        /* medalhas sÃ³ como emoji antes do nÃºmero */
+        .dc-ranking-table tr.first td:first-child::before {
+            content: "ðŸ¥‡ ";
+        }
+
+        .dc-ranking-table tr.second td:first-child::before {
+            content: "ðŸ¥ˆ ";
+        }
+
+        .dc-ranking-table tr.third td:first-child::before {
+            content: "ðŸ¥‰ ";
+        }
+
+    /* Destaque do usuÃ¡rio */
+    .dc-ranking-table tr.highlight td {
+        background: #dcfce7 !important;
+        color: #14532d;
+        font-weight: 800;
+    }
+
+    .dc-ranking-table tr.highlight:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px var(--ring);
+    }
+
+/* Avatar opcional */
 .dc-ranking-avatar {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--accent-2);
+}
+
+/* ===== Responsivo do ranking ===== */
+@media (max-width: 560px) {
+    .dc-ranking-table thead {
+        display: none;
+    }
+
+    .dc-ranking-table,
+    .dc-ranking-table tbody,
+    .dc-ranking-table tr,
+    .dc-ranking-table td {
+        display: block;
+        width: 100%;
+    }
+
+        .dc-ranking-table tbody tr {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            margin: 10px 0;
+            box-shadow: var(--shadow);
+            padding: 10px 8px;
+        }
+
+        .dc-ranking-table tbody td {
+            border: none;
+            padding: 8px 6px;
+            position: relative;
+            text-align: left;
+        }
+
+            .dc-ranking-table tbody td:nth-child(1)::before {
+                content: "PosiÃ§Ã£o";
+            }
+
+            .dc-ranking-table tbody td:nth-child(2)::before {
+                content: "UsuÃ¡rio";
+            }
+
+            .dc-ranking-table tbody td:nth-child(3)::before {
+                content: "Total";
+            }
+
+            .dc-ranking-table tbody td::before {
+                display: block;
+                font-size: .72rem;
+                font-weight: 700;
+                color: var(--muted);
+                margin-bottom: 4px;
+                text-transform: uppercase;
+                letter-spacing: .3px;
+            }
+
+        .dc-ranking-table tr.first td:first-child,
+        .dc-ranking-table tr.second td:first-child,
+        .dc-ranking-table tr.third td:first-child {
+            display: inline-block;
+            padding: 0;
+            margin: 0 0 6px 0;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+        }
+}
+/* ===== Base + card ===== */
+.dc-post-card {
+    --_card: var(--card, #fff);
+    --_text: var(--text, #0f172a);
+    --_muted: var(--muted, #6b7280);
+    --_line: var(--line, #e5e7eb);
+    --_accent: var(--accent, #22c55e);
+    --_accent2: var(--accent-2, #16a34a);
+    --_ring: var(--ring, rgba(34,197,94,.25));
+    --_radius: var(--radius, 16px);
+    --_shadow: var(--shadow, 0 8px 18px rgba(0,0,0,.06));
+    background: var(--_card);
+    color: var(--_text);
+    border: 1px solid var(--_line);
+    border-radius: var(--_radius);
+    box-shadow: var(--_shadow);
+    width: min(720px, 100%);
+    margin: 16px auto;
+    overflow: clip;
+}
+
+/* ===== Trigger ===== */
+.dc-post-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 18px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    font: 600 1rem/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
+
+    .dc-post-trigger:focus-visible {
+        outline: 3px solid var(--_ring);
+        outline-offset: 2px;
+        border-radius: 12px;
+    }
+
+/* BotÃ£o circular com + geomÃ©trico, 100% centralizado */
+.dc-plus {
+    --s: 40px; /* tamanho do cÃ­rculo */
+    --bar: 18px; /* comprimento das barras do + */
+    --thick: 3px; /* espessura das barras */
+
+    position: relative;
+    display: inline-block;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 4px 10px var(--ring);
+    cursor: pointer;
+}
+
+    /* barra horizontal */
+    .dc-plus::before,
+    .dc-plus::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: #fff;
+        border-radius: 2px;
+        transform: translate(-50%, -50%);
+    }
+
+    .dc-plus::before {
+        width: var(--bar);
+        height: var(--thick);
+    }
+
+    /* barra vertical */
+    .dc-plus::after {
+        width: var(--thick);
+        height: var(--bar);
+    }
+
+    /* estados */
+    .dc-plus:hover {
+        opacity: .92;
+    }
+
+    .dc-plus:active {
+        transform: scale(.98);
+    }
+
+
+
+
+.dc-post-trigger[aria-expanded="true"] .dc-plus {
+    transform: rotate(45deg);
+}
+
+/* ===== Layer (sheet que desce) ===== */
+.dc-post-layer {
+    border-top: 1px solid var(--_line);
+    padding: 12px 16px 16px;
+    animation: dc-slide .25s ease both;
+}
+
+@keyframes dc-slide {
+    from {
+        opacity: .0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Form ===== */
+#dc-post-form {
+    display: grid;
+    gap: 14px;
+}
+
+.dc-field {
+    display: grid;
+    gap: 6px;
+}
+
+    .dc-field > span {
+        font-weight: 600;
+        font-size: .95rem;
+    }
+
+    .dc-field select, .dc-field input[type="number"] {
+        border: 1px solid var(--_line);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font: 500 1rem/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial;
+        background: #fff;
+    }
+
+        .dc-field select:focus, .dc-field input[type="number"]:focus {
+            outline: 3px solid var(--_ring);
+        }
+
+/* ===== Upload ===== */
+.dc-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+    .dc-upload input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
+
+.dc-upload-btn {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: var(--_accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    border: 0;
+    box-shadow: 0 2px 8px var(--_ring);
+}
+
+.dc-upload-preview {
+    min-height: 44px;
+    min-width: 44px;
+    border: 1px dashed var(--_line);
+    border-radius: 12px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+    .dc-upload-preview img {
+        height: 56px;
+        width: 56px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid var(--_line);
+    }
+
+/* ===== Summary & actions ===== */
+.dc-summary {
+    margin: 4px 0 0;
+    color: var(--_muted);
+    font-size: .95rem;
+}
+
+.dc-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+.dc-btn {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 0;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--_accent), var(--_accent2));
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 10px var(--_ring);
+}
+
+    .dc-btn.ghost {
+        background: #fff;
+        color: var(--_text);
+        border: 1px solid var(--_line);
+        font-weight: 600;
+    }
+
+    .dc-btn:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+.dc-status {
+    margin: 0;
+    font-size: .95rem;
+    color: var(--_muted);
 }
 
 /* ===== Responsivo ===== */
+@media (max-width: 520px) {
+    .dc-post-trigger {
+        padding: 14px;
+    }
+
+    .dc-upload-preview {
+        width: 100%;
+    }
+}
+/* ===== Responsivo geral ===== */
 @media (max-width:1100px) {
     .dc-grid {
         grid-template-columns: minmax(0,1fr) 320px;

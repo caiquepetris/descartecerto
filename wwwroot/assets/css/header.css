@@ -275,9 +275,7 @@ header h1 {
     display: block !important; /* Forçar exibição */
 }
 
-/* =========================
-   AJUSTES SOMENTE NO MOBILE
-   ========================= */
+
 @media (max-width: 767.98px) {
   /* Header compacto no mobile */
   header { padding: .75rem 0; }
@@ -289,22 +287,20 @@ header h1 {
   .header-section__login-button { padding: 8px 10px; }
   .header-section__login-icon { width: 16px; height: 16px; }
 
-  /* Em telas muito estreitas, esconde o texto do login para caber tudo */
   @media (max-width: 360px) {
     .header-section__login-text { display: none; }
     .header-section__login-button { padding: 8px; }
   }
 
-  /* Overlay: só capta clique quando ativo (não interfere quando fechado) */
+
   .overlay { pointer-events: none; }
   .overlay.active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    display: block !important; /* mantém seu comportamento atual */
+    display: block !important;
   }
 
-  /* Menu lateral (off-canvas) no mobile */
   .menu {
     right: -100%;           /* some totalmente para fora da tela */
     width: 88vw;            /* largura proporcional no mobile */

@@ -189,7 +189,6 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin="" />
-
 <script defer>
     (function () {
         "use strict";
@@ -197,9 +196,9 @@
         // =========================
         // Config & utilitários
         // =========================
-        const DEFAULT_RADIUS_KM = 8;        // Raio padrão
-        const DEFAULT_ZOOM_CEP = 14;        // Zoom ao centralizar no CEP
-        const FLY_DURATION = 0.7;           // Animação do pan/zoom
+        const DEFAULT_RADIUS_KM = 8;
+        const DEFAULT_ZOOM_CEP = 14;
+        const FLY_DURATION = 0.7;
         const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
         const OVERPASS_ENDPOINTS = [
             "https://overpass-api.de/api/interpreter",
@@ -231,18 +230,12 @@
         function withTimeout(promise, ms, controller) {
             let id;
             const timeout = new Promise((_, rej) => {
-                id = setTimeout(() => {
-                    controller?.abort?.();
-                    rej(new Error("Tempo de rede esgotado."));
-                }, ms);
+                id = setTimeout(() => { controller?.abort?.(); rej(new Error("Tempo de rede esgotado.")); }, ms);
             });
             return Promise.race([promise, timeout]).finally(() => clearTimeout(id));
         }
 
-        function sanitizeCEP(v) {
-            return (v || "").replace(/\D/g, "");
-        }
-
+        const sanitizeCEP = (v) => (v || "").replace(/\D/g, "");
         function assertValidCEP(v) {
             if (v.length !== 8) throw new Error("CEP inválido. Use 8 dígitos (ex: 01311000).");
         }
@@ -255,7 +248,6 @@
         }
 
         function gmLink(originQuery, destLat, destLon) {
-            
             const params = new URLSearchParams({
                 api: "1",
                 origin: originQuery,
@@ -268,8 +260,8 @@
 
         function distanceMeters(a, b) {
             return map.distance(
-                L.latLng(a.lat, a.lon || a.lng),
-                L.latLng(b.lat, b.lon || b.lng)
+                L.latLng(a.lat, a.lon ?? a.lng),
+                L.latLng(b.lat, b.lon ?? b.lng)
             );
         }
 
@@ -296,11 +288,7 @@
             const q = parts.join(", ");
 
             const params = new URLSearchParams({
-                q,
-                format: "json",
-                addressdetails: "1",
-                countrycodes: "br",
-                limit: "1"
+                q, format: "json", addressdetails: "1", countrycodes: "br", limit: "1"
             });
             const controller = new AbortController();
             const url = `${NOMINATIM_URL}?${params.toString()}`;
@@ -321,8 +309,7 @@
 (
   ${blocks}
 );
-out center tags;
-`.trim();
+out center tags;`.trim();
         }
 
         async function fetchOverpass(ql) {
@@ -352,6 +339,7 @@ out center tags;
         }
 
         function ensureMap() {
+            if (!$map) { console.warn("Elemento #map não encontrado."); return null; }
             if (map) return map;
 
             map = L.map($map, { zoomControl: true }).setView([-15.78, -47.93], 4);
@@ -361,7 +349,6 @@ out center tags;
 
             resultsLayer = L.layerGroup().addTo(map);
 
-           
             const invalidate = () => { if (map) map.invalidateSize(); };
             setTimeout(invalidate, 0);
             setTimeout(invalidate, 250);
@@ -374,7 +361,6 @@ out center tags;
             } else {
                 window.addEventListener('resize', invalidate);
             }
-
             return map;
         }
 
@@ -385,20 +371,20 @@ out center tags;
             if (cepMarker) { map.removeLayer(cepMarker); cepMarker = null; }
         }
 
-    
         async function buscar() {
             try {
-                ensureMap();
+                const m = ensureMap();
+                if (!m) throw new Error("Mapa não disponível.");
                 clearResults();
 
-                const cepRaw = sanitizeCEP($cep.value);
-                const produto = $produto.value;
+                const cepRaw = sanitizeCEP($cep?.value || "");
+                const produto = $produto?.value;
                 if (!produto) throw new Error("Escolha um produto para reciclar.");
                 assertValidCEP(cepRaw);
 
                 const raioKm = DEFAULT_RADIUS_KM;
                 const raioM = Math.round(raioKm * 1000);
-                const originQuery = `${cepRaw}, Brasil`;   
+                const originQuery = `${cepRaw}, Brasil`;
 
                 const materialKeys = MATERIAL_TAGS[produto];
                 if (!materialKeys) throw new Error("Material inválido.");
@@ -409,16 +395,12 @@ out center tags;
                 // 2) Geocode em Nominatim
                 const center = await geocodeBR(addr);
 
-                // --- círculo do RAIO DE BUSCA no CEP informado ---
+                // Círculo do raio
                 searchCircle = L.circle([center.lat, center.lon], {
-                    radius: raioM,
-                    color: '#16a34a',
-                    weight: 1,
-                    fillColor: '#86efac',
-                    fillOpacity: 0.2
+                    radius: raioM, color: '#16a34a', weight: 1, fillColor: '#86efac', fillOpacity: 0.2
                 }).addTo(resultsLayer);
 
-                // Centraliza no CEP e marca
+                // Centraliza e marca
                 map.flyTo([center.lat, center.lon], DEFAULT_ZOOM_CEP, { duration: FLY_DURATION });
                 cepMarker = L.marker([center.lat, center.lon]).addTo(resultsLayer)
                     .bindPopup(`<b>Você está aqui (CEP informado)</b><br>${center.label}`).openPopup();
@@ -448,7 +430,7 @@ out center tags;
                     if (lat == null || lon == null) return null;
                     const name = el.tags?.name || "Ponto de coleta";
                     const mats = listAcceptedMaterials(el.tags || {});
-                    const link = gmLink(originQuery, lat, lon);   // <= AQUI: origem = CEP, destino = ponto
+                    const link = gmLink(originQuery, lat, lon);
 
                     L.marker([lat, lon], { icon }).addTo(resultsLayer)
                         .bindPopup(
@@ -461,7 +443,7 @@ out center tags;
                     return { lat, lon, name, mats };
                 }).filter(Boolean);
 
-                // Linha do CEP até o ponto mais próximo
+                // Linha até o mais próximo
                 let best = null, bestD = Infinity;
                 for (const p of pts) {
                     const d = distanceMeters(center, p);
@@ -479,23 +461,27 @@ out center tags;
                 console.error(err);
                 alert(err.message || "Erro ao buscar pontos. Confira o CEP e tente novamente.");
             }
-     
-        document.addEventListener("DOMContentLoaded", () => {
+        } // <-- FECHA buscar()
+
+        // =========================
+        // Boot: listeners
+        // =========================
+        function init() {
             ensureMap();
             $btn?.addEventListener("click", (e) => { e.preventDefault?.(); buscar(); });
-
-            const onEnter = (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    buscar();
-                }
-            };
+            const onEnter = (e) => { if (e.key === "Enter") { e.preventDefault(); buscar(); } };
             $cep?.addEventListener("keydown", onEnter);
             $produto?.addEventListener("keydown", onEnter);
-        });
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+        } else {
+            init();
+        }
+
     })();
 </script>
-
 
 
 
