@@ -31,7 +31,7 @@
                         <button id="logoutBtn" class="header-logout" type="button" style="display:none;">Sair</button>
 
                         <!-- Botão/Login padrão (será escondido se estiver logado) -->
-                        <a href="login/login.html" class="header-section__login-button" role="button">
+                        <a href="./login/login.html" class="header-section__login-button" role="button">
                             <svg class="header-section__login-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                                 <circle cx="12" cy="7" r="4" />
@@ -61,19 +61,19 @@
             </ul>
         </nav>
     </header>
-
-  
-</body>
-<script src="./assets/js/auth.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        applyHeaderAuth({
-            userSelector: '#userDisplay',
-            logoutSelector: '#logoutBtn',
-            loginLinkSelector: '.header-section__login-button',
-            onLoggedOutRedirect: '/login/login.html'
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            applyHeaderAuth({
+                userSelector: '#userDisplay',
+                logoutSelector: '#logoutBtn',
+                loginLinkSelector: '.header-section__login-button',
+                onLoggedOutRedirect: './login/login.html'
+            });
         });
-    });
-</script>
+    </script>
+    <script src="./assets/js/auth.js"></script>
 
-</html>
+
+
+
+

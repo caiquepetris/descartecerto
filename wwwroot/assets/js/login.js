@@ -1,11 +1,11 @@
-// /assets/js/login.js
+
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.querySelector('.login-form');
     const err = document.getElementById('loginError');
     const btn = document.querySelector('.login-btn');
 
-    // Se já estiver logado, redireciona para a home
-    if (isAuthenticated && isAuthenticated()) {
+    // já logado? vai pra home
+    if (typeof isAuthenticated === 'function' && isAuthenticated()) {
         window.location.replace('/index.html');
         return;
     }
@@ -14,48 +14,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loginForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        err.style.display = 'none';
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
+        if (err) { err.style.display = 'none'; err.textContent = ''; }
+
+        const email = document.getElementById('email')?.value.trim();
+        const password = document.getElementById('password')?.value;
 
         if (!email || !password) {
-            err.textContent = 'Por favor, preencha todos os campos.';
-            err.style.display = 'block';
+            if (err) { err.textContent = 'Por favor, preencha todos os campos.'; err.style.display = 'block'; }
             return;
         }
 
-        const payload = { username: email, password };
-
         try {
-            btn.textContent = 'Entrando...';
-            btn.disabled = true;
+            if (btn) { btn.textContent = 'Entrando...'; btn.disabled = true; }
 
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            // usa o auth.js (LOGIN_URL = http(s)://localhost:54034/api/Auth/login)
+            await loginWithCredentials({ email, password });
 
-            if (!res.ok) {
-                const t = await res.text();
-                throw new Error(t || 'Falha no login.');
-            }
-
-            const data = await res.json();
-           
-            const user = data.user || { username: email, email };
-            const token = data.token || data.accessToken || data.jwt || '';
-            if (!token) {
-                throw new Error('Token ausente na resposta.');
-            }
-            saveAuth(token, user);
             window.location.replace('/index.html');
         } catch (error) {
-            err.textContent = error.message || 'Erro inesperado ao logar.';
-            err.style.display = 'block';
+            if (err) { err.textContent = error?.message || 'Erro inesperado ao logar.'; err.style.display = 'block'; }
         } finally {
-            btn.textContent = 'Entrar';
-            btn.disabled = false;
+            if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
         }
     });
 });
