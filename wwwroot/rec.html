@@ -6,7 +6,7 @@
             document.body.insertAdjacentHTML('afterbegin', headerHTML);
             document.body.insertAdjacentHTML('beforeend', footerHTML);
             initMenu();
-            document.body.dispatchEvent(new Event('hf:ready'));  // << NOVO
+            document.body.dispatchEvent(new Event('hf:ready')); 
         } catch (e) { console.error("Erro ao carregar o header/footer:", e); }
     });
 </script>

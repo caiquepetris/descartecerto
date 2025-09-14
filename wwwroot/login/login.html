@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="/assets/css/login.css">
 </head>
 <body>
-     <a href="../index.html" class="voltar-link">
+    <a href="../index.html" class="voltar-link">
         <i class="fas fa-arrow-left"></i> Voltar
-     </a>
+    </a>
     <div class="container">
         <!-- Lado Esquerdo - Formulário de Login -->
         <div class="login-form-container">
@@ -20,12 +20,12 @@
                     <h1>Descarte <span>Certo</span></h1>
                     <div class="mission-divider"></div>
                 </div>
-                
+
                 <div class="login-header">
                     <h2>Login</h2>
                     <p>Ainda não tem uma conta? <a href="/login/cadastro.html" class="signup-link">Crie agora mesmo</a></p>
                 </div>
-                
+
                 <form class="login-form">
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -34,7 +34,7 @@
                             <input type="email" id="email" placeholder="Digite seu email" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="password">Senha</label>
                         <div class="input-wrapper">
@@ -50,12 +50,13 @@
                         </div>
                         <a href="/login/forgotpassword.html" class="forgot-password">Esqueceu sua senha?</a>
                     </div>
-                    
+
                     <button type="submit" class="login-btn">Entrar</button>
+                    <p id="loginError" style="color:#b91c1c; display:none;"></p>
                 </form>
             </div>
         </div>
-        
+
         <!-- Lado Direito - Ilustração -->
         <div class="illustration-container">
             <div class="illustration">
@@ -68,7 +69,8 @@
             </div>
         </div>
     </div>
-    
-    <script src="/assets/js/login.js"></script>
+
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/login.js"></script>
 </body>
 </html>

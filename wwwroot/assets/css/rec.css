@@ -22,13 +22,12 @@ body {
     color: #1f2937;
 }
 
-/* =================== Mapa =================== */
+/* =================== Mapa (tamanho original) =================== */
 #map {
     width: 100%;
-    height: 400px;
+    height: 400px; /* tamanho original */
     border-radius: 18px;
     box-shadow: 0 8px 20px rgba(0,0,0,.12);
-    /* REMOVIDO position:fixed; para não sobrepor tudo */
     position: relative;
     z-index: 1;
 }
@@ -39,69 +38,83 @@ body {
 .leaflet-container .leaflet-marker-icon,
 .leaflet-container .leaflet-marker-shadow {
     max-width: none !important;
-    /* z-index removido: não tem efeito sem position */
 }
 
-
+/* (Removidos min-height responsivos do mapa para manter 400px fixo) */
 
 /* =================== Título / busca =================== */
 .titlerec {
     max-width: 900px;
-    margin: 40px auto;
+    margin: 40px auto; /* manteve o valor original */
     padding: 20px;
     text-align: center;
     position: relative;
-    z-index: 1; /* z-index agora tem efeito */
+    z-index: 1;
 }
 
     .titlerec h1 {
-        font-size: 1.8rem;
+        font-size: clamp(1.25rem,3.2vw,1.8rem);
         color: #064e3b;
-        margin-bottom: 10px
+        margin-bottom: 10px;
     }
 
     .titlerec p {
         color: #4b5563;
-        margin-bottom: 20px
+        margin-bottom: 20px;
     }
 
+/* =================== Formulário .searchcep (limpo e sem duplicidade) =================== */
 .searchcep {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
+    /* cartão / visual */
     background: #fff;
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    margin-bottom: 25px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.10);
+    /* largura e centralização */
+    max-width: 1100px;
+    margin: 0 auto 25px;
+    /* grid base (mobile-first) */
+    display: grid;
+    grid-template-columns: 1fr; /* empilhado no mobile */
+    grid-auto-rows: auto;
+    gap: 12px;
+    align-items: start;
+    text-align: initial; /* não herdar center da .titlerec */
 }
 
     .searchcep label {
+        display: block;
+        margin: 0 0 6px 0; /* label acima do campo */
         font-weight: 600;
         color: #065f46;
-        margin-right: 6px;
-        white-space: nowrap
+        white-space: normal; /* evita forçar largura */
+        text-align: left;
     }
 
-    .searchcep input, .searchcep select, .searchcep button {
-        height: 42px;
+    .searchcep input,
+    .searchcep select,
+    .searchcep button {
+        height: 44px;
+        line-height: 44px; /* texto do botão centralizado */
         padding: 0 14px;
         border-radius: 12px;
         font-size: 1rem;
         outline: none;
-        transition: border-color .2s ease, box-shadow .2s ease;
+        transition: border-color .2s, box-shadow .2s;
+        width: 100%;
+        min-width: 0; /* evita overflow em grid/flex */
     }
 
-    .searchcep input, .searchcep select {
+    .searchcep input,
+    .searchcep select {
         border: 1px solid #d1d5db;
-        background: #fff
+        background: #fff;
     }
 
-        .searchcep input:focus, .searchcep select:focus {
+        .searchcep input:focus,
+        .searchcep select:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+            box-shadow: 0 0 0 3px rgba(16,185,129,.2);
         }
 
     .searchcep button {
@@ -111,22 +124,87 @@ body {
         font-weight: bold;
         cursor: pointer;
         font-size: 16px;
-        transition: background .2s ease;
     }
 
         .searchcep button:hover {
-            background: var(--accent-2)
+            background: var(--accent-2);
         }
 
-.maparec {
-    margin-top: 20px
+/* >=560px: 2 colunas (CEP | Produto), botão na linha de baixo */
+@media (min-width:560px) {
+    .searchcep {
+        grid-template-columns: minmax(160px,1fr) 1fr;
+        grid-template-rows: auto auto auto; /* r1 labels, r2 campos, r3 botão */
+        gap: 12px 14px;
+    }
+
+        .searchcep label[for="cep"] {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .searchcep #cep {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .searchcep label[for="produto"] {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .searchcep #produto {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .searchcep #buscar {
+            grid-column: 1 / -1;
+            grid-row: 3;
+            justify-self: end;
+        }
+}
+
+/* >=840px: 3 colunas (CEP | Produto | Botão) */
+@media (min-width:840px) {
+    .searchcep {
+        grid-template-columns: 180px 1fr 220px;
+        grid-template-rows: auto auto; /* r1 labels, r2 campos/botão */
+        align-items: end; /* alinha o botão com os campos */
+    }
+
+        .searchcep label[for="cep"] {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .searchcep #cep {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .searchcep label[for="produto"] {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .searchcep #produto {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .searchcep #buscar {
+            grid-column: 3;
+            grid-row: 2;
+            align-self: end;
+        }
 }
 
 /* =================== Scroller (2ª seção) =================== */
 .bestway {
     padding: clamp(20px,4vw,48px);
     max-width: 1100px;
-    margin: 0 auto
+    margin: 0 auto;
 }
 
     .bestway h2 {
@@ -134,7 +212,7 @@ body {
         font-size: clamp(1.4rem,2.4vw,2rem);
         font-weight: 600;
         margin-bottom: 20px;
-        color: #064e3b
+        color: #064e3b;
     }
 
 .scroller {
@@ -151,7 +229,7 @@ body {
     will-change: transform;
     animation: scroll-right var(--speed) linear infinite;
     position: relative;
-    z-index: 10 !important; /* !important no lugar certo */
+    z-index: 10 !important;
 }
 
 .card {
@@ -167,20 +245,20 @@ body {
     .card:hover {
         transform: translateY(-4px);
         border-color: var(--accent);
-        box-shadow: 0 10px 24px rgba(0,0,0,.15)
+        box-shadow: 0 10px 24px rgba(0,0,0,.15);
     }
 
     .card h3 {
         font-size: 1.05rem;
         font-weight: 600;
         margin-bottom: 10px;
-        color: #065f46
+        color: #065f46;
     }
 
     .card ul {
         list-style: none;
         padding: 0;
-        margin: 0
+        margin: 0;
     }
 
     .card li {
@@ -204,22 +282,21 @@ body {
 
 @keyframes scroll-right {
     from {
-        transform: translateX(-50%)
+        transform: translateX(-50%);
     }
-    /* começa no lote 2 */
+
     to {
-        transform: translateX(0)
+        transform: translateX(0);
     }
-    /* termina no lote 1 */
 }
 
 @media (prefers-reduced-motion:reduce) {
     .scroller__track {
-        animation: none
+        animation: none;
     }
 
     .card, .card:hover {
-        transform: none !important
+        transform: none !important;
     }
 }
 
@@ -227,27 +304,27 @@ body {
 .impact {
     background: var(--bg);
     color: var(--text);
-    padding: clamp(20px,4vw,48px); /* removido padding duplicado */
+    padding: clamp(20px,4vw,48px);
 }
 
 .impact-header {
     max-width: 1100px;
     margin: 0 auto 16px;
-    text-align: center
+    text-align: center;
 }
 
 .impact h2 {
     font-size: clamp(1.4rem,2.6vw,2rem);
     font-weight: 700;
     color: #064e3b;
-    margin-bottom: 6px
+    margin-bottom: 6px;
 }
 
 .impact-sub {
     color: var(--muted);
-    font-size: .95rem
+    font-size: .95rem;
 }
-
+/* formulário: auto-fit (1 → 2+ colunas) */
 .impact-form {
     max-width: 1100px;
     margin: 18px auto 20px;
@@ -258,13 +335,13 @@ body {
 
 .field {
     display: grid;
-    gap: 8px
+    gap: 8px;
 }
 
     .field span {
         font-size: .95rem;
         color: #065f46;
-        font-weight: 600
+        font-weight: 600;
     }
 
     .field input {
@@ -281,9 +358,9 @@ body {
 
         .field input:focus {
             border-color: var(--accent);
-            box-shadow: 0 8px 22px rgba(16,185,129,.18)
+            box-shadow: 0 8px 22px rgba(16,185,129,.18);
         }
-
+/* cards de resultado responsivos */
 .impact-grid {
     max-width: 1100px;
     margin: 8px auto 0;
@@ -303,18 +380,24 @@ body {
 .kpi-label {
     margin: 0 0 6px;
     color: var(--muted);
-    font-size: .95rem
+    font-size: .95rem;
 }
 
 .kpi-value {
     margin: 0 0 6px;
     font-size: clamp(1.4rem,2.5vw,1.8rem);
     font-weight: 700;
-    color: #065f46
+    color: #065f46;
 }
 
 .kpi-note {
     margin: 0;
     font-size: .85rem;
-    color: var(--muted)
+    color: var(--muted);
 }
+
+/* =================== Espaçamento do mapa (original) =================== */
+.maparec {
+    margin-top: 20px;
+}
+/* manteve o valor original */
