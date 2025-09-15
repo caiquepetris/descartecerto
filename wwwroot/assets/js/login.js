@@ -85,7 +85,12 @@ async function loginWithCredentials({ username, password }) {
         throw new Error('Token ausente na resposta.');
     }
 
-    const user = data.user || { username, email: data.email };
+    // 💡 Força o user a conter o username (mesmo que o backend não envie)
+    const user = {
+        username: data.username || username,
+        email: data.email || email
+    };
+
     saveAuth(token, user);
     return { token, user };
 }
@@ -96,7 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const err = document.getElementById('loginError');
     const btn = document.querySelector('.login-btn');
 
-    if (isAuthenticated()) {
+    // ✅ Redirecionar somente se estiver na página de login
+    const isLoginPage = window.location.pathname.includes('/login');
+
+    if (isLoginPage && isAuthenticated()) {
         window.location.replace('/index.html');
         return;
     }
@@ -132,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 
 // ================== fetch com token ==================
 async function authFetch(url, options = {}) {

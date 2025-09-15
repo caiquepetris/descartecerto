@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecyclingBackend.Models;
 using RecyclingBackend.Services;
+using System.Security.Claims;
 
 namespace RecyclingBackend.Controllers
 {
@@ -35,7 +37,7 @@ namespace RecyclingBackend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginRequest request)
         {
-            var loggedUser = _userService.Login(request.Email, request.Password);
+            var loggedUser = _userService.Login(request.Username, request.Password);
             if (loggedUser == null)
                 return Unauthorized("Usuário ou senha inválidos.");
 
@@ -53,5 +55,8 @@ namespace RecyclingBackend.Controllers
                 }
             });
         }
+
+       
+
     }
 }

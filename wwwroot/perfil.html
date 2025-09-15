@@ -28,13 +28,9 @@
 
     <!-- NOME DO USUARIO-->
     <section class="dc-profile" aria-label="Perfil">
-
         <div class="dc-name-row" aria-label="Nome e ações">
-            <span class="dc-mini-icon" title="Perfil">
-
-            </span>
-            <h1 id="nomePerfil">Seu Nome</h1>
-
+            <span class="dc-mini-icon" title="Perfil"></span>
+            <h1 id="nomePerfil">{{username}}</h1>
         </div>
     </section>
 
@@ -84,7 +80,7 @@
                             </div>
                         </div>
 
-                      
+
 
                         <!-- Ações -->
                         <div class="dc-actions">
@@ -98,7 +94,7 @@
                 </div>
             </section>
 
-           
+
 
             <script>
                 (() => {
@@ -171,7 +167,7 @@
                         // fd.append('points', String(quantidade));
 
                         if (foto.files && foto.files[0]) {
-                            fd.append('image', foto.files[0], foto.files[0].name); 
+                            fd.append('image', foto.files[0], foto.files[0].name);
                         }
 
                         // Se você usa JWT, armazene antes em localStorage.setItem('dc_token', '...') após login
@@ -317,123 +313,63 @@
 </body>
 <script src="./assets/js/menu.js" defer></script>
 <script src="/_framework/aspnetcore-browser-refresh.js"></script>
-<script>
-    (() => {
-        const els = {
-            pontos: document.getElementById('kPontos'),
-            itens: document.getElementById('kItens'),
-            posts: document.getElementById('kPosts')
-        };
 
-        // Helpers
-        const getNum = (el) => Number(String(el?.textContent || '0').replace(/\D+/g, '') || 0);
-        const setNum = (el, v) => { if (el) el.textContent = String(v); };
-
-        function render(metrics) {
-            setNum(els.pontos, metrics.pontos ?? 0);
-            setNum(els.itens, metrics.itens ?? 0);
-            setNum(els.posts, metrics.posts ?? 0);
-        }
-
-        function save(metrics) {
-            try { localStorage.setItem('dc_metrics', JSON.stringify(metrics)); } catch { }
-        }
-        function loadLocal() {
-            try { return JSON.parse(localStorage.getItem('dc_metrics')) || null; } catch { return null; }
-        }
-
-        async function fetchJSON(url, opts) {
-            const r = await fetch(url, opts);
-            if (!r.ok) throw new Error('HTTP ' + r.status);
-            return r.json();
-        }
-
-        async function loadFromBackend() {
-            const token = localStorage.getItem('dc_token');
-            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-            // Tente múltiplos endpoints comuns — o primeiro que responder, vale.
-            const candidates = [
-                '/api/recycling/summary',            // { totalPoints, totalItems, totalPosts }
-                '/api/recycling/me/summary',
-                '/api/recycling/metrics/me',
-                '/api/recycling/my'                  // ou lista de eventos para agregarmos
-            ];
-            for (const url of candidates) {
-                try {
-                    const data = await fetchJSON(url, { headers });
-                    // Caso venha lista de eventos:
-                    if (Array.isArray(data)) {
-                        const agg = data.reduce((acc, e) => {
-                            const q = Number(e.quantity || 0);
-                            acc.itens += q;
-                            acc.pontos += Number(e.points ?? q);
-                            acc.posts += 1;
-                            return acc;
-                        }, { pontos: 0, itens: 0, posts: 0 });
-                        return agg;
-                    }
-                    // Caso venha um resumo:
-                    const m = {
-                        pontos: Number(data.totalPoints ?? data.points ?? 0),
-                        itens: Number(data.totalItems ?? data.items ?? 0),
-                        posts: Number(data.totalPosts ?? data.posts ?? 0),
-                    };
-                    return m;
-                } catch (_) { /* tenta o próximo */ }
-            }
-            throw new Error('sem backend');
-        }
-
-        async function init() {
-            // 1) tenta backend
-            try {
-                const m = await loadFromBackend();
-                render(m); save(m);
-                return;
-            } catch (_) { }
-
-            // 2) fallback localStorage
-            const cached = loadLocal();
-            if (cached) { render(cached); return; }
-
-            // 3) fallback zero
-            render({ pontos: 0, itens: 0, posts: 0 });
-        }
-
-        // Atualiza ao postar (gatilho já existe no seu form)
-        window.addEventListener('dc:recycling:posted', (ev) => {
-            const d = ev.detail || {};
-            const atual = {
-                pontos: getNum(els.pontos),
-                itens: getNum(els.itens),
-                posts: getNum(els.posts)
-            };
-            const addPontos = Number(d.points ?? d.quantity ?? 0);
-            const addItens = Number(d.quantity ?? 0);
-            const novo = {
-                pontos: atual.pontos + addPontos,
-                itens: atual.itens + addItens,
-                posts: atual.posts + 1
-            };
-            render(novo); save(novo);
-        });
-
-        // Se você também popular o feed por script, pode disparar este evento ao terminar:
-        // window.dispatchEvent(new CustomEvent('dc:recycling:bootstrapped', { detail: metricsFromFeed }));
-        window.addEventListener('dc:recycling:bootstrapped', (ev) => {
-            const d = ev.detail || {};
-            const m = {
-                pontos: Number(d.pontos ?? d.points ?? 0),
-                itens: Number(d.itens ?? d.items ?? 0),
-                posts: Number(d.posts ?? 0)
-            };
-            render(m); save(m);
-        });
-
-        init();
-    })();
-</script>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const rankingBody = document.getElementById('rankingBody');
+        const token = localStorage.getItem('dc_token');
+        const auth = JSON.parse(localStorage.getItem('dc_auth_v1') || '{}');
+        const currentUser = auth?.user?.username || '';
+
+        if (!rankingBody) return;
+
+        try {
+            const res = await fetch('/api/auth/ranking', {
+                headers: {
+                    'Accept': 'application/json',
+                    ...(token && { 'Authorization': `Bearer ${token}` })
+                }
+            });
+
+            if (!res.ok) throw new Error('Erro ao buscar ranking');
+
+            const data = await res.json();
+
+            // Ordena por pontos (decrescente), e insere classe especial nos 3 primeiros
+            data.sort((a, b) => b.points - a.points);
+
+            rankingBody.innerHTML = ''; // limpa
+
+            data.forEach((user, index) => {
+                const pos = index + 1;
+                const isCurrent = user.username === currentUser;
+
+                const tr = document.createElement('tr');
+
+                if (pos === 1) tr.className = 'first';
+                else if (pos === 2) tr.className = 'second';
+                else if (pos === 3) tr.className = 'third';
+                else if (isCurrent) tr.className = 'highlight';
+
+                const emoji = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '';
+                const label = isCurrent ? `${user.username} (Você)` : user.username;
+
+                tr.innerHTML = `
+                <td>${emoji ? emoji + ' ' : ''}${pos}</td>
+                <td>${label}</td>
+                <td>${user.points} kg</td>
+            `;
+
+                rankingBody.appendChild(tr);
+            });
+
+        } catch (err) {
+            console.error('[ranking] Erro ao carregar:', err);
+            rankingBody.innerHTML = '<tr><td colspan="3">Erro ao carregar ranking</td></tr>';
+        }
+    });
+</script>
 
 <script defer>
     (() => {
@@ -444,7 +380,7 @@
             return false;
         };
 
-      
+
 
         // ===== 2) Post Card (abre/fecha, preview e submit) =====
         function initPostCard() {
@@ -610,7 +546,7 @@
                 try {
                     const api = await tryFetchPosts();
                     renderAll(api); savePosts(api);
-                   
+
                     window.dispatchEvent(new CustomEvent('dc:recycling:bootstrapped', {
                         detail: {
                             pontos: api.reduce((s, p) => s + (p.points || 0), 0),
@@ -696,6 +632,22 @@
             });
         }
     })();
+</script>
+
+<script src="/assets/js/login.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const nomeEl = document.getElementById('nomePerfil');
+        try {
+            const authRaw = localStorage.getItem('dc_auth_v1');
+            const auth = authRaw ? JSON.parse(authRaw) : null;
+            const username = auth?.user?.username || auth?.user?.email || 'Usuário';
+            if (nomeEl) nomeEl.textContent = username;
+        } catch (err) {
+            console.error('[perfil] Erro ao obter usuário:', err);
+            if (nomeEl) nomeEl.textContent = 'Usuário';
+        }
+    });
 </script>
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

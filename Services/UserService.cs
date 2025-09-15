@@ -33,10 +33,10 @@ namespace RecyclingBackend.Services
             return user;
         }
 
-        public User Login(string Email, string password)
+        public User Login(string Username, string password)
         {
             var hash = HashPassword(password);
-            return _context.Users.FirstOrDefault(u => u.Email == Email && u.PasswordHash == hash);
+            return _context.Users.FirstOrDefault(u => u.Username == Username && u.PasswordHash == hash);
         }
 
         private string HashPassword(string password)

@@ -19,7 +19,7 @@ namespace RecyclingBackend.Controllers
             _db = db;
         }
 
-        // Add a recycling event (user must be authenticated)
+   
         [HttpPost("add")]
         public async Task<IActionResult> AddEvent(RecyclingEventDto dto)
         {
