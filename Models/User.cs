@@ -11,8 +11,8 @@ namespace RecyclingBackend.Models
 
         [Required]
         public string PasswordHash { get; set; } = null!;
-
-        public string? Email { get; set; }
+        [Required]
+        public string? Email { get; set; } = null!;
 
         public int Points { get; set; } = 0;
     }

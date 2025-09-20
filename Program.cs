@@ -9,7 +9,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// load configuration
+
 var configuration = builder.Configuration;
 
 // Add services

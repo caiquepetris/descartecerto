@@ -1,655 +1,388 @@
-<script>
-    document.addEventListener("DOMContentLoaded", async function () {
-        try {
-            const [headerRes, footerRes] = await Promise.all([
-                fetch('header.html'),
-                fetch('footer.html')
-            ]);
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarte Certo</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="stylesheet" href="./assets/css/footer.css">
+    <link rel="stylesheet" href="./assets/css/perfil.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <section>
+            <div class="container">
+                <div class="header-top">
+                    <h1><a href="index.html" style="text-decoration: none; color: black;">Descarte Certo</a></h1>
 
-            if (!headerRes.ok || !footerRes.ok) {
-                throw new Error("Erro ao carregar header ou footer.");
-            }
+                    <div class="header-actions">
+                        <!-- Nome do usuário como link para o perfil -->
+                        <a href="perfil.html" id="userLink" style="display:none; margin-right: 12px;">
+                            <span id="userDisplay" class="header-user"></span>
+                        </a>
 
-            const [headerHTML, footerHTML] = await Promise.all([
-                headerRes.text(),
-                footerRes.text()
-            ]);
-
-            document.body.insertAdjacentHTML('afterbegin', headerHTML);
-            document.body.insertAdjacentHTML('beforeend', footerHTML);
-
-            initMenu();
-        } catch (error) {
-            console.error("Erro ao carregar o header/footer:", error);
-        }
-    });
-</script>
-<div class="dc-wrap">
-
-    <!-- NOME DO USUARIO-->
-    <section class="dc-profile" aria-label="Perfil">
-        <div class="dc-name-row" aria-label="Nome e ações">
-            <span class="dc-mini-icon" title="Perfil"></span>
-            <h1 id="nomePerfil">{{username}}</h1>
-        </div>
-    </section>
-
-    <!-- Tabs -->
-    <nav class="dc-tabs" role="tablist" aria-label="Navegação da página">  <button class="dc-tab" role="tab" aria-selected="true" data-tab="feed">Feed</button>  </nav>
-
-    <!-- Grid principal -->
-    <div class="dc-grid">
-        <main id="tab-feed" role="tabpanel" aria-labelledby="feed" class="dc-tab-panel">
-
-            <!-- Seção Publicar -->
-            <section class="dc-post-card" aria-labelledby="dc-post-title">
-                <button class="dc-post-trigger" id="dc-post-trigger" aria-expanded="false" aria-controls="dc-post-layer">
-                    <span class="dc-plus" aria-hidden="true"></span>
-                    <span id="dc-post-title">Poste sua reciclagem!</span>
-                </button>
-
-                <!-- Layer / sheet que desce -->
-                <div class="dc-post-layer" id="dc-post-layer" hidden>
-                    <form id="dc-post-form" enctype="multipart/form-data" novalidate>
-                        <!-- Material -->
-                        <label class="dc-field">
-                            <span>Material</span>
-                            <select name="material" id="material" required>
-                                <option value="" disabled selected>Selecione...</option>
-                                <option value="plastico">Plástico</option>
-                                <option value="papel">Papel</option>
-                                <option value="metal">Metal</option>
-                                <option value="vidro">Vidro</option>
-                                <option value="eletronicos">Eletrônicos</option>
-                            </select>
-                        </label>
-
-                        <!-- Quantidade -->
-                        <label class="dc-field">
-                            <span>Quantidade (unidades)</span>
-                            <input type="number" id="quantidade" name="quantidade" inputmode="numeric" min="1" step="1" placeholder="Ex.: 50" required>
-                        </label>
-
-                        <!-- Upload imagem -->
-                        <div class="dc-field">
-                            <span>Foto</span>
-                            <div class="dc-upload">
-                                <input type="file" id="foto" name="foto" accept="image/*">
-                                <label for="foto" class="dc-upload-btn">Selecionar imagem</label>
-                                <div class="dc-upload-preview" id="preview" aria-live="polite"></div>
-                            </div>
+                        <!-- Botão de login padrão -->
+                        <a href="login/login.html" class="header-section__login-button" role="button">
+                            <svg class="header-section__login-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <span class="header-section__login-text">Login / Sign Up</span>
+                        </a>
+                        <div class="menu-hamburguer">
+                            <i class="fas fa-bars"></i>
                         </div>
-
-
-
-                        <!-- Ações -->
-                        <div class="dc-actions">
-                            <button type="button" class="dc-btn ghost" id="dc-cancel">Cancelar</button>
-                            <button type="submit" class="dc-btn">Enviar</button>
-                        </div>
-
-                        <!-- Mensagem de status -->
-                        <p class="dc-status" id="dc-status" role="status" aria-live="polite"></p>
-                    </form>
+                    </div>
                 </div>
-            </section>
+            </div>
+        </section>
+        <nav class="menu">
+            <div class="sidebar-header">
+                <h2>Menu</h2>
+                <div class="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <ul>
+                <li><a href="index.html">Página inicial</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="rec.html">Como Reciclar?</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="overlay"></div>
+
+    <div class="dc-wrap">
+
+        <!-- NOME DO USUARIO-->
+        <section class="dc-profile" aria-label="Perfil">
+            <div class="dc-name-row" aria-label="Nome e ações">
+                <span class="dc-mini-icon" title="Perfil"></span>
+                <h1 id="nomePerfil"></h1>
+
+            </div>
+        </section>
+        <!-- Tabs -->
+        <nav class="dc-tabs" role="tablist" aria-label="Navegação da página">  <button class="dc-tab" role="tab" aria-selected="true" data-tab="feed">Feed</button>  </nav>
+
+        <!-- Grid principal -->
+        <div class="dc-grid">
+            <main id="tab-feed" role="tabpanel" aria-labelledby="feed" class="dc-tab-panel">
+
+                <!-- Seção Publicar -->
+                <section class="dc-post-card" aria-labelledby="dc-post-title">
+                    <button class="dc-post-trigger" id="dc-post-trigger" aria-expanded="false" aria-controls="dc-post-layer">
+                        <span class="dc-plus" aria-hidden="true"></span>
+                        <span id="dc-post-title">Poste sua reciclagem!</span>
+                    </button>
+
+                    <!-- Layer / sheet que desce -->
+                    <div class="dc-post-layer" id="dc-post-layer" hidden>
+                        <form id="dc-post-form" enctype="multipart/form-data" novalidate>
+                            <!-- Material -->
+                            <label class="dc-field">
+                                <span>Material</span>
+                                <select name="material" id="material" required>
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="plastico">Plástico</option>
+                                    <option value="papel">Papel</option>
+                                    <option value="metal">Metal</option>
+                                    <option value="vidro">Vidro</option>
+                                    <option value="eletronicos">Eletrônicos</option>
+                                </select>
+                            </label>
+
+                            <!-- Quantidade -->
+                            <label class="dc-field">
+                                <span>Quantidade (unidades)</span>
+                                <input type="number" id="quantidade" name="quantidade" inputmode="numeric" min="1" step="1" placeholder="Ex.: 50" required>
+                            </label>
+
+                            <!-- Upload imagem -->
+                            <div class="dc-field">
+                                <span>Foto</span>
+                                <div class="dc-upload">
+                                    <input type="file" id="foto" name="foto" accept="image/*">
+                                    <label for="foto" class="dc-upload-btn">Selecionar imagem</label>
+                                    <div class="dc-upload-preview" id="preview" aria-live="polite"></div>
+                                </div>
+                            </div>
 
 
 
-            <script>
-                (() => {
-                    const layer = document.getElementById('dc-post-layer');
-                    const trigger = document.getElementById('dc-post-trigger');
-                    const form = document.getElementById('dc-post-form');
-                    const qnt = document.getElementById('quantidade');
-                    const mat = document.getElementById('material');
-                    const foto = document.getElementById('foto');
-                    const summary = document.getElementById('dc-summary');
-                    const statusEl = document.getElementById('dc-status');
-                    const cancelBtn = document.getElementById('dc-cancel');
-                    const preview = document.getElementById('preview');
+                            <!-- Ações -->
+                            <div class="dc-actions">
+                                <button type="button" class="dc-btn ghost" id="dc-cancel">Cancelar</button>
+                                <button type="submit" class="dc-btn">Enviar</button>
+                            </div>
 
-                    // Abre/fecha o layer
-                    trigger.addEventListener('click', () => {
-                        const expanded = trigger.getAttribute('aria-expanded') === 'true';
-                        trigger.setAttribute('aria-expanded', String(!expanded));
-                        layer.hidden = expanded;
-                    });
+                            <!-- Mensagem de status -->
+                            <p class="dc-status" id="dc-status" role="status" aria-live="polite"></p>
+                        </form>
+                    </div>
+                </section>
 
-                    cancelBtn.addEventListener('click', () => {
-                        trigger.setAttribute('aria-expanded', 'false');
-                        layer.hidden = true;
-                        form.reset();
-                        preview.innerHTML = '';
-                        summary.textContent = '—';
-                        statusEl.textContent = '';
-                    });
 
-                    // Preview & resumo dinâmico
-                    function updateSummary() {
-                        const m = mat.value || '—';
-                        const v = Number(qnt.value || 0);
-                        if (!v) { summary.textContent = '—'; return; }
-                        const label = m === 'plastico' ? 'plásticos' :
-                            m === 'papel' ? 'papéis' :
-                                m === 'metal' ? 'metais' :
-                                    m === 'vidro' ? 'vidros' :
-                                        m === 'eletronicos' ? 'eletrônicos' : 'itens';
-                        summary.textContent = `${v} ${label} = ${v} pontos.`;
-                    }
-                    mat.addEventListener('change', updateSummary);
-                    qnt.addEventListener('input', updateSummary);
 
-                    foto.addEventListener('change', () => {
-                        preview.innerHTML = '';
-                        const file = foto.files?.[0];
-                        if (!file) return;
-                        const img = document.createElement('img');
-                        img.alt = 'Prévia da imagem selecionada';
-                        img.src = URL.createObjectURL(file);
-                        preview.appendChild(img);
-                    });
+                <script>
+                    (() => {
+                        const layer = document.getElementById('dc-post-layer');
+                        const trigger = document.getElementById('dc-post-trigger');
+                        const form = document.getElementById('dc-post-form');
+                        const qnt = document.getElementById('quantidade');
+                        const mat = document.getElementById('material');
+                        const foto = document.getElementById('foto');
+                        const summary = document.getElementById('dc-summary');
+                        const statusEl = document.getElementById('dc-status');
+                        const cancelBtn = document.getElementById('dc-cancel');
+                        const preview = document.getElementById('preview');
 
-                    // Submissão para o backend C# (multipart/form-data)
-                    form.addEventListener('submit', async (e) => {
-                        e.preventDefault();
-                        statusEl.textContent = '';
-                        const material = mat.value;
-                        const quantidade = Number(qnt.value);
+                        // Abre/fecha o layer
+                        trigger.addEventListener('click', () => {
+                            const expanded = trigger.getAttribute('aria-expanded') === 'true';
+                            trigger.setAttribute('aria-expanded', String(!expanded));
+                            layer.hidden = expanded;
+                        });
 
-                        if (!material) { statusEl.textContent = 'Selecione o material.'; return; }
-                        if (!quantidade || quantidade < 1) { statusEl.textContent = 'Informe uma quantidade válida.'; return; }
-
-                        const fd = new FormData();
-                        fd.append('material', material);
-                        fd.append('quantity', String(quantidade)); // backend espera "quantity"
-                        // Se sua API também recebe "points", pode mandar, mas no seu backend quantity = points
-                        // fd.append('points', String(quantidade));
-
-                        if (foto.files && foto.files[0]) {
-                            fd.append('image', foto.files[0], foto.files[0].name);
-                        }
-
-                        // Se você usa JWT, armazene antes em localStorage.setItem('dc_token', '...') após login
-                        const token = localStorage.getItem('dc_token');
-
-                        // Endpoint padrão do seu backend ASP.NET (ajuste se necessário)
-                        const url = '/api/recycling/add';
-
-                        try {
-                            setLoading(true);
-                            const resp = await fetch(url, {
-                                method: 'POST',
-                                headers: token ? { 'Authorization': `Bearer ${token}` } : undefined,
-                                body: fd
-                            });
-
-                            if (!resp.ok) {
-                                const msg = await safeText(resp);
-                                throw new Error(msg || `Erro ${resp.status}`);
-                            }
-
-                            // sucesso
-                            statusEl.textContent = 'Postado com sucesso! Pontos adicionados ao ranking.';
-
-                            window.dispatchEvent(new CustomEvent('dc:recycling:posted', {
-                                detail: { material, quantity: quantidade, points: quantidade }
-                            }));
-
-                            // reset suave
+                        cancelBtn.addEventListener('click', () => {
+                            trigger.setAttribute('aria-expanded', 'false');
+                            layer.hidden = true;
                             form.reset();
                             preview.innerHTML = '';
                             summary.textContent = '—';
-                            setTimeout(() => {
-                                trigger.setAttribute('aria-expanded', 'false');
-                                layer.hidden = true;
-                            }, 700);
+                            statusEl.textContent = '';
+                        });
 
-                        } catch (err) {
-                            statusEl.textContent = 'Falha ao enviar: ' + (err?.message || 'erro desconhecido');
-                        } finally {
-                            setLoading(false);
+                        // Preview & resumo dinâmico
+                        function updateSummary() {
+                            const m = mat.value || '—';
+                            const v = Number(qnt.value || 0);
+                            if (!v) { summary.textContent = '—'; return; }
+                            const label = m === 'plastico' ? 'plásticos' :
+                                m === 'papel' ? 'papéis' :
+                                    m === 'metal' ? 'metais' :
+                                        m === 'vidro' ? 'vidros' :
+                                            m === 'eletronicos' ? 'eletrônicos' : 'itens';
+                            summary.textContent = `${v} ${label} = ${v} pontos.`;
                         }
-                    });
+                        mat.addEventListener('change', updateSummary);
+                        qnt.addEventListener('input', updateSummary);
 
-                    function setLoading(v) {
-                        const btn = form.querySelector('.dc-btn:not(.ghost)');
-                        if (!btn) return;
-                        btn.disabled = v;
-                        btn.textContent = v ? 'Enviando...' : 'Enviar';
-                    }
-                    async function safeText(r) {
-                        try { return await r.text(); } catch { return ''; }
-                    }
-                })();
-            </script>
+                        foto.addEventListener('change', () => {
+                            preview.innerHTML = '';
+                            const file = foto.files?.[0];
+                            if (!file) return;
+                            const img = document.createElement('img');
+                            img.alt = 'Prévia da imagem selecionada';
+                            img.src = URL.createObjectURL(file);
+                            preview.appendChild(img);
+                        });
+
+                        // Submissão para o backend C# (multipart/form-data)
+                        form.addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            statusEl.textContent = '';
+                            const material = mat.value;
+                            const quantidade = Number(qnt.value);
+
+                            if (!material) { statusEl.textContent = 'Selecione o material.'; return; }
+                            if (!quantidade || quantidade < 1) { statusEl.textContent = 'Informe uma quantidade válida.'; return; }
+
+                            const fd = new FormData();
+                            fd.append('material', material);
+                            fd.append('quantity', String(quantidade)); // backend espera "quantity"
+                            // Se sua API também recebe "points", pode mandar, mas no seu backend quantity = points
+                            // fd.append('points', String(quantidade));
+
+                            if (foto.files && foto.files[0]) {
+                                fd.append('image', foto.files[0], foto.files[0].name);
+                            }
+
+                            // Se você usa JWT, armazene antes em localStorage.setItem('dc_token', '...') após login
+                            const token = localStorage.getItem('dc_token');
+
+                            // Endpoint padrão do seu backend ASP.NET (ajuste se necessário)
+                            const url = '/api/recycling/add';
+
+                            try {
+                                setLoading(true);
+                                const resp = await fetch(url, {
+                                    method: 'POST',
+                                    headers: token ? { 'Authorization': `Bearer ${token}` } : undefined,
+                                    body: fd
+                                });
+
+                                if (!resp.ok) {
+                                    const msg = await safeText(resp);
+                                    throw new Error(msg || `Erro ${resp.status}`);
+                                }
+
+                                // sucesso
+                                statusEl.textContent = 'Postado com sucesso! Pontos adicionados ao ranking.';
+
+                                window.dispatchEvent(new CustomEvent('dc:recycling:posted', {
+                                    detail: { material, quantity: quantidade, points: quantidade }
+                                }));
+
+                                // reset suave
+                                form.reset();
+                                preview.innerHTML = '';
+                                summary.textContent = '—';
+                                setTimeout(() => {
+                                    trigger.setAttribute('aria-expanded', 'false');
+                                    layer.hidden = true;
+                                }, 700);
+
+                            } catch (err) {
+                                statusEl.textContent = 'Falha ao enviar: ' + (err?.message || 'erro desconhecido');
+                            } finally {
+                                setLoading(false);
+                            }
+                        });
+
+                        function setLoading(v) {
+                            const btn = form.querySelector('.dc-btn:not(.ghost)');
+                            if (!btn) return;
+                            btn.disabled = v;
+                            btn.textContent = v ? 'Enviando...' : 'Enviar';
+                        }
+                        async function safeText(r) {
+                            try { return await r.text(); } catch { return ''; }
+                        }
+                    })();
+                </script>
 
 
-            <!-- Feed -->
-            <section class="dc-card" style="margin-top:14px">
-                <div class="dc-card__hd"><strong>Publicações</strong></div>
-                <div class="dc-card__bd">
-                    <div id="feed" class="dc-feed" aria-live="polite" aria-busy="false"></div>
-                </div>
-            </section>
-        </main>
-
-
-        <!-- METRICAS -->
-        <aside class="dc-sidebar">
-            <div class="dc-sidebar__panel">
+                <!-- Feed -->
                 <section class="dc-card" style="margin-top:14px">
-                    <div class="dc-card__hd" style="text-align:center;">
-                        <strong>Métricas</strong>
-                    </div>
-                    <div class="dc-card__bd" style="text-align:center;">
-                        <div class="dc-kpi" style="justify-content:center;">
-                            <div class="dc-kpi__k">
-                                <div class="dc-kpi__v" id="kPontos">0</div>
-                                <div class="dc-kpi__l">Pontos</div>
-                            </div>
-                            <div class="dc-kpi__k">
-                                <div class="dc-kpi__v" id="kItens">0</div>
-                                <div class="dc-kpi__l">Itens</div>
-                            </div>
-                            <div class="dc-kpi__k">
-                                <div class="dc-kpi__v" id="kPosts">0</div>
-                                <div class="dc-kpi__l">Posts</div>
-                            </div>
-                        </div>
-
-
+                    <div class="dc-card__hd"><strong>Publicações</strong></div>
+                    <div class="dc-card__bd">
+                        <div id="feed" class="dc-feed" aria-live="polite" aria-busy="false"></div>
                     </div>
                 </section>
-            </div>
-        </aside>
-        <!-- RANKING-->
-        <aside class="dc-ranking-widget">
-            <h2 class="dc-ranking-title">Ranking </h2>
-            <table class="dc-ranking-table">
-                <thead>
-                    <tr>
-                        <th>Posição</th>
-                        <th>Usuário</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="rankingBody">
-                    <tr class="first">
-                        <td>🥇 1</td>
-                        <td>Ana Souza</td>
-                        <td>820 kg</td>
-                    </tr>
-                    <tr class="second">
-                        <td>🥈 2</td>
-                        <td>João Pereira</td>
-                        <td>750 kg</td>
-                    </tr>
-                    <tr class="third">
-                        <td>🥉 3</td>
-                        <td>Maria Oliveira</td>
-                        <td>600 kg</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Carlos Lima</td>
-                        <td>470 kg</td>
-                    </tr>
-                    <tr class="highlight">
-                        <td>5</td>
-                        <td>Gabriel Santos (Você)</td>
-                        <td>325 kg</td>
-                    </tr>
-                </tbody>
-            </table>
-        </aside>
+            </main>
 
 
+            <!-- METRICAS -->
+            <aside class="dc-sidebar">
+                <div class="dc-sidebar__panel">
+                    <section class="dc-card" style="margin-top:14px">
+                        <div class="dc-card__hd" style="text-align:center;">
+                            <strong>Métricas</strong>
+                        </div>
+                        <div class="dc-card__bd" style="text-align:center;">
+                            <div class="dc-kpi" style="justify-content:center;">
+                                <div class="dc-kpi__k">
+                                    <div class="dc-kpi__v" id="kPontos">0</div>
+                                    <div class="dc-kpi__l">Pontos</div>
+                                </div>
+                                <div class="dc-kpi__k">
+                                    <div class="dc-kpi__v" id="kItens">0</div>
+                                    <div class="dc-kpi__l">Itens</div>
+                                </div>
+                                <div class="dc-kpi__k">
+                                    <div class="dc-kpi__v" id="kPosts">0</div>
+                                    <div class="dc-kpi__l">Posts</div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </section>
+                </div>
+            </aside>
+            <!-- RANKING-->
+            <aside class="dc-ranking-widget">
+                <h2 class="dc-ranking-title">Ranking </h2>
+                <table class="dc-ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Usuário</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingBody">
+                        <tr class="first">
+                            <td>🥇 1</td>
+                            <td>Ana Souza</td>
+                            <td>820 kg</td>
+                        </tr>
+                        <tr class="second">
+                            <td>🥈 2</td>
+                            <td>João Pereira</td>
+                            <td>750 kg</td>
+                        </tr>
+                        <tr class="third">
+                            <td>🥉 3</td>
+                            <td>Maria Oliveira</td>
+                            <td>600 kg</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Carlos Lima</td>
+                            <td>470 kg</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>5</td>
+                            <td>Gabriel Santos (Você)</td>
+                            <td>325 kg</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </aside>
+
+
+        </div>
     </div>
-</div>
 
+    <script src="./assets/js/logout.js" defer></script>
+    <script src="./assets/js/login.js" defer></script>
+    <script src="./assets/js/menu.js" defer></script>
+    <script src="./_framework/aspnetcore-browser-refresh.js"></script>
 
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <footer class="footer" role="contentinfo" aria-label="Rodapé">
+        <div class="container">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">Descarte Certo</a>
+                <p class="n-text">Compromissamos com a missão de informar sobre a reciclagem</p>
+            </div>
 
+            <ul class="footer-list" aria-label="Links úteis">
+                <li><p class="footer-list-title">Links Úteis</p></li>
+                <li><a href="index.html#sobrenos" class="footer-link">Sobre Nós</a></li>
+                <li><a href="index.html#guiderec" class="footer-link">Guia de Reciclagem</a></li>
+                <li><a href="blog.html" class="footer-link">Blog</a></li>
+            </ul>
+
+            <ul class="footer-list" aria-label="Contato">
+                <li><p class="footer-list-title">Contato</p></li>
+                <li class="footer-item">
+                    <a href="mailto:Descartecerto010@gmail.com" class="item-link" aria-label="Enviar e-mail" title="Enviar e-mail">
+                        <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+                    </a>
+                    <a href="https://www.instagram.com/descartecerto010?igsh=MWFjNmtwOTZxdTA1dg==" class="item-link"
+                       aria-label="Instagram Descarte Certo" title="Instagram Descarte Certo" target="_blank" rel="noopener noreferrer">
+                        <ion-icon name="logo-instagram" aria-hidden="true"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; Descarte Certo &amp;
+                <a href="https://petris.digital/" target="_blank" rel="noopener noreferrer">PETRIS</a>,
+                2025. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
 </body>
-<script src="./assets/js/menu.js" defer></script>
-<script src="/_framework/aspnetcore-browser-refresh.js"></script>
 
-</body>
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        const rankingBody = document.getElementById('rankingBody');
-        const token = localStorage.getItem('dc_token');
-        const auth = JSON.parse(localStorage.getItem('dc_auth_v1') || '{}');
-        const currentUser = auth?.user?.username || '';
-
-        if (!rankingBody) return;
-
-        try {
-            const res = await fetch('/api/auth/ranking', {
-                headers: {
-                    'Accept': 'application/json',
-                    ...(token && { 'Authorization': `Bearer ${token}` })
-                }
-            });
-
-            if (!res.ok) throw new Error('Erro ao buscar ranking');
-
-            const data = await res.json();
-
-            // Ordena por pontos (decrescente), e insere classe especial nos 3 primeiros
-            data.sort((a, b) => b.points - a.points);
-
-            rankingBody.innerHTML = ''; // limpa
-
-            data.forEach((user, index) => {
-                const pos = index + 1;
-                const isCurrent = user.username === currentUser;
-
-                const tr = document.createElement('tr');
-
-                if (pos === 1) tr.className = 'first';
-                else if (pos === 2) tr.className = 'second';
-                else if (pos === 3) tr.className = 'third';
-                else if (isCurrent) tr.className = 'highlight';
-
-                const emoji = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '';
-                const label = isCurrent ? `${user.username} (Você)` : user.username;
-
-                tr.innerHTML = `
-                <td>${emoji ? emoji + ' ' : ''}${pos}</td>
-                <td>${label}</td>
-                <td>${user.points} kg</td>
-            `;
-
-                rankingBody.appendChild(tr);
-            });
-
-        } catch (err) {
-            console.error('[ranking] Erro ao carregar:', err);
-            rankingBody.innerHTML = '<tr><td colspan="3">Erro ao carregar ranking</td></tr>';
-        }
-    });
-</script>
-
-<script defer>
-    (() => {
-        // ===== util =====
-        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-        const waitFor = async (cond, { tries = 20, delay = 100 } = {}) => {
-            while (tries-- > 0) { if (cond()) return true; await sleep(delay); }
-            return false;
-        };
-
-
-
-        // ===== 2) Post Card (abre/fecha, preview e submit) =====
-        function initPostCard() {
-            const layer = document.getElementById('dc-post-layer');
-            const trigger = document.getElementById('dc-post-trigger');
-            const form = document.getElementById('dc-post-form');
-            const qnt = document.getElementById('quantidade');
-            const mat = document.getElementById('material');
-            const foto = document.getElementById('foto');
-            const summary = document.getElementById('dc-summary');
-            const statusEl = document.getElementById('dc-status');
-            const cancelBtn = document.getElementById('dc-cancel');
-            const preview = document.getElementById('preview');
-
-            if (!form || !trigger) return;
-
-            // abre/fecha
-            trigger.addEventListener('click', () => {
-                const expanded = trigger.getAttribute('aria-expanded') === 'true';
-                trigger.setAttribute('aria-expanded', String(!expanded));
-                layer.hidden = expanded;
-            });
-            cancelBtn?.addEventListener('click', () => {
-                trigger.setAttribute('aria-expanded', 'false');
-                layer.hidden = true; form.reset(); preview.innerHTML = ''; summary.textContent = '—'; statusEl.textContent = '';
-            });
-
-            // resumo dinâmico
-            const matLabel = (m) => m === 'plastico' ? 'plásticos' : m === 'papel' ? 'papéis' : m === 'metal' ? 'metais' : m === 'vidro' ? 'vidros' : m === 'eletronicos' ? 'eletrônicos' : 'itens';
-            function updateSummary() {
-                const m = mat.value || '—';
-                const v = Number(qnt.value || 0);
-                summary.textContent = v ? `${v} ${matLabel(m)} = ${v} pontos.` : '—';
-            }
-            mat.addEventListener('change', updateSummary);
-            qnt.addEventListener('input', updateSummary);
-
-            // preview
-            foto?.addEventListener('change', () => {
-                preview.innerHTML = '';
-                const file = foto.files?.[0]; if (!file) return;
-                const img = document.createElement('img');
-                img.alt = 'Prévia da imagem selecionada'; img.src = URL.createObjectURL(file);
-                preview.appendChild(img);
-            });
-
-            // submit
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                statusEl.textContent = '';
-                const material = mat.value;
-                const quantidade = Number(qnt.value);
-
-                if (!material) { statusEl.textContent = 'Selecione o material.'; return; }
-                if (!quantidade || quantidade < 1) { statusEl.textContent = 'Informe uma quantidade válida.'; return; }
-
-                const fd = new FormData();
-                fd.append('material', material);
-                fd.append('quantity', String(quantidade)); // quantity = points no backend
-                if (foto.files && foto.files[0]) fd.append('image', foto.files[0], foto.files[0].name);
-
-                const token = localStorage.getItem('dc_token');
-                const url = '/api/recycling/add';
-
-                const btn = form.querySelector('.dc-btn:not(.ghost)');
-                const setLoading = (v) => { if (btn) { btn.disabled = v; btn.textContent = v ? 'Enviando...' : 'Enviar'; } };
-
-                try {
-                    setLoading(true);
-                    const resp = await fetch(url, { method: 'POST', headers: token ? { 'Authorization': `Bearer ${token}` } : undefined, body: fd });
-                    if (!resp.ok) throw new Error(await resp.text() || `Erro ${resp.status}`);
-
-                    let data = {}; try { data = await resp.json(); } catch { }
-                    statusEl.textContent = 'Postado com sucesso! Pontos adicionados ao ranking.';
-
-                    // evento global: métricas + feed
-                    window.dispatchEvent(new CustomEvent('dc:recycling:posted', {
-                        detail: {
-                            id: data.id || crypto.randomUUID(),
-                            material,
-                            quantity: quantidade,
-                            points: quantidade,
-                            imageUrl: data.imageUrl || (foto.files?.[0] ? URL.createObjectURL(foto.files[0]) : null),
-                            createdAt: data.createdAt || new Date().toISOString()
-                        }
-                    }));
-
-                    // reset e fecha
-                    form.reset(); preview.innerHTML = ''; summary.textContent = '—';
-                    setTimeout(() => { trigger.setAttribute('aria-expanded', 'false'); layer.hidden = true; }, 600);
-                } catch (err) {
-                    statusEl.textContent = 'Falha ao enviar: ' + (err?.message || 'erro desconhecido');
-                } finally {
-                    setLoading(false);
-                }
-            });
-        }
-
-        // ===== 3) Feed (carrega anteriores e insere novos) =====
-        function initFeed() {
-            const feedEl = document.getElementById('feed');
-            if (!feedEl) return;
-
-            const loadPosts = () => { try { return JSON.parse(localStorage.getItem('dc_posts') || '[]'); } catch { return []; } };
-            const savePosts = (arr) => { try { localStorage.setItem('dc_posts', JSON.stringify(arr)); } catch { } };
-
-            const matPretty = (m) => m === 'plastico' ? 'Plástico' : m === 'papel' ? 'Papel' : m === 'metal' ? 'Metal' : m === 'vidro' ? 'Vidro' : m === 'eletronicos' ? 'Eletrônicos' : 'Material';
-
-            function renderOne(p) {
-                const el = document.createElement('article');
-                el.className = 'dc-post';
-                el.style = 'border:1px solid var(--line,#e5e7eb);border-radius:12px;padding:12px;display:grid;gap:8px;';
-                const top = document.createElement('div');
-                top.style = 'display:flex;justify-content:space-between;align-items:center;gap:8px;';
-                const strong = document.createElement('strong');
-                strong.textContent = `${p.quantity} ${matPretty(p.material)} • ${p.points} pts`;
-                const when = document.createElement('span'); when.style = 'color:var(--muted,#6b7280);font-size:.9rem;'; when.textContent = new Date(p.createdAt).toLocaleString();
-                top.append(strong, when);
-
-                const mid = document.createElement('div'); mid.style = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;';
-                if (p.imageUrl) { const img = document.createElement('img'); img.src = p.imageUrl; img.alt = 'Imagem da reciclagem'; img.style = 'width:88px;height:88px;object-fit:cover;border-radius:10px;border:1px solid var(--line,#e5e7eb);'; mid.appendChild(img); }
-                const txt = document.createElement('p'); txt.style = 'margin:0;'; txt.textContent = `Postou ${p.points} ponto(s) com ${p.quantity} ${matPretty(p.material)}.`;
-                mid.appendChild(txt);
-
-                el.append(top, mid);
-                feedEl.prepend(el);
-            }
-
-            function renderAll(list) {
-                feedEl.setAttribute('aria-busy', 'true');
-                feedEl.innerHTML = '';
-                list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                list.forEach(renderOne);
-                feedEl.setAttribute('aria-busy', 'false');
-            }
-
-            async function tryFetchPosts() {
-                const token = localStorage.getItem('dc_token');
-                const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-                const urls = ['/api/recycling/my', '/api/recycling/me', '/api/recycling/list?me=1'];
-                for (const u of urls) {
-                    try {
-                        const r = await fetch(u, { headers });
-                        if (!r.ok) continue;
-                        const arr = await r.json();
-                        if (Array.isArray(arr)) {
-                            return arr.map(x => ({
-                                id: x.id || crypto.randomUUID(),
-                                material: x.material,
-                                quantity: Number(x.quantity || 0),
-                                points: Number(x.points ?? x.quantity ?? 0),
-                                imageUrl: x.imageUrl || null,
-                                createdAt: x.createdAt || x.date || new Date().toISOString()
-                            }));
-                        }
-                    } catch { }
-                }
-                throw new Error('no backend');
-            }
-
-            // boot
-            (async () => {
-                try {
-                    const api = await tryFetchPosts();
-                    renderAll(api); savePosts(api);
-
-                    window.dispatchEvent(new CustomEvent('dc:recycling:bootstrapped', {
-                        detail: {
-                            pontos: api.reduce((s, p) => s + (p.points || 0), 0),
-                            itens: api.reduce((s, p) => s + (p.quantity || 0), 0),
-                            posts: api.length
-                        }
-                    }));
-                } catch {
-                    renderAll(loadPosts());
-                }
-            })();
-
-            // novo post
-            window.addEventListener('dc:recycling:posted', (ev) => {
-                const d = ev.detail || {};
-                const post = {
-                    id: d.id || crypto.randomUUID(),
-                    material: d.material,
-                    quantity: Number(d.quantity || 0),
-                    points: Number(d.points ?? d.quantity ?? 0),
-                    imageUrl: d.imageUrl || null,
-                    createdAt: d.createdAt || new Date().toISOString()
-                };
-                renderOne(post);
-                const all = [post, ...loadPosts()];
-                savePosts(all);
-            });
-        }
-
-        // ===== 4) Métricas (carrega e mantém em sincronia) =====
-        function initMetrics() {
-            const els = {
-                pontos: document.getElementById('kPontos'),
-                itens: document.getElementById('kItens'),
-                posts: document.getElementById('kPosts')
-            };
-            const getNum = (el) => Number(String(el?.textContent || '0').replace(/\D+/g, '') || 0);
-            const setNum = (el, v) => { if (el) el.textContent = String(v); };
-            const render = (m) => { setNum(els.pontos, m.pontos || 0); setNum(els.itens, m.itens || 0); setNum(els.posts, m.posts || 0); };
-            const save = (m) => { try { localStorage.setItem('dc_metrics', JSON.stringify(m)); } catch { } };
-            const load = () => { try { return JSON.parse(localStorage.getItem('dc_metrics') || 'null'); } catch { return null; } };
-
-            async function fromBackend() {
-                const token = localStorage.getItem('dc_token');
-                const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-                const endpoints = ['/api/recycling/summary', '/api/recycling/me/summary', '/api/recycling/metrics/me', '/api/recycling/my'];
-                for (const url of endpoints) {
-                    try {
-                        const r = await fetch(url, { headers });
-                        if (!r.ok) continue;
-                        const data = await r.json();
-                        if (Array.isArray(data)) {
-                            const agg = data.reduce((a, e) => { const q = Number(e.quantity || 0); a.itens += q; a.pontos += Number(e.points ?? q); a.posts += 1; return a; }, { pontos: 0, itens: 0, posts: 0 });
-                            return agg;
-                        } else {
-                            return {
-                                pontos: Number(data.totalPoints ?? data.points ?? 0),
-                                itens: Number(data.totalItems ?? data.items ?? 0),
-                                posts: Number(data.totalPosts ?? data.posts ?? 0)
-                            };
-                        }
-                    } catch { }
-                }
-                throw new Error('no metrics api');
-            }
-
-            (async () => {
-                try { const m = await fromBackend(); render(m); save(m); }
-                catch { const c = load(); render(c || { pontos: 0, itens: 0, posts: 0 }); }
-            })();
-
-            // atualiza em tempo real
-            window.addEventListener('dc:recycling:posted', (ev) => {
-                const d = ev.detail || {};
-                const atual = { pontos: getNum(els.pontos), itens: getNum(els.itens), posts: getNum(els.posts) };
-                const novo = { pontos: atual.pontos + Number(d.points ?? d.quantity ?? 0), itens: atual.itens + Number(d.quantity || 0), posts: atual.posts + 1 };
-                render(novo); save(novo);
-            });
-            window.addEventListener('dc:recycling:bootstrapped', (ev) => {
-                const d = ev.detail || {};
-                const m = { pontos: Number(d.pontos || 0), itens: Number(d.itens || 0), posts: Number(d.posts || 0) };
-                render(m); save(m);
-            });
-        }
-    })();
-</script>
-
-<script src="/assets/js/login.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const nomeEl = document.getElementById('nomePerfil');
-        try {
-            const authRaw = localStorage.getItem('dc_auth_v1');
-            const auth = authRaw ? JSON.parse(authRaw) : null;
-            const username = auth?.user?.username || auth?.user?.email || 'Usuário';
-            if (nomeEl) nomeEl.textContent = username;
-        } catch (err) {
-            console.error('[perfil] Erro ao obter usuário:', err);
-            if (nomeEl) nomeEl.textContent = 'Usuário';
-        }
-    });
-</script>
-
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </html>

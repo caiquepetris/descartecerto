@@ -1,6 +1,6 @@
 // ================== CONFIG ==================
-const AUTH_KEY = 'dc_auth_v1';
-const API_BASE = 'https://localhost:54034'; // Troque para https:// se seu site também estiver em HTTPS
+var AUTH_KEY = 'dc_auth_v1';
+const API_BASE = 'https://localhost:54034'; 
 const LOGIN_URL = `${API_BASE}/api/Auth/login`;
 
 // ================== STORAGE ==================
@@ -30,7 +30,7 @@ function applyHeaderAuth({
     userSelector = '#userDisplay',
     logoutSelector = '#logoutBtn',
     loginLinkSelector = '.header-section__login-button',
-    onLoggedOutRedirect = '/login/login.html'
+    onLoggedOutRedirect = '/perfil.html'
 } = {}) {
     const auth = getAuth();
     const userEl = document.querySelector(userSelector);
@@ -53,47 +53,51 @@ function applyHeaderAuth({
         if (loginLinkEl) loginLinkEl.style.display = 'inline-flex';
     }
 
-    if (logoutEl) {
-        logoutEl.addEventListener('click', () => {
-            clearAuth();
-            window.location.replace(onLoggedOutRedirect);
-        });
-    }
+    
 }
 
 
 // ================== LOGIN ==================
-async function loginWithCredentials({ username, password }) {
+async function loginWithCredentials({ username, password, email }) {
     const res = await fetch(LOGIN_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        body: JSON.stringify({ Email: username, Password: password }),
+        body: JSON.stringify({ Email: username,Password: password }),
         credentials: 'include'
     });
 
+    
     if (!res.ok) {
-        const msg = await res.text().catch(() => '');
-        throw new Error(msg || `Falha no login (${res.status})`);
+        const text = await res.text().catch(() => '');
+        let msg = `Falha no login (${res.status})`;
+        try {
+            const j = JSON.parse(text);
+            msg = j.title || j.message || msg;
+        } catch { }
+        throw new Error(msg);
     }
 
     const data = await res.json();
-    const token = data.token || data.accessToken || data.jwt || '';
-    if (!token) {
-        throw new Error('Token ausente na resposta.');
-    }
 
-    // 💡 Força o user a conter o username (mesmo que o backend não envie)
+    // token com fallback para diferentes casings/campos
+    const token = data.token || data.Token || data.accessToken || data.jwt;
+    if (!token) throw new Error('Token ausente na resposta da API.');
+
     const user = {
-        username: data.username || username,
-        email: data.email || email
+        id: data.userId,
+        username: data.username,
+        email: data.email,
+        points: data.points
     };
+
 
     saveAuth(token, user);
     return { token, user };
 }
+
 
 // ================== LOGIN FORM HANDLER ==================
 document.addEventListener('DOMContentLoaded', function () {
@@ -129,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             await loginWithCredentials({ username: email, password });
 
-            // ✅ Sucesso: redirecionar
+     
             window.location.replace('/index.html');
         } catch (error) {
             err.textContent = error.message || 'Erro inesperado ao logar.';
@@ -141,8 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-// ================== fetch com token ==================
 async function authFetch(url, options = {}) {
     const token = getToken();
     const headers = new Headers(options.headers || {});

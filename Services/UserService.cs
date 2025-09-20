@@ -15,7 +15,7 @@ namespace RecyclingBackend.Services
             _context = context;
         }
 
-        public User Register(string username, string email, string password)
+        public User? Register(string username, string email, string password)
         {
             if (_context.Users.Any(u => u.Username == username))
                 return null; // Usuário já existe
@@ -33,10 +33,10 @@ namespace RecyclingBackend.Services
             return user;
         }
 
-        public User Login(string Username, string password)
+        public User Login(string Email, string password)
         {
             var hash = HashPassword(password);
-            return _context.Users.FirstOrDefault(u => u.Username == Username && u.PasswordHash == hash);
+            return _context.Users.FirstOrDefault(u => u.Email == Email && u.PasswordHash == hash);
         }
 
         private string HashPassword(string password)
