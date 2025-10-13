@@ -108,6 +108,56 @@
                         <div id="feed" class="dc-feed" aria-live="polite" aria-busy="false"></div>
                     </div>
                 </section>
+                <script>
+                    const API_BASE = "https://localhost:54034"; // troque pelo seu endpoint real
+
+                    async function postarReciclagem() {
+                        const token = getToken(); // sua função de auth local
+                        const material = document.querySelector("#material").value;
+                        const quantity = document.querySelector("#quantidade").value;
+
+                        if (!material || !quantity) {
+                            alert("Preencha o material e a quantidade.");
+                            return;
+                        }
+
+                        const res = await fetch(`${API_BASE}/api/Recycling/add`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                material,
+                                quantity,
+                                items: 1
+                            })
+                        });
+
+                        const data = await res.json();
+
+                        if (res.ok) {
+                            renderPost(data.publication.username, data.publication.text);
+                        } else {
+                            alert(data.message || "Erro ao registrar reciclagem.");
+                        }
+                    }
+
+                    // função para renderizar a publicação no feed
+                    function renderPost(username, text) {
+                        const feed = document.querySelector("#feed");
+                        const post = document.createElement("div");
+                        post.classList.add("dc-feed__item");
+                        post.innerHTML = `
+                      <div class="dc-feed__content">
+                          <strong>${username}</strong><br>
+                          ${text}
+                      </div>
+                  `;
+                        feed.prepend(post); // adiciona no topo
+                    }
+                </script>
+
             </main>
 
             <!-- Ranking -->
@@ -167,7 +217,13 @@
                 if (!token) { statusEl.textContent = "Usuário não autenticado."; return; }
 
                 const url = "https://localhost:54034/api/recycling/add"; // ajuste conforme backend
-                const body = JSON.stringify({ items: quantidade, material });
+
+                const body = JSON.stringify({
+                    items: 1,
+                    material,
+                    quantity: quantidade
+                });
+
 
                 try {
                     setLoading(true);
@@ -187,6 +243,7 @@
 
                     const data = await resp.json();
                     statusEl.textContent = `✅ Postado! Você agora tem ${data.userPoints} pontos.`;
+                    renderPost(data.publication.username, data.publication.text);
 
                     form.reset();
                     setTimeout(() => {

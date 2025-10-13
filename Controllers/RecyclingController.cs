@@ -19,28 +19,55 @@ namespace RecyclingBackend.Controllers
             _db = db;
         }
 
-   
+
         [HttpPost("add")]
         public async Task<IActionResult> AddEvent(RecyclingEventDto dto)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub) ?? "0");
+            var userId = int.Parse(
+                User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? User.FindFirstValue(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)
+                ?? "0"
+            );
+
             var user = await _db.Users.FindAsync(userId);
             if (user == null) return Unauthorized();
 
-            var points = dto.Items; // 1 item = 1 point, customize here
+            // Pontos = número de itens ou quantidade reciclada
+            var points = dto.Items;
+
             var ev = new RecyclingEvent
             {
                 UserId = userId,
                 Items = dto.Items,
-                Points = points
+                Points = points,
+                Material = dto.Material,
+                Quantity = dto.Quantity,
+                CreatedAt = DateTime.UtcNow
             };
+
             _db.RecyclingEvents.Add(ev);
+
             user.Points += points;
+
             await _db.SaveChangesAsync();
-            return Ok(new { message = "Event recorded", userPoints = user.Points });
+
+            // Texto da publicação
+            var publicationText = $"{user.Username} reciclou {dto.Quantity}g de {dto.Material}.";
+
+            return Ok(new
+            {
+                message = "Reciclagem registrada com sucesso!",
+                userPoints = user.Points,
+                publication = new
+                {
+                    username = user.Username,
+                    text = publicationText,
+                    createdAt = ev.CreatedAt
+                }
+            });
         }
 
-       
+
         [AllowAnonymous]
         [HttpGet("ranking")]
         public async Task<IActionResult> Ranking([FromQuery] int top = 5)
