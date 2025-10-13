@@ -156,7 +156,10 @@ function openLogoutModal(ev) {
 
         clearAuth();
         document.body.removeChild(modalBg);
+
+        // ATUALIZA O NOME DO PERFIL NA HORA!
         atualizarNomePerfil();
+
         updateHeaderAuthUI();
     });
 

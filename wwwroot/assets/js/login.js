@@ -80,7 +80,7 @@ async function loginWithCredentials({ username, password, email }) {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        body: JSON.stringify({ Email: username, Password: password }),
+        body: JSON.stringify({ Email: username,Password: password }),
         credentials: 'include'
     });
 
