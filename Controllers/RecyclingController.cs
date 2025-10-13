@@ -40,10 +40,10 @@ namespace RecyclingBackend.Controllers
             return Ok(new { message = "Event recorded", userPoints = user.Points });
         }
 
-        // Ranking: top N users by points
+       
         [AllowAnonymous]
         [HttpGet("ranking")]
-        public async Task<IActionResult> Ranking([FromQuery] int top = 50)
+        public async Task<IActionResult> Ranking([FromQuery] int top = 5)
         {
             var topUsers = await _db.Users
                 .OrderByDescending(u => u.Points)
@@ -54,7 +54,7 @@ namespace RecyclingBackend.Controllers
             return Ok(topUsers);
         }
 
-        // Get user's events
+       
         [HttpGet("myevents")]
         public async Task<IActionResult> MyEvents()
         {

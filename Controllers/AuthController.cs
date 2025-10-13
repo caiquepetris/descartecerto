@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecyclingBackend.DTOs;
 using RecyclingBackend.Models;
 using RecyclingBackend.Services;
 using System.Security.Claims;
@@ -37,26 +38,26 @@ namespace RecyclingBackend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginRequest request)
         {
-            var loggedUser = _userService.Login(request.Username, request.Password);
+            var loggedUser = _userService.Login(request.Email, request.Password);
+
             if (loggedUser == null)
                 return Unauthorized("Usuário ou senha inválidos.");
 
+
             var token = _jwtService.GenerateToken(loggedUser);
 
-            return Ok(new
-            {
+            var response = new AuthResponseDto(
                 token,
-                user = new
-                {
-                    loggedUser.Id,
-                    loggedUser.Username,
-                    loggedUser.Email,
-                    loggedUser.Points
-                }
-            });
+                loggedUser.Id,
+                loggedUser.Username,
+                loggedUser.Email,
+                loggedUser.Points
+            );
+
+            return Ok(response);
         }
 
-       
+
 
     }
 }

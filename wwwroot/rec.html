@@ -1,493 +1,584 @@
-<script>
-    document.addEventListener("DOMContentLoaded", async function () {
-        try {
-            const [headerRes, footerRes] = await Promise.all([fetch('header.html'), fetch('footer.html')]);
-            const [headerHTML, footerHTML] = await Promise.all([headerRes.text(), footerRes.text()]);
-            document.body.insertAdjacentHTML('afterbegin', headerHTML);
-            document.body.insertAdjacentHTML('beforeend', footerHTML);
-            initMenu();
-            document.body.dispatchEvent(new Event('hf:ready')); 
-        } catch (e) { console.error("Erro ao carregar o header/footer:", e); }
-    });
-</script>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarte Certo</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="stylesheet" href="./assets/css/footer.css">
+    <link rel="stylesheet" href="./assets/css/rec.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="overlay"></div>
+
+    <header>
+        <section>
+            <div class="container">
+                <div class="header-top">
+                    <h1><a href="index.html" style="text-decoration: none; color: black;">Descarte Certo</a></h1>
+
+                    <div class="header-actions">
+                        <!-- Nome do usuário como link para o perfil -->
+                        <a href="perfil.html" id="userLink" style="display:none; margin-right: 12px;">
+                            <span id="userDisplay" class="header-user"></span>
+                        </a>
 
 
+                        <!-- Botão de login padrão -->
+                        <a href="login/login.html" class="header-section__login-button" role="button">
+                            <svg class="header-section__login-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <span class="header-section__login-text">Login / Sign Up</span>
 
-<main>
-    <section>
-        <div class="titlerec">
-            <h1>Quer saber onde reciclar seus produtos?</h1>
-            <p>Digite seu CEP e escolha o produto que você quer reciclar!</p>
+                        </a>
 
-            <div class="searchcep">
-                <label for="cep">CEP:</label>
-                <input type="text"
-                       id="cep"
-                       name="cep"
-                       maxlength="9"
-                       pattern="[0-9]{5}-?[0-9]{3}"
-                       inputmode="numeric"
-                       placeholder="00000-000"
-                       required />
-
-                <label for="produto">Qual produto quer reciclar?</label>
-                <select id="produto" name="produto" required>
-                    <option value="" disabled selected>Escolha o produto</option>
-                    <option value="plastico">Plástico</option>
-                    <option value="papel">Papel</option>
-                    <option value="metal">Metal</option>
-                    <option value="vidro">Vidro</option>
-                    <option value="eletronicos">Eletrônicos</option>
-                </select>
-
-                <button id="buscar" type="button">Buscar ponto de coleta</button>
+                        <!-- Menu hamburguer -->
+                        <div class="menu-hamburguer">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="maparec">
-
-                <div id="map" aria-label="Mapa de pontos de coleta"></div>
+        <nav class="menu">
+            <div class="sidebar-header">
+                <h2>Menu</h2>
+                <div class="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
-        </div>
-    </section>
+            <ul>
+                <li><a href="index.html">Página inicial</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="rec.html">Como Reciclar?</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- 2a Seção -->
-    <section class="bestway">
-        <h2>Como preparar seus materiais para reciclagem</h2>
+    <main>
+        <!-- 1a seção-->
+        <section>
+            <div class="titlerec">
+                <h1>Quer saber onde reciclar seus produtos?</h1>
+                <p>Digite seu CEP e escolha o produto que você quer reciclar!</p>
 
-        <div class="scroller scroller--right">
-            <div class="scroller__track">
-                <!-- LOTE 1 -->
-                <article class="card">
-                    <h3>Plástico</h3>
-                    <ul>
-                        <li>Esvazie e enxágue rapidamente</li>
-                        <li>Mantenha as tampas na garrafa</li>
-                        <li>Compacte para reduzir volume</li>
-                    </ul>
+                <div class="searchcep">
+                    <label for="cep">CEP:</label>
+                    <input type="text"
+                           id="cep"
+                           name="cep"
+                           maxlength="9"
+                           pattern="[0-9]{5}-?[0-9]{3}"
+                           inputmode="numeric"
+                           placeholder="00000-000"
+                           required />
+
+                    <label for="produto">Qual produto quer reciclar?</label>
+                    <select id="produto" name="produto" required>
+                        <option value="" disabled selected>Escolha o produto</option>
+                        <option value="plastico">Plástico</option>
+                        <option value="papel">Papel</option>
+                        <option value="metal">Metal</option>
+                        <option value="vidro">Vidro</option>
+                        <option value="eletronicos">Eletrônicos</option>
+                    </select>
+
+                    <button id="buscar" type="button">Buscar ponto de coleta</button>
+                </div>
+
+                <div class="maparec">
+
+                    <div id="map" aria-label="Mapa de pontos de coleta"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2a Seção -->
+        <section class="bestway">
+            <h2>Como preparar seus materiais para reciclagem</h2>
+
+            <div class="scroller scroller--right">
+                <div class="scroller__track">
+                    <!-- LOTE 1 -->
+                    <article class="card">
+                        <h3>Plástico</h3>
+                        <ul>
+                            <li>Esvazie e enxágue rapidamente</li>
+                            <li>Mantenha as tampas na garrafa</li>
+                            <li>Compacte para reduzir volume</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Papel/Papelão</h3>
+                        <ul>
+                            <li>Mantenha limpo e seco</li>
+                            <li>Retire fitas/grampos quando possível</li>
+                            <li>Achate caixas</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Metal</h3>
+                        <ul>
+                            <li>Enxágue latas</li>
+                            <li>Pode amassar para economizar espaço</li>
+                            <li>Aerossol: apenas vazio</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Vidro</h3>
+                        <ul>
+                            <li>Enxágue e evite quebrar</li>
+                            <li>Remova tampas (recicle à parte)</li>
+                            <li>Leve a PEVs/Ecopontos quando houver</li>
+                        </ul>
+                    </article>
+
+                    <!-- LOTE 2 (duplicado para scroller infinito) -->
+                    <article class="card" aria-hidden="true">
+                        <h3>Plástico</h3>
+                        <ul>
+                            <li>Esvazie e enxágue rapidamente</li>
+                            <li>Mantenha as tampas na garrafa</li>
+                            <li>Compacte para reduzir volume</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" aria-hidden="true">
+                        <h3>Papel/Papelão</h3>
+                        <ul>
+                            <li>Mantenha limpo e seco</li>
+                            <li>Retire fitas/grampos quando possível</li>
+                            <li>Achate caixas</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" aria-hidden="true">
+                        <h3>Metal</h3>
+                        <ul>
+                            <li>Enxágue latas</li>
+                            <li>Pode amassar para economizar espaço</li>
+                            <li>Aerossol: apenas vazio</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" aria-hidden="true">
+                        <h3>Vidro</h3>
+                        <ul>
+                            <li>Enxágue e evite quebrar</li>
+                            <li>Remova tampas (recicle à parte)</li>
+                            <li>Leve a PEVs/Ecopontos quando houver</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3a seção -->
+        <section class="impact" id="impact">
+            <header class="impact-header">
+                <h2>Seu impacto mensal</h2>
+                <p class="impact-sub">Informe seus volumes mensais e veja o impacto estimado da sua reciclagem.</p>
+            </header>
+
+            <form class="impact-form" autocomplete="off">
+                <label class="field">
+                    <span>Garrafas PET por mês</span>
+                    <input type="number" min="0" value="0" id="qtdPet" inputmode="numeric" />
+                </label>
+
+                <label class="field">
+                    <span>Latas de alumínio por mês</span>
+                    <input type="number" min="0" value="0" id="qtdLata" inputmode="numeric" />
+                </label>
+
+                <label class="field">
+                    <span>Peso de papel reciclado (kg por mês)</span>
+                    <input type="number" min="0" value="0" id="kgPapel" step="0.1" inputmode="decimal" />
+                </label>
+            </form>
+
+            <div class="impact-grid">
+                <article class="impact-card">
+                    <p class="kpi-label">Plástico desviado</p>
+                    <p class="kpi-value"><span id="kgPlastico">0</span> kg/mês</p>
+                    <p class="kpi-note">Estimado por garrafa PET de 25 g.</p>
                 </article>
 
-                <article class="card">
-                    <h3>Papel/Papelão</h3>
-                    <ul>
-                        <li>Mantenha limpo e seco</li>
-                        <li>Retire fitas/grampos quando possível</li>
-                        <li>Achate caixas</li>
-                    </ul>
+                <article class="impact-card">
+                    <p class="kpi-label">Alumínio desviado</p>
+                    <p class="kpi-value"><span id="kgAluminio">0</span> kg/mês</p>
+                    <p class="kpi-note">Estimado por lata de 14,5 g.</p>
                 </article>
 
-                <article class="card">
-                    <h3>Metal</h3>
-                    <ul>
-                        <li>Enxágue latas</li>
-                        <li>Pode amassar para economizar espaço</li>
-                        <li>Aerossol: apenas vazio</li>
-                    </ul>
-                </article>
-
-                <article class="card">
-                    <h3>Vidro</h3>
-                    <ul>
-                        <li>Enxágue e evite quebrar</li>
-                        <li>Remova tampas (recicle à parte)</li>
-                        <li>Leve a PEVs/Ecopontos quando houver</li>
-                    </ul>
-                </article>
-
-                <!-- LOTE 2 (duplicado para scroller infinito) -->
-                <article class="card" aria-hidden="true">
-                    <h3>Plástico</h3>
-                    <ul>
-                        <li>Esvazie e enxágue rapidamente</li>
-                        <li>Mantenha as tampas na garrafa</li>
-                        <li>Compacte para reduzir volume</li>
-                    </ul>
-                </article>
-
-                <article class="card" aria-hidden="true">
-                    <h3>Papel/Papelão</h3>
-                    <ul>
-                        <li>Mantenha limpo e seco</li>
-                        <li>Retire fitas/grampos quando possível</li>
-                        <li>Achate caixas</li>
-                    </ul>
-                </article>
-
-                <article class="card" aria-hidden="true">
-                    <h3>Metal</h3>
-                    <ul>
-                        <li>Enxágue latas</li>
-                        <li>Pode amassar para economizar espaço</li>
-                        <li>Aerossol: apenas vazio</li>
-                    </ul>
-                </article>
-
-                <article class="card" aria-hidden="true">
-                    <h3>Vidro</h3>
-                    <ul>
-                        <li>Enxágue e evite quebrar</li>
-                        <li>Remova tampas (recicle à parte)</li>
-                        <li>Leve a PEVs/Ecopontos quando houver</li>
-                    </ul>
+                <article class="impact-card">
+                    <p class="kpi-label">CO₂ evitado (papel)</p>
+                    <p class="kpi-value">~<span id="kgCO2">0</span> kg/mês</p>
+                    <p class="kpi-note">Fator médio: 1,5 kg CO₂ por kg de papel.</p>
                 </article>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- 3a seção -->
-    <section class="impact" id="impact">
-        <header class="impact-header">
-            <h2>Seu impacto mensal</h2>
-            <p class="impact-sub">Informe seus volumes mensais e veja o impacto estimado da sua reciclagem.</p>
-        </header>
-
-        <form class="impact-form" autocomplete="off">
-            <label class="field">
-                <span>Garrafas PET por mês</span>
-                <input type="number" min="0" value="0" id="qtdPet" inputmode="numeric" />
-            </label>
-
-            <label class="field">
-                <span>Latas de alumínio por mês</span>
-                <input type="number" min="0" value="0" id="qtdLata" inputmode="numeric" />
-            </label>
-
-            <label class="field">
-                <span>Peso de papel reciclado (kg por mês)</span>
-                <input type="number" min="0" value="0" id="kgPapel" step="0.1" inputmode="decimal" />
-            </label>
-        </form>
-
-        <div class="impact-grid">
-            <article class="impact-card">
-                <p class="kpi-label">Plástico desviado</p>
-                <p class="kpi-value"><span id="kgPlastico">0</span> kg/mês</p>
-                <p class="kpi-note">Estimado por garrafa PET de 25 g.</p>
-            </article>
-
-            <article class="impact-card">
-                <p class="kpi-label">Alumínio desviado</p>
-                <p class="kpi-value"><span id="kgAluminio">0</span> kg/mês</p>
-                <p class="kpi-note">Estimado por lata de 14,5 g.</p>
-            </article>
-
-            <article class="impact-card">
-                <p class="kpi-label">CO₂ evitado (papel)</p>
-                <p class="kpi-value">~<span id="kgCO2">0</span> kg/mês</p>
-                <p class="kpi-note">Fator médio: 1,5 kg CO₂ por kg de papel.</p>
-            </article>
-        </div>
-    </section>
-</main>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""
-        defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+            defer></script>
 
 
-<link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin="" />
-<script defer>
-    (function () {
-        "use strict";
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <!-- API Openstreetmap-->
+    <script defer>
+        (function () {
+            "use strict";
+            const DEFAULT_RADIUS_KM = 8;
+            const DEFAULT_ZOOM_CEP = 14;
+            const FLY_DURATION = 0.7;
+            const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
+            const OVERPASS_ENDPOINTS = [
+                "https://overpass-api.de/api/interpreter",
+                "https://overpass.kumi.systems/api/interpreter",
+                "https://overpass.openstreetmap.ru/api/interpreter"
+            ];
+            const FETCH_TIMEOUT_MS = 12000;
 
-        // =========================
-        // Config & utilitários
-        // =========================
-        const DEFAULT_RADIUS_KM = 8;
-        const DEFAULT_ZOOM_CEP = 14;
-        const FLY_DURATION = 0.7;
-        const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
-        const OVERPASS_ENDPOINTS = [
-            "https://overpass-api.de/api/interpreter",
-            "https://overpass.kumi.systems/api/interpreter",
-            "https://overpass.openstreetmap.ru/api/interpreter"
-        ];
-        const FETCH_TIMEOUT_MS = 12000;
+            const MATERIAL_TAGS = {
+                plastico: ["recycling:plastic", "recycling:plastic_packaging", "recycling:packaging_plastic"],
+                papel: ["recycling:paper", "recycling:cardboard", "recycling:magazines", "recycling:newspaper"],
+                metal: ["recycling:metal", "recycling:aluminium", "recycling:steel"],
+                vidro: ["recycling:glass", "recycling:glass_bottles"],
+                eletronicos: ["recycling:electronics", "recycling:electrical_appliances", "recycling:small_appliances", "recycling:computers", "recycling:mobile_phones"]
+            };
 
-        const MATERIAL_TAGS = {
-            plastico: ["recycling:plastic", "recycling:plastic_packaging", "recycling:packaging_plastic"],
-            papel: ["recycling:paper", "recycling:cardboard", "recycling:magazines", "recycling:newspaper"],
-            metal: ["recycling:metal", "recycling:aluminium", "recycling:steel"],
-            vidro: ["recycling:glass", "recycling:glass_bottles"],
-            eletronicos: ["recycling:electronics", "recycling:electrical_appliances", "recycling:small_appliances", "recycling:computers", "recycling:mobile_phones"]
-        };
+            // Referências (IDs do seu HTML)
+            const $map = document.getElementById("map");
+            const $cep = document.getElementById("cep");
+            const $produto = document.getElementById("produto");
+            const $btn = document.getElementById("buscar");
 
-        // Referências (IDs do seu HTML)
-        const $map = document.getElementById("map");
-        const $cep = document.getElementById("cep");
-        const $produto = document.getElementById("produto");
-        const $btn = document.getElementById("buscar");
+            // Estado Leaflet
+            let map, resultsLayer, linkLine, searchCircle, cepMarker;
 
-        // Estado Leaflet
-        let map, resultsLayer, linkLine, searchCircle, cepMarker;
+            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+            const fmtKm = (m) => (m / 1000).toFixed(2);
 
-        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-        const fmtKm = (m) => (m / 1000).toFixed(2);
+            function withTimeout(promise, ms, controller) {
+                let id;
+                const timeout = new Promise((_, rej) => {
+                    id = setTimeout(() => { controller?.abort?.(); rej(new Error("Tempo de rede esgotado.")); }, ms);
+                });
+                return Promise.race([promise, timeout]).finally(() => clearTimeout(id));
+            }
 
-        function withTimeout(promise, ms, controller) {
-            let id;
-            const timeout = new Promise((_, rej) => {
-                id = setTimeout(() => { controller?.abort?.(); rej(new Error("Tempo de rede esgotado.")); }, ms);
-            });
-            return Promise.race([promise, timeout]).finally(() => clearTimeout(id));
-        }
+            const sanitizeCEP = (v) => (v || "").replace(/\D/g, "");
+            function assertValidCEP(v) {
+                if (v.length !== 8) throw new Error("CEP inválido. Use 8 dígitos (ex: 01311000).");
+            }
 
-        const sanitizeCEP = (v) => (v || "").replace(/\D/g, "");
-        function assertValidCEP(v) {
-            if (v.length !== 8) throw new Error("CEP inválido. Use 8 dígitos (ex: 01311000).");
-        }
+            function listAcceptedMaterials(tags) {
+                const mats = Object.keys(tags || {})
+                    .filter(k => k.startsWith("recycling:") && tags[k] === "yes")
+                    .map(k => k.replace("recycling:", "").replaceAll("_", " "));
+                return mats.length ? mats.join(", ") : "não informado";
+            }
 
-        function listAcceptedMaterials(tags) {
-            const mats = Object.keys(tags || {})
-                .filter(k => k.startsWith("recycling:") && tags[k] === "yes")
-                .map(k => k.replace("recycling:", "").replaceAll("_", " "));
-            return mats.length ? mats.join(", ") : "não informado";
-        }
+            function gmLink(originQuery, destLat, destLon) {
+                const params = new URLSearchParams({
+                    api: "1",
+                    origin: originQuery,
+                    destination: `${destLat},${destLon}`,
+                    travelmode: "driving",
+                    dir_action: "navigate"
+                });
+                return `https://www.google.com/maps/dir/?${params.toString()}`;
+            }
 
-        function gmLink(originQuery, destLat, destLon) {
-            const params = new URLSearchParams({
-                api: "1",
-                origin: originQuery,
-                destination: `${destLat},${destLon}`,
-                travelmode: "driving",
-                dir_action: "navigate"
-            });
-            return `https://www.google.com/maps/dir/?${params.toString()}`;
-        }
+            function distanceMeters(a, b) {
+                return map.distance(
+                    L.latLng(a.lat, a.lon ?? a.lng),
+                    L.latLng(b.lat, b.lon ?? b.lng)
+                );
+            }
 
-        function distanceMeters(a, b) {
-            return map.distance(
-                L.latLng(a.lat, a.lon ?? a.lng),
-                L.latLng(b.lat, b.lon ?? b.lng)
-            );
-        }
+            // =========================
+            // OSM: ViaCEP + Nominatim + Overpass
+            // =========================
+            async function viaCep(cep) {
+                const controller = new AbortController();
+                const url = `https://viacep.com.br/ws/${cep}/json/`;
+                const resp = await withTimeout(fetch(url, { signal: controller.signal }), FETCH_TIMEOUT_MS, controller);
+                if (!resp.ok) throw new Error("Falha no ViaCEP.");
+                const data = await resp.json();
+                if (data.erro) throw new Error("CEP não encontrado.");
+                return data;
+            }
 
-        // =========================
-        // OSM: ViaCEP + Nominatim + Overpass
-        // =========================
-        async function viaCep(cep) {
-            const controller = new AbortController();
-            const url = `https://viacep.com.br/ws/${cep}/json/`;
-            const resp = await withTimeout(fetch(url, { signal: controller.signal }), FETCH_TIMEOUT_MS, controller);
-            if (!resp.ok) throw new Error("Falha no ViaCEP.");
-            const data = await resp.json();
-            if (data.erro) throw new Error("CEP não encontrado.");
-            return data;
-        }
+            async function geocodeBR(addr) {
+                const parts = [
+                    addr.logradouro || "",
+                    addr.bairro || "",
+                    addr.localidade ? `${addr.localidade} - ${addr.uf}` : "",
+                    "Brasil"
+                ].filter(Boolean);
+                const q = parts.join(", ");
 
-        async function geocodeBR(addr) {
-            const parts = [
-                addr.logradouro || "",
-                addr.bairro || "",
-                addr.localidade ? `${addr.localidade} - ${addr.uf}` : "",
-                "Brasil"
-            ].filter(Boolean);
-            const q = parts.join(", ");
+                const params = new URLSearchParams({
+                    q, format: "json", addressdetails: "1", countrycodes: "br", limit: "1"
+                });
+                const controller = new AbortController();
+                const url = `${NOMINATIM_URL}?${params.toString()}`;
+                const resp = await withTimeout(fetch(url, { signal: controller.signal }), FETCH_TIMEOUT_MS, controller);
+                if (!resp.ok) throw new Error("Falha no geocoding (Nominatim).");
+                const arr = await resp.json();
+                if (!arr.length) throw new Error("Endereço não geocodificado.");
+                const { lat, lon, display_name } = arr[0];
+                return { lat: +lat, lon: +lon, label: display_name };
+            }
 
-            const params = new URLSearchParams({
-                q, format: "json", addressdetails: "1", countrycodes: "br", limit: "1"
-            });
-            const controller = new AbortController();
-            const url = `${NOMINATIM_URL}?${params.toString()}`;
-            const resp = await withTimeout(fetch(url, { signal: controller.signal }), FETCH_TIMEOUT_MS, controller);
-            if (!resp.ok) throw new Error("Falha no geocoding (Nominatim).");
-            const arr = await resp.json();
-            if (!arr.length) throw new Error("Endereço não geocodificado.");
-            const { lat, lon, display_name } = arr[0];
-            return { lat: +lat, lon: +lon, label: display_name };
-        }
-
-        function buildOverpassQL(lat, lon, radiusMeters, materialKeyList) {
-            const blocks = materialKeyList.map(k =>
-                `nwr(around:${radiusMeters},${lat},${lon})["amenity"="recycling"]["${k}"="yes"];`
-            ).join("\n");
-            return `
+            function buildOverpassQL(lat, lon, radiusMeters, materialKeyList) {
+                const blocks = materialKeyList.map(k =>
+                    `nwr(around:${radiusMeters},${lat},${lon})["amenity"="recycling"]["${k}"="yes"];`
+                ).join("\n");
+                return `
 [out:json][timeout:30];
 (
-  ${blocks}
+      ${blocks}
 );
 out center tags;`.trim();
-        }
-
-        async function fetchOverpass(ql) {
-            let lastErr;
-            for (const ep of OVERPASS_ENDPOINTS) {
-                try {
-                    const controller = new AbortController();
-                    const resp = await withTimeout(
-                        fetch(ep, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            body: new URLSearchParams({ data: ql }),
-                            signal: controller.signal
-                        }),
-                        FETCH_TIMEOUT_MS,
-                        controller
-                    );
-                    if (!resp.ok) throw new Error(`Overpass fora ou respondeu ${resp.status}.`);
-                    const data = await resp.json();
-                    return data?.elements ?? [];
-                } catch (err) {
-                    lastErr = err;
-                    await sleep(250);
-                }
             }
-            throw lastErr || new Error("Falha na Overpass API.");
-        }
 
-        function ensureMap() {
-            if (!$map) { console.warn("Elemento #map não encontrado."); return null; }
-            if (map) return map;
-
-            map = L.map($map, { zoomControl: true }).setView([-15.78, -47.93], 4);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
-            resultsLayer = L.layerGroup().addTo(map);
-
-            const invalidate = () => { if (map) map.invalidateSize(); };
-            setTimeout(invalidate, 0);
-            setTimeout(invalidate, 250);
-            setTimeout(invalidate, 800);
-            window.addEventListener('load', invalidate);
-            document.body.addEventListener('hf:ready', invalidate);
-            if ('ResizeObserver' in window) {
-                const ro = new ResizeObserver(invalidate);
-                ro.observe($map);
-            } else {
-                window.addEventListener('resize', invalidate);
-            }
-            return map;
-        }
-
-        function clearResults() {
-            resultsLayer && resultsLayer.clearLayers();
-            if (linkLine) { map.removeLayer(linkLine); linkLine = null; }
-            if (searchCircle) { map.removeLayer(searchCircle); searchCircle = null; }
-            if (cepMarker) { map.removeLayer(cepMarker); cepMarker = null; }
-        }
-
-        async function buscar() {
-            try {
-                const m = ensureMap();
-                if (!m) throw new Error("Mapa não disponível.");
-                clearResults();
-
-                const cepRaw = sanitizeCEP($cep?.value || "");
-                const produto = $produto?.value;
-                if (!produto) throw new Error("Escolha um produto para reciclar.");
-                assertValidCEP(cepRaw);
-
-                const raioKm = DEFAULT_RADIUS_KM;
-                const raioM = Math.round(raioKm * 1000);
-                const originQuery = `${cepRaw}, Brasil`;
-
-                const materialKeys = MATERIAL_TAGS[produto];
-                if (!materialKeys) throw new Error("Material inválido.");
-
-                // 1) CEP -> ViaCEP
-                const addr = await viaCep(cepRaw);
-
-                // 2) Geocode em Nominatim
-                const center = await geocodeBR(addr);
-
-                // Círculo do raio
-                searchCircle = L.circle([center.lat, center.lon], {
-                    radius: raioM, color: '#16a34a', weight: 1, fillColor: '#86efac', fillOpacity: 0.2
-                }).addTo(resultsLayer);
-
-                // Centraliza e marca
-                map.flyTo([center.lat, center.lon], DEFAULT_ZOOM_CEP, { duration: FLY_DURATION });
-                cepMarker = L.marker([center.lat, center.lon]).addTo(resultsLayer)
-                    .bindPopup(`<b>Você está aqui (CEP informado)</b><br>${center.label}`).openPopup();
-
-                // 3) Overpass
-                const ql = buildOverpassQL(center.lat, center.lon, raioM, materialKeys);
-                await sleep(150);
-                const elements = await fetchOverpass(ql);
-
-                // 4) Plotagem
-                const bounds = [[center.lat, center.lon]];
-                const icon = L.icon({
-                    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-                    iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
-                    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png", shadowSize: [41, 41]
-                });
-
-                if (!elements.length) {
-                    map.fitBounds(bounds, { padding: [40, 40] });
-                    alert("Nenhum ponto de coleta para esse material nesse raio.");
-                    return;
-                }
-
-                const pts = elements.map(el => {
-                    const lat = el.lat || el.center?.lat;
-                    const lon = el.lon || el.center?.lon;
-                    if (lat == null || lon == null) return null;
-                    const name = el.tags?.name || "Ponto de coleta";
-                    const mats = listAcceptedMaterials(el.tags || {});
-                    const link = gmLink(originQuery, lat, lon);
-
-                    L.marker([lat, lon], { icon }).addTo(resultsLayer)
-                        .bindPopup(
-                            `<b>${name}</b><br>` +
-                            (el.tags?.operator ? `${el.tags.operator}<br>` : "") +
-                            `Materiais aceitos: ${mats}<br>` +
-                            `<a href="${link}" target="_blank" rel="noopener">Traçar rota</a>`
+            async function fetchOverpass(ql) {
+                let lastErr;
+                for (const ep of OVERPASS_ENDPOINTS) {
+                    try {
+                        const controller = new AbortController();
+                        const resp = await withTimeout(
+                            fetch(ep, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                                body: new URLSearchParams({ data: ql }),
+                                signal: controller.signal
+                            }),
+                            FETCH_TIMEOUT_MS,
+                            controller
                         );
-                    bounds.push([lat, lon]);
-                    return { lat, lon, name, mats };
-                }).filter(Boolean);
-
-                // Linha até o mais próximo
-                let best = null, bestD = Infinity;
-                for (const p of pts) {
-                    const d = distanceMeters(center, p);
-                    if (d < bestD) { bestD = d; best = p; }
+                        if (!resp.ok) throw new Error(`Overpass fora ou respondeu ${resp.status}.`);
+                        const data = await resp.json();
+                        return data?.elements ?? [];
+                    } catch (err) {
+                        lastErr = err;
+                        await sleep(250);
+                    }
                 }
-                if (best) {
-                    linkLine = L.polyline([[center.lat, center.lon], [best.lat, best.lon]], { color: "green" })
-                        .addTo(resultsLayer)
-                        .bindPopup(`Ponto mais próximo: <b>${best.name}</b> (${fmtKm(bestD)} km)`)
-                        .openPopup();
-                }
-
-                if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
-            } catch (err) {
-                console.error(err);
-                alert(err.message || "Erro ao buscar pontos. Confira o CEP e tente novamente.");
+                throw lastErr || new Error("Falha na Overpass API.");
             }
-        } // <-- FECHA buscar()
 
-        // =========================
-        // Boot: listeners
-        // =========================
-        function init() {
-            ensureMap();
-            $btn?.addEventListener("click", (e) => { e.preventDefault?.(); buscar(); });
-            const onEnter = (e) => { if (e.key === "Enter") { e.preventDefault(); buscar(); } };
-            $cep?.addEventListener("keydown", onEnter);
-            $produto?.addEventListener("keydown", onEnter);
-        }
+            function ensureMap() {
+                if (!$map) { console.warn("Elemento #map não encontrado."); return null; }
+                if (map) return map;
 
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", init);
-        } else {
-            init();
-        }
+                map = L.map($map, { zoomControl: true }).setView([-15.78, -47.93], 4);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
 
-    })();
-</script>
+                resultsLayer = L.layerGroup().addTo(map);
+
+                const invalidate = () => { if (map) map.invalidateSize(); };
+                setTimeout(invalidate, 0);
+                setTimeout(invalidate, 250);
+                setTimeout(invalidate, 800);
+                window.addEventListener('load', invalidate);
+                document.body.addEventListener('hf:ready', invalidate);
+                if ('ResizeObserver' in window) {
+                    const ro = new ResizeObserver(invalidate);
+                    ro.observe($map);
+                } else {
+                    window.addEventListener('resize', invalidate);
+                }
+                return map;
+            }
+
+            function clearResults() {
+                resultsLayer && resultsLayer.clearLayers();
+                if (linkLine) { map.removeLayer(linkLine); linkLine = null; }
+                if (searchCircle) { map.removeLayer(searchCircle); searchCircle = null; }
+                if (cepMarker) { map.removeLayer(cepMarker); cepMarker = null; }
+            }
+
+            async function buscar() {
+                try {
+                    const m = ensureMap();
+                    if (!m) throw new Error("Mapa não disponível.");
+                    clearResults();
+
+                    const cepRaw = sanitizeCEP($cep?.value || "");
+                    const produto = $produto?.value;
+                    if (!produto) throw new Error("Escolha um produto para reciclar.");
+                    assertValidCEP(cepRaw);
+
+                    const raioKm = DEFAULT_RADIUS_KM;
+                    const raioM = Math.round(raioKm * 1000);
+                    const originQuery = `${cepRaw}, Brasil`;
+
+                    const materialKeys = MATERIAL_TAGS[produto];
+                    if (!materialKeys) throw new Error("Material inválido.");
+
+                    // 1) CEP -> ViaCEP
+                    const addr = await viaCep(cepRaw);
+
+                    // 2) Geocode em Nominatim
+                    const center = await geocodeBR(addr);
+
+                    // Círculo do raio
+                    searchCircle = L.circle([center.lat, center.lon], {
+                        radius: raioM, color: '#16a34a', weight: 1, fillColor: '#86efac', fillOpacity: 0.2
+                    }).addTo(resultsLayer);
+
+                    // Centraliza e marca
+                    map.flyTo([center.lat, center.lon], DEFAULT_ZOOM_CEP, { duration: FLY_DURATION });
+                    cepMarker = L.marker([center.lat, center.lon]).addTo(resultsLayer)
+                        .bindPopup(`<b>Você está aqui (CEP informado)</b><br>${center.label}`).openPopup();
+
+                    // 3) Overpass
+                    const ql = buildOverpassQL(center.lat, center.lon, raioM, materialKeys);
+                    await sleep(150);
+                    const elements = await fetchOverpass(ql);
+
+                    // 4) Plotagem
+                    const bounds = [[center.lat, center.lon]];
+                    const icon = L.icon({
+                        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+                        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+                        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png", shadowSize: [41, 41]
+                    });
+
+                    if (!elements.length) {
+                        map.fitBounds(bounds, { padding: [40, 40] });
+                        alert("Nenhum ponto de coleta para esse material nesse raio.");
+                        return;
+                    }
+
+                    const pts = elements.map(el => {
+                        const lat = el.lat || el.center?.lat;
+                        const lon = el.lon || el.center?.lon;
+                        if (lat == null || lon == null) return null;
+                        const name = el.tags?.name || "Ponto de coleta";
+                        const mats = listAcceptedMaterials(el.tags || {});
+                        const link = gmLink(originQuery, lat, lon);
+
+                        L.marker([lat, lon], { icon }).addTo(resultsLayer)
+                            .bindPopup(
+                                `<b>${name}</b><br>` +
+                                (el.tags?.operator ? `${el.tags.operator}<br>` : "") +
+                                `Materiais aceitos: ${mats}<br>` +
+                                `<a href="${link}" target="_blank" rel="noopener">Traçar rota</a>`
+                            );
+                        bounds.push([lat, lon]);
+                        return { lat, lon, name, mats };
+                    }).filter(Boolean);
+
+                    // Linha até o mais próximo
+                    let best = null, bestD = Infinity;
+                    for (const p of pts) {
+                        const d = distanceMeters(center, p);
+                        if (d < bestD) { bestD = d; best = p; }
+                    }
+                    if (best) {
+                        linkLine = L.polyline([[center.lat, center.lon], [best.lat, best.lon]], { color: "green" })
+                            .addTo(resultsLayer)
+                            .bindPopup(`Ponto mais próximo: <b>${best.name}</b> (${fmtKm(bestD)} km)`)
+                            .openPopup();
+                    }
+
+                    if (bounds.length) map.fitBounds(bounds, { padding: [40, 40] });
+                } catch (err) {
+                    console.error(err);
+                    alert(err.message || "Erro ao buscar pontos. Confira o CEP e tente novamente.");
+                }
+            } // <-- FECHA buscar()
+
+            // =========================
+            // Boot: listeners
+            // =========================
+            function init() {
+                ensureMap();
+                $btn?.addEventListener("click", (e) => { e.preventDefault?.(); buscar(); });
+                const onEnter = (e) => { if (e.key === "Enter") { e.preventDefault(); buscar(); } };
+                $cep?.addEventListener("keydown", onEnter);
+                $produto?.addEventListener("keydown", onEnter);
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
 
 
 
 
+
+    <footer class="footer" role="contentinfo" aria-label="Rodapé">
+        <div class="container">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">Descarte Certo</a>
+                <p class="n-text">Compromissamos com a missão de informar sobre a reciclagem</p>
+            </div>
+
+            <ul class="footer-list" aria-label="Links úteis">
+                <li><p class="footer-list-title">Links Úteis</p></li>
+                <li><a href="index.html#sobrenos" class="footer-link">Sobre Nós</a></li>
+                <li><a href="index.html#guiderec" class="footer-link">Guia de Reciclagem</a></li>
+                <li><a href="blog.html" class="footer-link">Blog</a></li>
+            </ul>
+
+            <ul class="footer-list" aria-label="Contato">
+                <li><p class="footer-list-title">Contato</p></li>
+                <li class="footer-item">
+                    <a href="mailto:Descartecerto010@gmail.com" class="item-link" aria-label="Enviar e-mail" title="Enviar e-mail">
+                        <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+                    </a>
+                    <a href="https://www.instagram.com/descartecerto010?igsh=MWFjNmtwOTZxdTA1dg==" class="item-link"
+                       aria-label="Instagram Descarte Certo" title="Instagram Descarte Certo" target="_blank" rel="noopener noreferrer">
+                        <ion-icon name="logo-instagram" aria-hidden="true"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; Descarte Certo &amp;
+                <a href="https://petris.digital/" target="_blank" rel="noopener noreferrer">PETRIS</a>,
+                2025. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+</body>
+<script src="./assets/js/logout.js" defer></script>
 <script src="./assets/js/impacto.js" defer></script>
 <script src="./assets/js/menu.js" defer></script>
 <script src="./assets/js/chat.js" defer></script>
+<script src="./assets/js/login.js" defer></script>
+
+
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</html>

@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22 d17.14
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecyclingBackend", "RecyclingBackend.csproj", "{0BBD7E9A-9453-812D-8EAC-EE798BF5911F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateUsersConsole", "..\CreateUsersConsole\CreateUsersConsole.csproj", "{08AD04A3-FEF6-4D2B-B1D3-F60A93C4142C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{0BBD7E9A-9453-812D-8EAC-EE798BF5911F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BBD7E9A-9453-812D-8EAC-EE798BF5911F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BBD7E9A-9453-812D-8EAC-EE798BF5911F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08AD04A3-FEF6-4D2B-B1D3-F60A93C4142C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08AD04A3-FEF6-4D2B-B1D3-F60A93C4142C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08AD04A3-FEF6-4D2B-B1D3-F60A93C4142C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08AD04A3-FEF6-4D2B-B1D3-F60A93C4142C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

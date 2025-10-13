@@ -7,6 +7,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\assets\js\auth.js" />
+    <Content Remove="wwwroot\assets\js\JavaScript.js" />
+    <Content Remove="wwwroot\footer.html" />
+    <Content Remove="wwwroot\header.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\.vscode\settings.json" />

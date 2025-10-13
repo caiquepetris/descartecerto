@@ -1,31 +1,61 @@
 
-<script>
-    document.addEventListener("DOMContentLoaded", async function () {
-        try {
-            const [headerRes, footerRes] = await Promise.all([
-                fetch('header.html'),
-                fetch('footer.html')
-            ]);
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarte Certo</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="stylesheet" href="./assets/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 
-            if (!headerRes.ok || !footerRes.ok) {
-                throw new Error("Erro ao carregar header ou footer.");
-            }
+<body>
 
-            const [headerHTML, footerHTML] = await Promise.all([
-                headerRes.text(),
-                footerRes.text()
-            ]);
+    <div class="overlay"></div>
 
-            document.body.insertAdjacentHTML('afterbegin', headerHTML);
-            document.body.insertAdjacentHTML('beforeend', footerHTML);
+    <header>
+        <section>
+            <div class="container">
+                <div class="header-top">
+                    <h1><a href="index.html" style="text-decoration: none; color: black;">Descarte Certo</a></h1>
 
-            initMenu();
-        } catch (error) {
-            console.error("Erro ao carregar o header/footer:", error);
-        }
-    });
-</script>
+                    <div class="header-actions">
 
+                        <!-- Botão de login padrão -->
+                        <a href="login/login.html" class="header-section__login-button" role="button">
+                            <svg class="header-section__login-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <span class="header-section__login-text">Login / Sign Up</span>
+
+                        </a>
+
+                        <!-- Menu hamburguer -->
+                        <div class="menu-hamburguer">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="menu">
+            <div class="sidebar-header">
+                <h2>Menu</h2>
+                <div class="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <ul>
+                <li><a href="index.html">Página inicial</a></li>
+                <li><a href="perfil.html">Perfil</a></li>
+                <li><a href="rec.html">Como Reciclar?</a></li>
+            </ul>
+        </nav>
+    </header>
 <!-- O que é a Descarte Certo? -->
 <section class="mission-section" id="sobrenos">
     <div class="mission-container">
@@ -91,7 +121,7 @@
         <div class="mission-footer">
             <div class="mission-join-us">
                 <span class="mission-leaf-icon" aria-hidden="true">🍃</span>
-                <a href="https://www.instagram.com/descartecerto010" style="color: #16a34a;">Junte-se a nós nessa missão</a>
+                <a href="https://www.instagram.com/descartecerto010" style="color: #16a34a; font-size:20px;">Junte-se a nós nessa missão</a>
             </div>
         </div>
 
@@ -345,38 +375,49 @@
     </div>
 </section>
 
+<footer class="footer" role="contentinfo" aria-label="Rodapé">
+    <div class="container">
+        <div class="footer-brand">
+            <a href="index.html" class="logo">Descarte Certo</a>
+            <p class="n-text">Compromissamos com a missão de informar sobre a reciclagem</p>
+        </div>
+
+        <ul class="footer-list" aria-label="Links úteis">
+            <li><p class="footer-list-title">Links Úteis</p></li>
+            <li><a href="index.html#sobrenos" class="footer-link">Sobre Nós</a></li>
+            <li><a href="index.html#guiderec" class="footer-link">Guia de Reciclagem</a></li>
+            <li><a href="blog.html" class="footer-link">Blog</a></li>
+        </ul>
+
+        <ul class="footer-list" aria-label="Contato">
+            <li><p class="footer-list-title">Contato</p></li>
+            <li class="footer-item">
+                <a href="mailto:Descartecerto010@gmail.com" class="item-link" aria-label="Enviar e-mail" title="Enviar e-mail">
+                    <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+                </a>
+                <a href="https://www.instagram.com/descartecerto010?igsh=MWFjNmtwOTZxdTA1dg==" class="item-link"
+                   aria-label="Instagram Descarte Certo" title="Instagram Descarte Certo" target="_blank" rel="noopener noreferrer">
+                    <ion-icon name="logo-instagram" aria-hidden="true"></ion-icon>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            &copy; Descarte Certo &amp;
+            <a href="https://petris.digital/" target="_blank" rel="noopener noreferrer">PETRIS</a>,
+            2025. Todos os direitos reservados.
+        </p>
+    </div>
+</footer>
 
 </body>
 
-
+<script src="./assets/js/logout.js" defer></script>
 <script src="./assets/js/menu.js" defer></script>
 <script src="./assets/js/chat.js" defer></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        requireAuth(); // redireciona pro login se não tiver token
-        applyHeaderAuth({ /* ... */ });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        applyHeaderAuth({
-            userSelector: '#userDisplay',
-            logoutSelector: '#logoutBtn',
-            loginLinkSelector: '.header-section__login-button',
-            onLoggedOutRedirect: '/login/login.html'
-        });
-
-        // 
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function () {
-                localStorage.clear(); // remove todos os dados locais, inclusive o token
-                alert('Conta deslogada!');
-                window.location.replace('/login/login.html'); // redireciona para login
-            });
-        }
-    });
-</script>
+<script src="./assets/js/login.js" defer></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </html>

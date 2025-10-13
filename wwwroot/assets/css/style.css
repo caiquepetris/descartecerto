@@ -1,4 +1,4 @@
-/* Estilos específicos para a seção de missão */
+
 .mission-section {
     padding: 96px 0; 
     background: linear-gradient(to bottom right, #f0fdf4, #ffffff, #f0fdf4);
@@ -188,6 +188,7 @@
     gap: 12px;
     color: #16a34a;
     font-weight: 500;
+    font-size:30px;
 }
 
 .mission-leaf-icon {font-size: 20px;}
