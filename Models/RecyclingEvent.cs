@@ -17,6 +17,10 @@ namespace RecyclingBackend.Models
         // points awarded for this event (can be equal to Items)
         public int Points { get; set; }
 
+        public required string Material { get; set; }
+
+        public int Quantity { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

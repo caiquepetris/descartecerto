@@ -33,16 +33,16 @@ namespace RecyclingBackend.Controllers
             if (user == null) return Unauthorized();
 
             // Pontos = número de itens ou quantidade reciclada
-            var points = dto.Items;
+
+            var points = dto.Quantity;
 
             var ev = new RecyclingEvent
             {
                 UserId = userId,
-                Items = dto.Items,
-                Points = points,
+                Points = dto.Quantity,
                 Material = dto.Material,
                 Quantity = dto.Quantity,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
 
             _db.RecyclingEvents.Add(ev);

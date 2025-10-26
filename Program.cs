@@ -58,6 +58,21 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<RecyclingDbContext>();
+//    try
+//    {
+//        db.Database.CanConnect();
+//        Console.WriteLine("Conexão com o banco OK!");
+//    }
+//    catch (Exception ex)
+//    {
+//        Console.WriteLine($"Erro ao conectar: {ex.Message}");
+//    }
+//}
+
+
 // Configure middleware
 if (app.Environment.IsDevelopment())
 {

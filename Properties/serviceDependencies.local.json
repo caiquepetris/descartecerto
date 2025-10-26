@@ -5,7 +5,7 @@
     },
     "mssql1": {
       "secretStore": "LocalSecretsFile",
-      "type": "mssql.local",
+      "type": "mssql.onprem",
       "connectionId": "ConnectionStrings:DefaultConnection1",
       "dynamicId": null
     }

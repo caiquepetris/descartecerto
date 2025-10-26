@@ -191,7 +191,7 @@ function updateHeaderAuthUI() {
             loginBtn.setAttribute("href", "perfil.html");
             loginBtn.setAttribute("title", "Ver perfil");
         } else {
-            const username = auth?.user?.username || auth?.user?.email || 'não logado';
+            const username = auth?.user?.username || auth?.user?.email || 'Faça Login!';
             loginBtn.querySelector(".header-section__login-text").textContent = "Login / Sign Up";
             loginBtn.setAttribute("href", "login/login.html");
             loginBtn.setAttribute("title", "Login ou cadastro");
@@ -211,10 +211,10 @@ function atualizarNomePerfil() {
     try {
         const authRaw = localStorage.getItem('dc_auth_v1');
         const auth = authRaw ? JSON.parse(authRaw) : null;
-        const username = auth?.user?.username || auth?.user?.email || 'não logado';
+        const username = auth?.user?.username || auth?.user?.email || 'Faça Login!';
         if (nomeEl) nomeEl.textContent = username;
     } catch (err) {
-        if (nomeEl) nomeEl.textContent = 'não logado';
+        if (nomeEl) nomeEl.textContent = 'Faça Login!';
     }
 }
 

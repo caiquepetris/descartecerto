@@ -109,7 +109,7 @@
                     </div>
                 </section>
                 <script>
-                    const API_BASE = "https://localhost:54034"; // troque pelo seu endpoint real
+                    const API_BASE = "https://descartecerto.azurewebsites.net"; // troque pelo seu endpoint real
 
                     async function postarReciclagem() {
                         const token = getToken(); // sua função de auth local
@@ -216,7 +216,7 @@
                 const token = auth?.token;
                 if (!token) { statusEl.textContent = "Usuário não autenticado."; return; }
 
-                const url = "https://localhost:54034/api/recycling/add"; // ajuste conforme backend
+                const url = "https://descartecerto.azurewebsites.net/api/Recycling/add"; // ajuste conforme backend
 
                 const body = JSON.stringify({
                     items: 1,
@@ -270,7 +270,7 @@
             // === Atualiza ranking ===
             async function atualizarRanking() {
                 try {
-                    const res = await fetch("https://localhost:54034/api/recycling/ranking");
+                    const res = await fetch("https://descartecerto.azurewebsites.net/api/Recycling/ranking");
                     if (!res.ok) throw new Error("Erro ao buscar ranking.");
 
                     const data = await res.json();

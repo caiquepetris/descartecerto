@@ -1,6 +1,6 @@
 // ================== CONFIG ==================
 var AUTH_KEY = 'dc_auth_v1';
-const API_BASE = 'https://localhost:54034';
+const API_BASE = 'https://descartecerto.azurewebsites.net';
 const LOGIN_URL = `${API_BASE}/api/Auth/login`;
 const Ranking = `${API_BASE}/api/Recycling/ranking`;
 
