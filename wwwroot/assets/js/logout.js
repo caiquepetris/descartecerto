@@ -153,13 +153,9 @@ function openLogoutModal(ev) {
     yesBtn.addEventListener("click", () => {
         if (logoutClicked) return;
         logoutClicked = true;
-
         clearAuth();
         document.body.removeChild(modalBg);
-
-        // ATUALIZA O NOME DO PERFIL NA HORA!
         atualizarNomePerfil();
-
         updateHeaderAuthUI();
     });
 
