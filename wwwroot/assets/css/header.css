@@ -239,7 +239,7 @@ header h1 {
 .menu {
     position: fixed;
     top: 0;
-    right: -280px;
+    right: -303px;
     width: 280px;
     height: 100vh;
     background-color: white;

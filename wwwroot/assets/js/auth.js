@@ -1,6 +1,5 @@
-﻿// ==== auth.js (vanilla JS, sem bundler) ====
-// Ajuste a URL da sua API (HTTPS, porta 54034):
-const API_BASE = 'https://localhost:54034';
+﻿// Ajuste a URL da sua API (HTTPS, porta 54034):
+const API_BASE = 'https://descartecerto.azurewebsites.net';
 const LOGIN_URL = `${API_BASE}/api/Auth/login`;
 const REGISTER_URL = `${API_BASE}/api/Auth/register`; // se você tiver esse endpoint
 const AUTH_KEY = 'dc.auth';
